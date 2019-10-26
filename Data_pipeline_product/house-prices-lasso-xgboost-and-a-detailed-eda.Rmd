@@ -200,10 +200,10 @@ raincloud_theme <- theme(
   legend.position = "right",
   plot.title = element_text(lineheight = .8, face = "bold", size = 16),
   panel.border = element_blank(),
-  panel.grid.minor = element_blank(),
+  #panel.grid.minor = element_blank(),
   panel.grid.major = element_blank(),
-  axis.line.x = element_line(colour = "black", size = 0.5, linetype = "solid"),
-  axis.line.y = element_line(colour = "black", size = 0.5, linetype = "solid"))
+  axis.line.x = element_line(colour = "grey", size = 2, linetype = "solid"),
+  axis.line.y = element_line(colour = "grey", size = 2, linetype = "solid"))
 
 #mypalette = RColorBrewer::brewer.pal(26,"Spectral") not working
 getPalette = colorRampPalette(RColorBrewer::brewer.pal(8, "RdBu"))(10)
@@ -232,19 +232,24 @@ g <-
   scale_color_manual(values = getPalette) +
   scale_fill_manual(values = getPalette) +
   #coord_flip() + # flip or not
-  theme_bw() +
-  raincloud_theme +
-  coord_trans(y = 'log2')+
-  labs( y = 'log2_SalePrice')+
-  labs(x = 'OverallQual')
+  coord_trans(y = 'log2') +
+  labs( y = 'SalePrice' ) +
+  labs(x = 'OverallQual')+
+  annotate("text", x = 4, y = 3e+05, label = c('outlier?'))+
+  labs(title = "Relationship between SalesPrice and OverallQual")+
+  labs(subtitle = "Data Source: House Prices Competition in Kaggle")+
+  labs(caption = "Vis: @zhao_yikai with ggplot")+
+  theme_bw()+
+  theme(plot.subtitle = element_text(color = 'grey12'))+
+  theme(panel.border = element_blank())+
+  theme(plot.title = element_text(lineheight = .8, face = "bold", size = 16))+
+  theme(panel.grid.minor = element_blank())+
+  theme(axis.line.x = element_line(color = 'darkgrey', size = 0.5))+
+  scale_y_continuous(breaks= seq(0, 800000, by=100000), labels = comma)
+  
+
 
 print(g)
-
-
-
-
-
-
 ```
 
 The positive correlation is certainly there indeed, and seems to be a slightly upward curve. Regarding outliers, I do not see any extreme values. If there is a candidate to take out as an outlier later on, it seems to be the expensive house with grade 4.
@@ -255,9 +260,21 @@ The numeric variable with the second highest correlation with SalesPrice is the 
 
 ```{r}
 ggplot(data=all[!is.na(all$SalePrice),], aes(x=GrLivArea, y=SalePrice))+
-        geom_point(col='blue') + geom_smooth(method = "lm", se=FALSE, color="black", aes(group=1)) +
+        geom_point() + 
+        geom_smooth(method = "lm", se=FALSE, color="black", lty = "dotted") +
         scale_y_continuous(breaks= seq(0, 800000, by=100000), labels = comma) +
-        geom_text_repel(aes(label = ifelse(all$GrLivArea[!is.na(all$SalePrice)]>4500, rownames(all), '')))
+        geom_text_repel(aes(label = ifelse(all$GrLivArea[!is.na(all$SalePrice)]>4500, rownames(all), '')))+
+        theme_bw()+
+        theme(plot.subtitle = element_text(color = 'grey12'))+
+        theme(panel.border = element_blank())+
+        theme(plot.title = element_text(lineheight = .8, face = "bold", size = 16))+
+        theme(panel.grid.minor = element_blank())+
+        theme(plot.subtitle = element_text(color = 'darkgray'))+
+        theme(axis.line.x = element_line(color = 'darkgrey', size = 0.5))+
+        labs(title = "Relationship between SalesPrice and GrLivArea")+
+        labs(subtitle = "Data Source: House Prices Competition in Kaggle")+
+        labs(caption = "Vis: @zhao_yikai with ggplot")
+  
         
 ```
 
