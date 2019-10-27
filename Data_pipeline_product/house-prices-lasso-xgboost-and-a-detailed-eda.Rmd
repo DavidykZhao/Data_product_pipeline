@@ -126,11 +126,11 @@ ggplot_missing <- function(x){
     scale_fill_grey(name = "",
                     labels = c("Present","Missing")) +
     theme_minimal() +
-    theme(axis.text.x  = element_text(angle=45, vjust=0.5)) +
+    theme(axis.text.x  = element_text(angle=90, vjust=0.5)) +
     labs(x = "Variables in Dataset",
          y = "Rows / observations")
 }
-ggplot_missing(all[, 1:ncol(all)-1])
+ggplot_missing(all[, 1:ncol(all)])
 ```
 
 
@@ -174,7 +174,7 @@ It also becomes clear the multicollinearity is an issue. For example: the correl
 
 Overall Quality has the highest correlation with SalePrice among the numeric variables (0.79). It rates the overall material and finish of the house on a scale from 1 (very poor) to 10 (very excellent).
 
-```{r}
+```{r warning=FALSE}
 # ggplot(data=all[!is.na(all$SalePrice),], aes(x=factor(OverallQual), y=SalePrice))+
 #         geom_boxplot(col='blue') + labs(x='Overall Quality') +
 #         scale_y_continuous(breaks= seq(0, 800000, by=100000), labels = comma)
@@ -368,11 +368,13 @@ Within Miscellaneous Feature, there are 2814 NAs. As the values are not ordinal,
 ```{r}
 all$MiscFeature[is.na(all$MiscFeature)] <- 'None'
 all$MiscFeature <- as.factor(all$MiscFeature)
-
+custom.col <- c("#FFDB6D", "#C4961A", "#F4EDCA", 
+                "#D16103", "#C3D7A4", "#52854C", "#4E84C4", "#293352")
 ggplot(all[!is.na(all$SalePrice),], aes(x=MiscFeature, y=SalePrice)) +
-        geom_bar(stat='summary', fun.y = "median", fill='blue') +
+        geom_bar(stat='summary', fun.y = "median", aes(fill= MiscFeature)) +
         scale_y_continuous(breaks= seq(0, 800000, by=100000), labels = comma) +
-        geom_label(stat = "count", aes(label = ..count.., y = ..count..))
+        geom_label(stat = "count", aes(label = ..count.., y = ..count..))+
+        scale_fill_manual(values = custom.col[3:length(custom.col)])
 
 table(all$MiscFeature)
 ```
