@@ -1701,7 +1701,7 @@ grid.arrange(ms1, ms2)
 
 ###Garage variables
 
-Several Garage variables have a high correlation with SalePrice, and are also in the top-20 list of the quick random forest. However, there is multicolinearity among them and I think that 7 garage variables is too many anyway. I feel that something like 3 variables should be sufficient (possibly GarageCars, GarageType, and a Quality measurement), but before I do any selection I am visualizing all of them in this section.
+Several Garage variables have a high correlation with SalePrice, and are also in the top-20 list of the quick random forest. However, there is multicolinearity among them and I think that 7 grage variables is too many anyway. I feel that something like 3 variables should be sufficient (possibly GarageCars, GarageType, and a Quality measurement), but before I do any selection I am visualizing all of them in this section.
 
 ```{r}
 #correct error
@@ -2139,97 +2139,4 @@ saveRDS(reg_auto, file = "autoxgboost_160.rds")
 xgb_grid = expand.grid(
 nrounds = 1000,
 eta = c(0.1, 0.05, 0.01),
-max_depth = c(2, 3, 4, 5, 6),
-gamma = 0,
-colsample_bytree=1,
-min_child_weight=c(1, 2, 3, 4 ,5),
-subsample=1
-)
-```
-
-The next step is to let caret find the best hyperparameter values (using 5 fold cross validation).
-
-```{r}
-#xgb_caret <- train(x=train1, y=all$SalePrice[!is.na(all$SalePrice)], method='xgbTree', trControl= my_control, tuneGrid=xgb_grid) 
-#xgb_caret$bestTune
-```
-
-As expected, this took quite a bit of time (locally). As I want to limit the running time on Kaggle, I disabled the code, and am just continuing with the results. According to caret, the 'bestTune' parameters are:
-
-* Max_depth=3
-* eta=0.05
-* Min_child_weight=4
-
-In the remainder of this section, I will continue to work with the xgboost package directly. Below, I am starting with the preparation of the data in the recommended format.
-
-```{r}
-label_train <- all$SalePrice[!is.na(all$SalePrice)]
-
-# put our testing & training data into two seperates Dmatrixs objects
-dtrain <- xgb.DMatrix(data = as.matrix(train1), label= label_train)
-dtest <- xgb.DMatrix(data = as.matrix(test1))
-```
-
-In addition, I am taking over the best tuned values from the caret cross validation.
-
-```{r}
-default_param<-list(
-        objective = "reg:linear",
-        booster = "gbtree",
-        eta=0.114, #default = 0.3
-        gamma=0.009,
-        max_depth=3, #default=6
-        #min_child_weight=4, #default=1
-        colsample_bytree=0.503,
-        colsample_bylevel= 0.564,
-        lambda = 2.631,
-        alpha= 0.004,
-        subsample =0.975
-        
-)
-
-```
-
-The next step is to do cross validation to determine the best number of rounds (for the given set of parameters). 
-
-```{r}
-xgbcv <- xgb.cv( params = default_param, data = dtrain, nrounds = 301, nfold = 5, showsd = T, stratified = T, print_every_n = 40, early_stopping_rounds = 10, maximize = F)
-```
-
-Although it was a bit of work, the hyperparameter tuning definitly paid of, as the cross validated RMSE inproved considerably (from 0.1225 without the caret tuning, to 0.1162 in this version)!
-
-```{r}
-#train the model using the best iteration found by cross validation
-xgb_mod <- xgb.train(data = dtrain, params=default_param, nrounds = 183)
-```
-
-```{r}
-XGBpred <- predict(xgb_mod, dtest)
-predictions_XGB <- exp(XGBpred) #need to reverse the log to the real values
-head(predictions_XGB)
-```
-
-```{r, out.width="100%"}
-#view variable importance plot
-library(Ckmeans.1d.dp) #required for ggplot clustering
-mat <- xgb.importance (feature_names = colnames(train1),model = xgb_mod)
-xgb.ggplot.importance(importance_matrix = mat[1:20], rel_to_first = TRUE)
-```
-
-##Averaging predictions
-
-Since the lasso and XGBoost algorithms are very different, averaging predictions likely improves the scores. As the lasso model does better regarding the cross validated RMSE score (0.1121 versus 0.1162), I am weigting the lasso model double.
-
-```{r}
-sub_avg <- data.frame(Id = test_labels, SalePrice = (predictions_XGB+2*predictions_lasso)/3)
-head(sub_avg)
-write.csv(sub_avg, file = 'average.csv', row.names = F)
-```
-
-
-
-
-
-
-
-
+max_depth = c
