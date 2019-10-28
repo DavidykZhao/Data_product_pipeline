@@ -399,9 +399,11 @@ all$Alley <- as.factor(all$Alley)
 
 ggplot(all[!is.na(all$SalePrice),], aes(x=Alley, y=SalePrice)) +
         geom_bar(stat='summary', fun.y = "median", fill='blue')+
-        scale_y_continuous(breaks= seq(0, 200000, by=50000), labels = comma)
+        scale_y_continuous(breaks= seq(0, 200000, by=50000), labels = comma)+
+        geom_label(stat = "count", aes(label = ..count.., y = ..count..))
 
-table(all$Alley)
+
+table(all[!is.na(all$SalePrice),]$Alley)
 ```
 
 **Please return to the 5.2 Tabs menu to select other (groups of) variables**
@@ -476,7 +478,11 @@ sum(table(all$Fireplaces))
 ```{r}
 ggplot(all[!is.na(all$LotFrontage),], aes(x=as.factor(Neighborhood), y=LotFrontage)) +
         geom_bar(stat='summary', fun.y = "median", fill='blue') +
-        theme(axis.text.x = element_text(angle = 45, hjust = 1))
+        theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+        #geom_label(stat = 'count', aes(label = ..count.., y = ..count..))+
+        geom_label(stat = "count", aes(label = ..count.., y = ..count..))
+
+        
 ```
 
 ```{r}
@@ -547,6 +553,7 @@ length(which(is.na(all$GarageType) & is.na(all$GarageFinish) & is.na(all$GarageC
 
 #Find the 2 additional NAs
 kable(all[!is.na(all$GarageType) & is.na(all$GarageFinish), c('GarageCars', 'GarageArea', 'GarageType', 'GarageCond', 'GarageQual', 'GarageFinish')])
+
 ```
 
 The 157 NAs within GarageType all turn out to be NA in GarageCondition, GarageQuality, and GarageFinish as well. The differences are found in houses 2127 and 2577. As you can see, house 2127 actually does seem to have a Garage and house 2577 does not. Therefore, there should be 158 houses without a Garage. To fix house 2127, I will imputate the most common values (modes) for GarageCond, GarageQual, and GarageFinish.
@@ -839,7 +846,7 @@ all[is.na(all$MasVnrType) & !is.na(all$MasVnrArea), c('MasVnrType', 'MasVnrArea'
 
 ```{r}
 #fix this veneer type by imputing the mode
-all$MasVnrType[2611] <- names(sort(-table(all$MasVnrType)))[2] #taking the 2nd value as the 1st is 'none'
+all$MasVnrType[2611] <- names(sort(table(all$MasVnrType), decreasing = T))[2] #taking the 2nd value as the 1st is 'none'
 all[2611, c('MasVnrType', 'MasVnrArea')]
 ```
 
@@ -1464,6 +1471,11 @@ sum(table(all$Street))
 all$PavedDrive<-as.integer(revalue(all$PavedDrive, c('N'=0, 'P'=1, 'Y'=2)))
 table(all$PavedDrive)
 sum(table(all$PavedDrive))
+
+ggplot(data =all[!is.na(all$SaleType), ], aes(x = PavedDrive, y= SalePrice))+
+  geom_bar(stat = 'summary', fun.y = 'median')+
+  geom_label(stat = "count", aes(label = ..count.., y = ..count..))
+
 ```
 
 **Please return to the 5.3 Tabs menu to select other (groups of) variables**
@@ -1573,7 +1585,7 @@ I tried to get the relative importance of variables with a quick linear regressi
 
 ```{r}
 set.seed(2018)
-quick_RF <- randomForest(x=all[1:1460,-79], y=all$SalePrice[1:1460], ntree=100,importance=TRUE)
+quick_RF <- randomForest(x=all[1:1460,-79], y=all$SalePrice[1:1460], ntree=200,importance=TRUE)
 imp_RF <- importance(quick_RF)
 imp_DF <- data.frame(Variables = row.names(imp_RF), MSE = imp_RF[,1])
 imp_DF <- imp_DF[order(imp_DF$MSE, decreasing = TRUE),]
@@ -1617,7 +1629,7 @@ GrLivArea seemed to be just the total of square feet 1st and 2nd floor. However,
 
 ```{r}
 cor(all$GrLivArea, (all$X1stFlrSF + all$X2ndFlrSF + all$LowQualFinSF))
-head(all[all$LowQualFinSF>0, c('GrLivArea', 'X1stFlrSF', 'X2ndFlrSF', 'LowQualFinSF')])
+kable(head(all[all$LowQualFinSF>0, c('GrLivArea', 'X1stFlrSF', 'X2ndFlrSF', 'LowQualFinSF')]))
 ```
 
 ###The most important categorical variable; Neighborhood
@@ -2050,6 +2062,10 @@ qqline(all$SalePrice)
 ```{r}
 train1 <- combined[!is.na(all$SalePrice),]
 test1 <- combined[is.na(all$SalePrice),]
+
+
+train_df <- cbind(combined[!is.na(all$SalePrice),], 'SalePrice' = all$SalePrice[!is.na(all$SalePrice)])
+colnames(train_df)
 ```
 
 #Modeling
@@ -2101,6 +2117,26 @@ Initially, I just worked with the XGBoost package directly. The main reason for 
 Although caret does not seem to use the (fast) datastructure of the xgb package, I eventually decided to do hyperparameter tuning with it anyway, as it at least supports a full grid search. As far as I understand it, the main parameters to tune to avoid overfitting are max_depth, and min_child_weight (see [XGBoost documentation](http://xgboost.readthedocs.io/en/latest/how_to/param_tuning.html)). Below I am setting up a grid that tunes both these parameters, and also the eta (learning rate).
 
 ```{r}
+devtools::install_github("ja-thomas/autoxgboost")
+#library('ParamHelpers')
+library(autoxgboost)
+```
+
+```{r}
+autoxgbparset
+# change the column name of train_df
+# new_col_name = gsub(" ", "_", colnames(train_df))
+# colnames(train_df) = new_col_name
+# colnames(train_df)
+colnames(train_df) = make.names(colnames(train_df))
+reg_task <- makeRegrTask(data = train_df, target = "SalePrice")
+system.time(reg_auto <- autoxgboost(reg_task))
+reg_auto
+saveRDS(reg_auto, file = "autoxgboost_160.rds")
+```
+
+
+```{r}
 xgb_grid = expand.grid(
 nrounds = 1000,
 eta = c(0.1, 0.05, 0.01),
@@ -2148,6 +2184,18 @@ default_param<-list(
         subsample=1,
         colsample_bytree=1
 )
+
+
+Recommended parameters:
+              eta: 0.114
+            gamma: 0.009
+        max_depth: 3
+ colsample_bytree: 0.503
+colsample_bylevel: 0.564
+           lambda: 2.631
+            alpha: 0.004
+        subsample: 0.975
+          nrounds: 301
 ```
 
 The next step is to do cross validation to determine the best number of rounds (for the given set of parameters). 
