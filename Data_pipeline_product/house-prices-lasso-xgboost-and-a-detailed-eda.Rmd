@@ -2065,6 +2065,7 @@ test1 <- combined[is.na(all$SalePrice),]
 
 
 train_df <- cbind(combined[!is.na(all$SalePrice),], 'SalePrice' = all$SalePrice[!is.na(all$SalePrice)])
+colnames(train_df)
 ```
 
 #Modeling
@@ -2122,14 +2123,14 @@ library(autoxgboost)
 ```
 
 ```{r}
-#autoxgbparset
+autoxgbparset
 # change the column name of train_df
 # new_col_name = gsub(" ", "_", colnames(train_df))
 # colnames(train_df) = new_col_name
 # colnames(train_df)
 colnames(train_df) = make.names(colnames(train_df))
 reg_task <- makeRegrTask(data = train_df, target = "SalePrice")
-#system.time(reg_auto <- autoxgboost(reg_task))
+system.time(reg_auto <- autoxgboost(reg_task))
 reg_auto
 saveRDS(reg_auto, file = "autoxgboost_160.rds")
 ```
@@ -2176,31 +2177,38 @@ In addition, I am taking over the best tuned values from the caret cross validat
 default_param<-list(
         objective = "reg:linear",
         booster = "gbtree",
-        eta=0.114, #default = 0.3
-        gamma=0.009,
+        eta=0.05, #default = 0.3
+        gamma=0,
         max_depth=3, #default=6
-        #min_child_weight=4, #default=1
-        colsample_bytree=0.503,
-        colsample_bylevel= 0.564,
-        lambda = 2.631,
-        alpha= 0.004,
-        subsample =0.975
-        
+        min_child_weight=4, #default=1
+        subsample=1,
+        colsample_bytree=1
 )
 
+
+Recommended parameters:
+              eta: 0.114
+            gamma: 0.009
+        max_depth: 3
+ colsample_bytree: 0.503
+colsample_bylevel: 0.564
+           lambda: 2.631
+            alpha: 0.004
+        subsample: 0.975
+          nrounds: 301
 ```
 
 The next step is to do cross validation to determine the best number of rounds (for the given set of parameters). 
 
 ```{r}
-xgbcv <- xgb.cv( params = default_param, data = dtrain, nrounds = 301, nfold = 5, showsd = T, stratified = T, print_every_n = 40, early_stopping_rounds = 10, maximize = F)
+xgbcv <- xgb.cv( params = default_param, data = dtrain, nrounds = 500, nfold = 5, showsd = T, stratified = T, print_every_n = 40, early_stopping_rounds = 10, maximize = F)
 ```
 
 Although it was a bit of work, the hyperparameter tuning definitly paid of, as the cross validated RMSE inproved considerably (from 0.1225 without the caret tuning, to 0.1162 in this version)!
 
 ```{r}
 #train the model using the best iteration found by cross validation
-xgb_mod <- xgb.train(data = dtrain, params=default_param, nrounds = 183)
+xgb_mod <- xgb.train(data = dtrain, params=default_param, nrounds = 454)
 ```
 
 ```{r}
