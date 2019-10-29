@@ -2062,10 +2062,14 @@ qqline(all$SalePrice)
 ```{r}
 train1 <- combined[!is.na(all$SalePrice),]
 test1 <- combined[is.na(all$SalePrice),]
+saveRDS(train1, file = "training_x.rds")
+saveRDS(test1, file = "training_x.rds")
+
 
 
 train_df <- cbind(combined[!is.na(all$SalePrice),], 'SalePrice' = all$SalePrice[!is.na(all$SalePrice)])
-colnames(train_df)
+saveRDS(train_df, file = "training_y_included.rds")
+
 ```
 
 #Modeling
@@ -2079,7 +2083,6 @@ The elastic-net penalty is controlled by alpha, and bridges the gap between lass
 Below, I am using caret cross validation to find the best value for lambda, which is the only hyperparameter that needs to be tuned for the lasso model.
 
 ```{r}
-set.seed(27042018)
 my_control <-trainControl(method="cv", number=5)
 lassoGrid <- expand.grid(alpha = 1, lambda = seq(0.001,0.1,by = 0.0005))
 
@@ -2117,22 +2120,22 @@ Initially, I just worked with the XGBoost package directly. The main reason for 
 Although caret does not seem to use the (fast) datastructure of the xgb package, I eventually decided to do hyperparameter tuning with it anyway, as it at least supports a full grid search. As far as I understand it, the main parameters to tune to avoid overfitting are max_depth, and min_child_weight (see [XGBoost documentation](http://xgboost.readthedocs.io/en/latest/how_to/param_tuning.html)). Below I am setting up a grid that tunes both these parameters, and also the eta (learning rate).
 
 ```{r}
-devtools::install_github("ja-thomas/autoxgboost")
+#devtools::install_github("ja-thomas/autoxgboost")
 #library('ParamHelpers')
 library(autoxgboost)
 ```
 
 ```{r}
-autoxgbparset
+#autoxgbparset
 # change the column name of train_df
 # new_col_name = gsub(" ", "_", colnames(train_df))
 # colnames(train_df) = new_col_name
 # colnames(train_df)
 colnames(train_df) = make.names(colnames(train_df))
 reg_task <- makeRegrTask(data = train_df, target = "SalePrice")
-system.time(reg_auto <- autoxgboost(reg_task))
-reg_auto
-saveRDS(reg_auto, file = "autoxgboost_160.rds")
+#system.time(reg_auto <- autoxgboost(reg_task))
+#reg_auto
+#saveRDS(reg_auto, file = "autoxgboost_160.rds")
 ```
 
 
@@ -2174,28 +2177,31 @@ dtest <- xgb.DMatrix(data = as.matrix(test1))
 In addition, I am taking over the best tuned values from the caret cross validation.
 
 ```{r}
-default_param<-list(
+default_param <-list(
         objective = "reg:linear",
         booster = "gbtree",
-        eta=0.05, #default = 0.3
-        gamma=0,
+        eta= 0.114, #default = 0.3
+        gamma=0.009,
         max_depth=3, #default=6
         min_child_weight=4, #default=1
-        subsample=1,
-        colsample_bytree=1
+        subsample=0.975,
+        colsample_bytree=0.503,
+        colsample_bylevel = 0.564,
+        lambda = 2.631,
+        alpha = 0.004
 )
 
 
-Recommended parameters:
-              eta: 0.114
-            gamma: 0.009
-        max_depth: 3
- colsample_bytree: 0.503
-colsample_bylevel: 0.564
-           lambda: 2.631
-            alpha: 0.004
-        subsample: 0.975
-          nrounds: 301
+# Recommended parameters:
+#               eta: 0.114
+#             gamma: 0.009
+#         max_depth: 3
+#  colsample_bytree: 0.503
+# colsample_bylevel: 0.564
+#            lambda: 2.631
+#             alpha: 0.004
+#         subsample: 0.975
+#           nrounds: 301
 ```
 
 The next step is to do cross validation to determine the best number of rounds (for the given set of parameters). 
@@ -2208,7 +2214,7 @@ Although it was a bit of work, the hyperparameter tuning definitly paid of, as t
 
 ```{r}
 #train the model using the best iteration found by cross validation
-xgb_mod <- xgb.train(data = dtrain, params=default_param, nrounds = 454)
+xgb_mod <- xgb.train(data = dtrain, params=default_param, nrounds = 178)
 ```
 
 ```{r}
@@ -2224,20 +2230,71 @@ mat <- xgb.importance (feature_names = colnames(train1),model = xgb_mod)
 xgb.ggplot.importance(importance_matrix = mat[1:20], rel_to_first = TRUE)
 ```
 
+
+
+
+
 ##Averaging predictions
 
 Since the lasso and XGBoost algorithms are very different, averaging predictions likely improves the scores. As the lasso model does better regarding the cross validated RMSE score (0.1121 versus 0.1162), I am weigting the lasso model double.
 
 ```{r}
-sub_avg <- data.frame(Id = test_labels, SalePrice = (predictions_XGB+2*predictions_lasso)/3)
+sub_avg <- data.frame(Id = test_labels, SalePrice = (predictions_XGB+predictions_lasso)/2)
 head(sub_avg)
-write.csv(sub_avg, file = 'average.csv', row.names = F)
+write.csv(sub_avg, file = 'average1.csv', row.names = F)
 ```
 
 
+```{r}
+#devtools::install_github("liuyanguu/SHAPforxgboost")
+
+#library('SHAPforxgboost')
+```
+
+```{r}
+# to make SHAP summary plot
+
+mod <- xgboost::xgboost(data = as.matrix(train1), label = as.matrix(train_df$SalePrice), 
+                       xgb_param = default_param, nrounds = 301,
+                       verbose = FALSE, nthread = parallel::detectCores() - 2,
+                       early_stopping_rounds = 8)
+shap_values <- shap.values(xgb_model = mod, X_train = train1)
+
+shap_long <- shap.prep(xgb_model = mod, X_train = train1)
+# find out the top20 names
+top20_names = shap_long %>%
+  select(variable, mean_value) %>%
+  arrange() %>%
+  unique() %>%
+  top_n(20) %>%
+  select(variable)
 
 
+shap_top20 = shap_long %>%
+  filter(variable %in% top20_names$variable)
+shap_top20$variable = droplevels(shap_top20$variable)
 
+shap.plot.summary(shap_top20)
+
+```
+
+```{r}
+# interaction plots
+shap.plot.dependence(data_long = shap_long, x = 'TotalSqFeet', y = 'TotalSqFeet', color_feature = 'OverallQual') + ggtitle("(A) SHAP values of TotalSqFeet vs. TotalSqFeet")
+
+```
+
+```{r}
+shap.plot.dependence(data_long = shap_long, x = 'TotalSqFeet', y = 'Age', color_feature = 'OverallQual') + ggtitle("(A) SHAP values of TotalSqFeet vs. TotalSqFeet")
+```
+
+```{r}
+# without color version but has marginal distribution, 
+# just plot SHAP value against feature value:
+fig_list <- lapply(names(shap_top20$mean_value)[1:4], 
+                   shap.plot.dependence, data_long = shap_long)
+gridExtra::grid.arrange(grobs = fig_list, ncol = 2)
+```
 
 
 
