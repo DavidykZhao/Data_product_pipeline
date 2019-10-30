@@ -8,7 +8,7 @@
 ******************/
 
 :root {
-    --main-color1: #161738;
+    --main-color1: #272822;
     --main-color2: #202040;
     --main-color3: #282c4b;
     --main-color4: #282747;
@@ -91,11 +91,17 @@
 
 .remark-code-line-highlighted { background-color: var(--code-highlight); }
 
+@import url(https://fonts.googleapis.com/css?family=Raleway);
+body{
+  font-family: 'Raleway';
+  font-weight: normal;
+}
 
-h1, h2, h3, body{
+h1, h2, h3 {
   font-family: 'Yanone Kaffeesatz';
   font-weight: normal;
 }
+
 .remark-code, .remark-inline-code {
   font-family: 'Source Code Pro', 'Lucida Console', Monaco, monospace;
   color: var(--code-text-color);
