@@ -2063,12 +2063,15 @@ qqline(all$SalePrice)
 train1 <- combined[!is.na(all$SalePrice),]
 test1 <- combined[is.na(all$SalePrice),]
 saveRDS(train1, file = "training_x.rds")
-saveRDS(test1, file = "training_x.rds")
-
+saveRDS(test1, file = "testing_x.rds")
+train1 = readRDS("training_x.rds")
+test1 = readRDS("testing_x.rds")
 
 
 train_df <- cbind(combined[!is.na(all$SalePrice),], 'SalePrice' = all$SalePrice[!is.na(all$SalePrice)])
 saveRDS(train_df, file = "training_y_included.rds")
+
+training_y_included = readRDS("training_y_included.rds")
 
 ```
 
@@ -2248,8 +2251,31 @@ write.csv(sub_avg, file = 'average1.csv', row.names = F)
 ```{r}
 #devtools::install_github("liuyanguu/SHAPforxgboost")
 
-#library('SHAPforxgboost')
+library('SHAPforxgboost')
 ```
+
+
+```{r}
+
+#devtools::install_github("tidyverse/ggplot2")
+#library(ggplot2)
+yikai_labels <- list(
+   labs(subtitle = "Data Source: House Prices Competition in Kaggle"),
+   labs(caption = "Vis: @zhao_yikai with ggplot")
+             )
+
+yikai_themes = theme(
+  plot.subtitle = element_text(color = 'grey30'),
+  panel.border = element_blank(),
+  plot.title = element_text(lineheight = .8, face = "bold", size = 16),
+  panel.grid.minor = element_blank(),
+  axis.line.x = element_line(color = 'darkgrey', size = 0.5),
+  plot.title.position = "plot", 
+  plot.caption.position =  "plot") #NEW parameter
+
+
+```
+
 
 ```{r}
 # to make SHAP summary plot
@@ -2264,23 +2290,29 @@ shap_long <- shap.prep(xgb_model = mod, X_train = train1)
 # find out the top20 names
 top20_names = shap_long %>%
   select(variable, mean_value) %>%
-  arrange() %>%
+  arrange(desc(mean_value)) %>%
   unique() %>%
-  top_n(20) %>%
-  select(variable)
+  top_n(20)
 
+top20_names$variable = droplevels(top20_names$variable)
+top_20_feature_field = 
+  train1 %>%
+  select(as.character(top20_names$variable))
 
 shap_top20 = shap_long %>%
   filter(variable %in% top20_names$variable)
 shap_top20$variable = droplevels(shap_top20$variable)
 
-shap.plot.summary(shap_top20)
+shap.plot.summary(shap_top20) + yikai_labels + yikai_themes
+
+
+
 
 ```
 
 ```{r}
 # interaction plots
-shap.plot.dependence(data_long = shap_long, x = 'TotalSqFeet', y = 'TotalSqFeet', color_feature = 'OverallQual') + ggtitle("(A) SHAP values of TotalSqFeet vs. TotalSqFeet")
+shap.plot.dependence(data_long = shap_long, x = 'TotalSqFeet', y = 'TotalSqFeet', color_feature = 'OverallQual') + ggtitle("(A) SHAP values of TotalSqFeet vs. TotalSqFeet")+
 
 ```
 
@@ -2291,10 +2323,40 @@ shap.plot.dependence(data_long = shap_long, x = 'TotalSqFeet', y = 'Age', color_
 ```{r}
 # without color version but has marginal distribution, 
 # just plot SHAP value against feature value:
-fig_list <- lapply(names(shap_top20$mean_value)[1:4], 
+fig_list <- lapply(names(shap_values$mean_shap_score)[1:4], 
                    shap.plot.dependence, data_long = shap_long)
 gridExtra::grid.arrange(grobs = fig_list, ncol = 2)
 ```
 
+```{r}
 
+# construct a smaller model object from top 20 feature field
+mod_20 <- xgboost::xgboost(data = as.matrix(top_20_feature_field), label = as.matrix(train_df$SalePrice), 
+                       xgb_param = default_param, nrounds = 301,
+                       verbose = FALSE, nthread = parallel::detectCores() -2,
+                       early_stopping_rounds = 8)
+shap_long_20 <- shap.prep(xgb_model = mod_20, X_train = as.matrix(top_20_feature_field))
+
+shap_int <- shap.prep.interaction(xgb_mod = mod_20, X_train = as.matrix(top_20_feature_field))
+saveRDS(shap_int, "shap_interaction_plot_data")
+shap.plot.dependence(data_long = shap_long_20,
+                           #data_int = shap_int,
+                           x= "TotalSqFeet", y = "OverallQual", 
+                           color_feature = "OverallQual")
+
+
+
+```
+
+```{r}
+# force plot
+plot_data <- shap.prep.stack.data(shap_contrib = shap_values$shap_score, top_n = 10, n_groups = 6)
+
+shap.plot.force_plot(plot_data, zoom_in_location = 500, y_parent_limit = c(-1.5,1.5))
+
+
+shap.plot.force_plot_bygroup(plot_data)
+
+
+```
 
