@@ -92,13 +92,14 @@ layout: true
 class: split-three with-thick-border
 
 .column.bg-main1[.content[
-#  Data cleaning and manipulation 
-## This step involves dealing of .orange[missing data] and .teal[outliers]:
+#  Data exploration and manipulation 
+### This step involves dealing of .orange[missing data] and .teal[outliers]:
   + ### missing at random or missing with pattern(s)
   + ### impute or discard them
   
-## Deal with skewed variables
-## Feature engineering 
+### view the distribution of variables and their relaitonships
+### Deal with skewed variables
+### Feature engineering 
 
 ]]
 .column.bg-main1[.content[
@@ -135,10 +136,34 @@ layout: false
 
 class: bg-main1, center, middle
 
-# Part 1: Data cleaning and manipulation
+# Part 1: Data exploration and manipulation
 
 ---
+class: split-50 
+.column.bg-main1[.content.vmiddle[
 
+# Which numerical variables are important to explore first
+
+## We could find variables with a correlation of at least 0.5 with our dependent variable .orange[SalePrice]
+
+]]
+
+.column.bg-main4[.content.vmiddle.center[
+
+
+
+
+```r
+#sorted on decreasing correlations with SalePrice
+corrplot.mixed(cor_numVar, tl.col="black", tl.pos = "lt")
+```
+
+![](index_yikai_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
+
+
+]]
+
+---
 class: split-40  with-thick-border
 
 .column.bg-main1[.content.vmiddle[
@@ -161,10 +186,12 @@ class: split-40  with-thick-border
 
 
 
-&lt;img src="index_yikai_files/figure-html/unnamed-chunk-5-1.png" width="100%" height="70%" /&gt;
+&lt;img src="index_yikai_files/figure-html/unnamed-chunk-7-1.png" width="100%" height="70%" /&gt;
 
 
 ]]
+
+---
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
