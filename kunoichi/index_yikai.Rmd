@@ -31,7 +31,7 @@ options(htmltools.dir.version = FALSE)
 
 ---
 
-class: split-two white
+class: split-60 white with-thick-border
 
 .column.bg-main1[.content.vmiddle[
 # Overview
@@ -42,9 +42,10 @@ class: split-two white
 * #### convey those insights to customers & decision makers
 
 
-### This powerpoint aims to bridge the two purposes above through .orange[visualizations]
+### This powerpoint aims to use .orange[visualizations] to showcase the process of data analysis from data cleaning to final model interpretation
 
 ### I will use the House Prices dataset from [Kaggle](https://www.kaggle.com/c/house-prices-advanced-regression-techniques)
+
 
 ### The information about this dataset could be glanced from right
 
@@ -60,15 +61,15 @@ library(knitr)
 library(ggplot2)
 library(plyr)
 library(dplyr)
-library(corrplot)
-library(caret)
-library(gridExtra)
-library(scales)
-library(Rmisc)
-library(ggrepel)
-library(randomForest)
-library(psych)
-library(xgboost)
+# library(corrplot)
+# library(caret)
+# library(gridExtra)
+# library(scales)
+# library(Rmisc)
+# library(ggrepel)
+# library(randomForest)
+# library(psych)
+# library(xgboost)
 train <- read.csv("../kunoichi/data/train_house.csv", stringsAsFactors = F)
 test <- read.csv("../kunoichi/data/test_house.csv", stringsAsFactors = F)
 test_labels <- test$Id
@@ -78,14 +79,32 @@ test$SalePrice <- NA
 all <- rbind(train, test)
 ```
 
-```{r}
+```{r, eval = F}
 # The dimention of the data are
 dim(train)
 dim(test)
 ```
 
+```{r, eval=F}
+[1] 1460   80
+[1] 1459   80
+```
 
+### There are 79 predictors and we will use them to predict our response variable SalePrice of houses. 
 ]]
+
+---
+class: bg-main1 center middle hide-slide-number
+
+.reveal-text[.pad1[
+.font4[There will be three major parts
+]
+]]
+
+---
+
+
+
 
 
 
@@ -94,15 +113,6 @@ dim(test)
 
 
 ---
-# Hello World
-
-Install the **xaringan** package from [Github](https://github.com/yihui/xaringan):
-
-```{r eval=FALSE, tidy=FALSE}
-devtools::install_github("yihui/xaringan")
-```
-
---
 
 You are recommended to use the [RStudio IDE](https://www.rstudio.com/products/rstudio/), but you do not have to.
 

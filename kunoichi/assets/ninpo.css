@@ -44,9 +44,9 @@
 
 .reveal-text,
 .reveal-text::after {
-	animation-delay: 1s;
+	animation-delay: 0s;
 	animation-iteration-count: 1;
-	animation-duration: 800ms;
+	animation-duration: 1300ms;
 	animation-fill-mode: both;
 	animation-timing-function: cubic-bezier(0.0, 0.0, 0.2, 1);
 }

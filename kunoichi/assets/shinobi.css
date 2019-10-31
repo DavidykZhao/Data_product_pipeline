@@ -9,13 +9,13 @@
 
 :root {
     --main-color1: #272822;
-    --main-color2: #202040;
-    --main-color3: #282c4b;
-    --main-color4: #282747;
+    --main-color2: #272822b8;
+    --main-color4: rgb(237, 237, 237);
+    --main-color3: #2728228c;
     --main-color5: #474863;
     --text-color1: white;
     --text-color2: white;
-    --text-color3: white;
+    --text-color3: #272822;
     --text-color4: white;
     --text-color5: white;
     --text-opacity: white;
@@ -91,13 +91,16 @@
 
 .remark-code-line-highlighted { background-color: var(--code-highlight); }
 
+/******************
 @import url(https://fonts.googleapis.com/css?family=Raleway);
 body{
   font-family: 'Raleway';
   font-weight: normal;
 }
+******************/
 
-h1, h2, h3, h4 {
+
+h1, h2, h3, h4, body {
   font-family: 'Yanone Kaffeesatz';
   font-weight: normal;
 }
