@@ -28,8 +28,8 @@
     --color-opacity70: rgba(26, 23, 56, 0.7);
     --color-opacity50: rgba(26,23,56 ,0.5);
     --color-opacity30: rgba(26,23,56 ,0.3);
-    --title-background: url("");
-    --logo: url("images/test.bng");
+    --title-background: url("https://cdn.hipwallpaper.com/i/52/70/78IzCX.jpg");
+    --logo: url("");
 }
 
 .title-slide {
@@ -40,7 +40,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  background-color: var(--color-opacity70);
+  background-color: var(--color-opacity50);
   color: white;
   padding: 0;
 }
@@ -97,7 +97,7 @@ body{
   font-weight: normal;
 }
 
-h1, h2, h3 {
+h1, h2, h3, h4 {
   font-family: 'Yanone Kaffeesatz';
   font-weight: normal;
 }

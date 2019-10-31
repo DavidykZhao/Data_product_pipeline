@@ -1,14 +1,14 @@
 ---
-title: "Visualization of a data analysis pipeline"
-subtitle: 'From data cleaning to model interpretation'
-author: "<br><br>Yikai Zhao&nbsp;&nbsp;&nbsp;`r anicon::faa('twitter', animate='float', rtext='&nbsp;@zhao_yikai')`"
+title: "End-to-end data analysis pipeline"
+subtitle: 'An visualization journey'
+author: "<br>Yikai Zhao&nbsp;&nbsp;&nbsp;`r anicon::faa('twitter', animate='burst', rtext='&nbsp;@zhao_yikai')`"
 institute: "Looking for a full time position as Data scientist"
-date: "25-Oct-2018 &nbsp;&nbsp; `r anicon::faa('link', animate='vertical', rtext='&nbsp;ykzhao.com', color='white')`"
+date: "25-Oct-2019 &nbsp;&nbsp; `r anicon::faa('link', animate='ring', rtext='&nbsp;ykzhao.com', color='white')`"
 output:
   xaringan::moon_reader:
     
     lib_dir: libs
-    css: ["assets/shinobi.css", "ninjutsu", "assets/ninpo.css"]
+    css: ["assets/shinobi.css", "assets/ninjutsu.css", "assets/ninpo.css"]
     nature:
       ratio: "16:9"
       highlightStyle: github
@@ -18,30 +18,82 @@ editor_options:
   chunk_output_type: console
 ---
 
-background-image: url(https://upload.wikimedia.org/wikipedia/commons/b/be/Sharingan_triple.svg)
+class: center, middle
+
+<img src="images/data_scientist.png" width="25%">
+
 
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)
 ```
 
-???
 
-Image credit: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Sharingan_triple.svg)
-
----
-class: center, middle
-
-# xaringan
-
-### /ʃaː.'riŋ.ɡan/
-
----
-class: inverse, center, middle
-
-# Get Started
 
 ---
 
+class: split-two white
+
+.column.bg-main1[.content.vmiddle[
+# Overview
+<br>
+### Data visualization is important to
+
+* #### draw insights amid the data analysis
+* #### convey those insights to customers & decision makers
+
+
+### This powerpoint aims to bridge the two purposes above through .orange[visualizations]
+
+### I will use the House Prices dataset from [Kaggle](https://www.kaggle.com/c/house-prices-advanced-regression-techniques)
+
+### The information about this dataset could be glanced from right
+
+
+]]
+
+
+
+.column.bg-main3[.content.vmiddle.center[
+<center>
+```{r echo = FALSE, message=FALSE, warning=FALSE }
+library(knitr)
+library(ggplot2)
+library(plyr)
+library(dplyr)
+library(corrplot)
+library(caret)
+library(gridExtra)
+library(scales)
+library(Rmisc)
+library(ggrepel)
+library(randomForest)
+library(psych)
+library(xgboost)
+train <- read.csv("../kunoichi/data/train_house.csv", stringsAsFactors = F)
+test <- read.csv("../kunoichi/data/test_house.csv", stringsAsFactors = F)
+test_labels <- test$Id
+test$Id <- NULL
+train$Id <- NULL
+test$SalePrice <- NA
+all <- rbind(train, test)
+```
+
+```{r}
+# The dimention of the data are
+dim(train)
+dim(test)
+```
+
+
+]]
+
+
+
+
+
+
+
+---
 # Hello World
 
 Install the **xaringan** package from [Github](https://github.com/yihui/xaringan):

@@ -1,50 +1,93 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
   <head>
-    <title>Visualization of a data analysis pipeline</title>
+    <title>End-to-end data analysis pipeline</title>
     <meta charset="utf-8" />
-    <meta name="author" content="  Yikai Zhao   <span>&lt;i class="fab  fa-twitter faa-float animated "&gt;&lt;/i&gt;&amp;nbsp;@zhao_yikai</span>" />
-    <link href="libs/remark-css/ninjutsu.css" rel="stylesheet" />
+    <meta name="author" content=" Yikai Zhao   <span>&lt;i class="fab  fa-twitter faa-burst animated "&gt;&lt;/i&gt;&amp;nbsp;@zhao_yikai</span>" />
     <link href="libs/font-awesome-animation/font-awesome-animation-emi.css" rel="stylesheet" />
     <script src="libs/fontawesome/js/fontawesome-all.min.js"></script>
     <link rel="stylesheet" href="assets/shinobi.css" type="text/css" />
+    <link rel="stylesheet" href="assets/ninjutsu.css" type="text/css" />
     <link rel="stylesheet" href="assets/ninpo.css" type="text/css" />
   </head>
   <body>
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
-# Visualization of a data analysis pipeline
-## From data cleaning to model interpretation
-### <br><br>Yikai Zhao   <span>&lt;i class="fab  fa-twitter faa-float animated "&gt;&lt;/i&gt;&amp;nbsp;@zhao_yikai</span>
+# End-to-end data analysis pipeline
+## An visualization journey
+### <br>Yikai Zhao   <span>&lt;i class="fab  fa-twitter faa-burst animated "&gt;&lt;/i&gt;&amp;nbsp;@zhao_yikai</span>
 ### Looking for a full time position as Data scientist
-### 25-Oct-2018    <span>&lt;i class="fas  fa-link faa-vertical animated " style=" color:white;"&gt;&lt;/i&gt;&amp;nbsp;ykzhao.com</span>
+### 25-Oct-2019    <span>&lt;i class="fas  fa-link faa-ring animated " style=" color:white;"&gt;&lt;/i&gt;&amp;nbsp;ykzhao.com</span>
 
 ---
 
 
-background-image: url(https://upload.wikimedia.org/wikipedia/commons/b/be/Sharingan_triple.svg)
-
-
-
-???
-
-Image credit: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Sharingan_triple.svg)
-
----
 class: center, middle
 
-# xaringan
+&lt;img src="images/data_scientist.png" width="25%"&gt;
 
-### /ʃaː.'riŋ.ɡan/
 
----
-class: inverse, center, middle
 
-# Get Started
+
+
 
 ---
 
+class: split-two white
+
+.column.bg-main1[.content.vmiddle[
+# Overview
+&lt;br&gt;
+### Data visualization is important to
+
+* #### draw insights amid the data analysis
+* #### convey those insights to customers &amp; decision makers
+
+
+### This powerpoint aims to bridge the two purposes above through .orange[visualizations]
+
+### I will use the House Prices dataset from [Kaggle](https://www.kaggle.com/c/house-prices-advanced-regression-techniques)
+
+### The information about this dataset could be glanced from right
+
+
+]]
+
+
+
+.column.bg-main3[.content.vmiddle.center[
+&lt;center&gt;
+
+
+
+```r
+# The dimention of the data are
+dim(train)
+```
+
+```
+## [1] 1460   80
+```
+
+```r
+dim(test)
+```
+
+```
+## [1] 1459   80
+```
+
+
+]]
+
+
+
+
+
+
+
+---
 # Hello World
 
 Install the **xaringan** package from [Github](https://github.com/yihui/xaringan):
