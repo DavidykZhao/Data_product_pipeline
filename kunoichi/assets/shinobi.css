@@ -9,14 +9,14 @@
 
 :root {
     --main-color1: #272822;
-    --main-color2: #272822b8;
+    --main-color2: #272822d4;
     --main-color4: rgb(237, 237, 237);
-    --main-color3: #2728228c;
+    --main-color3: #272822af;
     --main-color5: #474863;
     --text-color1: white;
     --text-color2: white;
-    --text-color3: #272822;
-    --text-color4: white;
+    --text-color3: white;
+    --text-color4: #272822;
     --text-color5: white;
     --text-opacity: white;
     --link-color: rgba(67,160,71 ,1);
@@ -116,7 +116,7 @@ h1, h2, h3, h4 {
     margin-bottom: 0;
     margin-top: 10px;
 }
-h1 { font-size: 3.5em; }
+h1 { font-size: 4em; }
 h2 { font-size: 3em; }
 h3 { font-size: 1.6em; }
 h4 { font-size: 1em; }

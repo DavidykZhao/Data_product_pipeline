@@ -31,7 +31,7 @@ options(htmltools.dir.version = FALSE)
 
 ---
 
-class: split-60 white with-thick-border
+class: split-60 white 
 
 .column.bg-main1[.content.vmiddle[
 # Overview
@@ -54,13 +54,14 @@ class: split-60 white with-thick-border
 
 
 
-.column.bg-main3[.content.vmiddle.center[
+.column.bg-main4[.content.vmiddle.center[
 <center>
 ```{r echo = FALSE, message=FALSE, warning=FALSE }
 library(knitr)
 library(ggplot2)
 library(plyr)
 library(dplyr)
+library(reshape2)
 # library(corrplot)
 # library(caret)
 # library(gridExtra)
@@ -90,7 +91,7 @@ dim(test)
 [1] 1459   80
 ```
 
-### There are 79 predictors and we will use them to predict our response variable SalePrice of houses. 
+### There are 79 predictors and we will use them to predict our response variable .teal[SalePrice] of houses. 
 ]]
 
 ---
@@ -101,27 +102,130 @@ class: bg-main1 center middle hide-slide-number
 ]
 ]]
 
----
-
-
-
-
-
-
-
-
-
 
 ---
+layout: true
 
-You are recommended to use the [RStudio IDE](https://www.rstudio.com/products/rstudio/), but you do not have to.
+class: split-three with-thick-border
 
-- Create a new R Markdown document from the menu `File -> New File -> R Markdown -> From Template -> Ninja Presentation`;<sup>1</sup>
+.column.bg-main1[.content[
+#  Data cleaning and manipulation 
+## This step involves dealing of .orange[missing data] and .teal[outliers]:
+  + ### missing at random or missing with pattern(s)
+  + ### impute or discard them
+  
+## Deal with skewed variables
+## Feature engineering 
 
---
+]]
+.column.bg-main1[.content[
+# Predicative modeling
 
-- Click the `Knit` button to compile it;
+## Choose the appropriate modeling architecture(s)
+## .orange[hyperparamerter tuning] 
+## .teal[ensembling] the models for better generalibility
+]]
+.column.bg-main1[.content[
+# Results interpretation
 
---
+## Interpretable machine learning
+## .orange[Shapley] values to attribute contributions to variables
+## View interactions between variables
+]]
 
-- or use the [RStudio ]
+---
+
+class: gray-col2 gray-col3
+count: false
+
+---
+
+class: gray-col3
+count: false
+
+---
+
+count: false
+
+---
+layout: false
+
+class: bg-main1, center, middle
+
+# Part 1: Data cleaning and manipulation
+
+---
+
+class: split-40  with-thick-border
+
+.column.bg-main1[.content.vmiddle[
+
+# Plotting the missingness in that dataset 
+
+###.orange[white lines] indicate missing values in the corresponding variable
+### some variables have missingness at random, some have huge missingness
+### Turns out some missingness indicate the .orange[absence] of that feature (e.g. a pool or fense)
+### some are data misentry and we need to .red[find them out!] 
+
+
+]]
+
+.column.bg-main4[.content.vmiddle.center[
+<center>
+
+```{r, echo = F}
+  all[, 1:ncol(all)] %>%
+    is.na %>%
+    melt %>%
+    group_by(Var2) %>%
+    summarise(n_missing = sum(value)) -> missing_cols
+```
+
+```{r plot_themes, echo=F}
+yikai_labels <- list(
+   labs(subtitle = "Data Source: House Prices Competition in Kaggle"),
+   labs(caption = "Vis: @zhao_yikai with ggplot")
+             )
+
+yikai_themes = theme(
+  plot.subtitle = element_text(color = 'grey30'),
+  panel.border = element_blank(),
+  plot.title = element_text(lineheight = .8, face = "bold", size = 16),
+  panel.grid.minor = element_blank(),
+  axis.line.x = element_line(color = 'darkgrey', size = 0.5),
+  plot.title.position = "plot", 
+  plot.caption.position =  "plot") #NEW parameter
+```
+
+
+```{r, message= F, warning=F, echo = F, out.width = "100%" , dpi = 300, out.height= "70%"}
+  all[, 1:ncol(all)] %>%
+    is.na %>%
+    melt %>%
+    filter(Var2 %in% missing_cols$Var2[missing_cols$n_missing > 0]) %>%
+  ggplot(data = .,
+         aes(x = Var2,
+             y = Var1)) +
+    geom_raster(aes(fill = value)) +
+    scale_fill_grey(name = "",
+                    labels = c("Present","Missing")) +
+    theme_minimal() +
+    theme(axis.text.x  = element_text(angle=90, vjust=0.5)) +
+    labs(x = "Variables in Dataset",
+         y = "Rows / observations")+
+    yikai_themes+
+    yikai_labels
+  
+```
+
+
+]]
+
+
+
+
+
+
+
+
+
