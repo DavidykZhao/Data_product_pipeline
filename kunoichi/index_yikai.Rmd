@@ -2,14 +2,13 @@
 title: "Visualization of a data analysis pipeline"
 subtitle: 'From data cleaning to model interpretation'
 author: "<br><br>Yikai Zhao&nbsp;&nbsp;&nbsp;`r anicon::faa('twitter', animate='float', rtext='&nbsp;@zhao_yikai')`"
-
 institute: "Looking for a full time position as Data scientist"
-date: "25-Oct-2018 <br><br `r anicon::faa('link', animate='vertical', rtext='&nbsp;ykzhao.com', color='white')` "
+date: "25-Oct-2018 &nbsp;&nbsp; `r anicon::faa('link', animate='vertical', rtext='&nbsp;ykzhao.com', color='white')`"
 output:
   xaringan::moon_reader:
+    
     lib_dir: libs
     css: ["assets/shinobi.css", "ninjutsu", "assets/ninpo.css"]
-    
     nature:
       ratio: "16:9"
       highlightStyle: github
@@ -17,7 +16,6 @@ output:
       countIncrementalSlides: false
 editor_options: 
   chunk_output_type: console
-
 ---
 
 background-image: url(https://upload.wikimedia.org/wikipedia/commons/b/be/Sharingan_triple.svg)
