@@ -156,7 +156,8 @@ class: bg-main1, center, middle
 # Part 1: Data exploration and manipulation
 
 ---
-layout: true
+
+layout: false
 class: split-50 
 .column.bg-main1[.content.vmiddle[
 
@@ -190,8 +191,8 @@ corrplot.mixed(cor_numVar, tl.col="black", tl.pos = "lt")
 
 ]]
 
+
 ---
-layout: false
 
 
 ```{r, echo = FALSE, warning = F, message= F}
@@ -250,7 +251,7 @@ ggplot(data = training_data,
   
 ```
 
----
+
 `r apply_reveal("rainplot")`
 
 
@@ -314,7 +315,11 @@ yikai_themes = theme(
     labs(x = "Variables in Dataset",
          y = "Rows / observations")+
     yikai_themes+
-    yikai_labels
+    yikai_labels+
+    theme(panel.grid.minor = element_blank())+
+    theme(panel.grid.major = element_blank())
+
+
   
 ```
 
