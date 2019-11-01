@@ -1,7 +1,7 @@
 ---
 title: "End-to-end data analysis pipeline"
 subtitle: 'An visualization journey'
-author: "<br>Yikai Zhao&nbsp;&nbsp;&nbsp;`r anicon::faa('twitter', animate='burst', rtext='&nbsp;@zhao_yikai')`"
+author: "<br>Yikai Zhao&nbsp;&nbsp;&nbsp;`r anicon::faa('twitter', animate='vertical', rtext='&nbsp;@zhao_yikai')`"
 institute: "Looking for a full time position as Data scientist"
 date: "25-Oct-2019 &nbsp;&nbsp; `r anicon::faa('link', animate='ring', rtext='&nbsp;ykzhao.com', color='white')`"
 output:
@@ -25,6 +25,10 @@ class: center, middle
 
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(dpi = 300,  out.width = "80%") # this is set for the aesthetics of the 
+# flipplot remember to add out.width to all other plots
+
+
 ```
 
 
@@ -114,7 +118,7 @@ class: split-three
   + ### missing at random or missing with pattern(s)
   + ### impute or discard them
   
-### view the distribution of variables and their relaitonships
+### View the distribution of variables and their relaitonships
 ### Deal with skewed variables
 ### Feature engineering 
 
@@ -169,7 +173,7 @@ class: split-50
 
 .column.bg-main5[.content.vmiddle.center[
 
-```{r, echo= F, out.width= '100%', warning=F, message= F, dpi= 300}
+```{r, echo= F, out.width= '100%', warning=F, message= F}
 numericVars <- which(sapply(all, is.numeric)) #index vector numeric variables
 numericVarNames <- names(numericVars) #saving names vector for use later on
 
@@ -183,7 +187,7 @@ CorHigh <- names(which(apply(cor_sorted, 1, function(x) abs(x)>0.5)))
 cor_numVar <- cor_numVar[CorHigh, CorHigh]
 ```
 
-```{r}
+```{r, out.height= "40%" }
 #sorted on decreasing correlations with SalePrice
 corrplot.mixed(cor_numVar, tl.col="black", tl.pos = "lt")
 ```
@@ -219,8 +223,9 @@ source("https://raw.githubusercontent.com/EvaMaeRey/little_flipbooks_library/mas
 
 ```
 
-```{r rainplot, echo = F, warning=F, eval=F, message=F, dpi=300, cache= T}
-# We could visualize the distributino of variable OverallQual in a rainplot
+```{r rainplot, eval = F, echo = F,  out.width = "100%", warning = F, message = F, dpi= 300}
+# We could visualize the distribution
+# of variable OverallQual in a rainplot
 ggplot(data = training_data, 
   aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +
   geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +
@@ -242,7 +247,7 @@ ggplot(data = training_data,
   labs(subtitle = "Data Source: House Prices Competition in Kaggle", 
        caption = "Vis: @zhao_yikai with ggplot")+
   theme_bw()+
-  theme(plot.subtitle = element_text(color = 'grey12'))+
+  theme(plot.subtitle = element_text(color = 'grey'))+
   theme(panel.border = element_blank())+
   theme(plot.title = element_text(lineheight = .8, face = "bold", size = 16))+
   theme(panel.grid.minor = element_blank())+
@@ -257,7 +262,7 @@ ggplot(data = training_data,
 
 
 ---
-class: split-40  with-thick-border
+class: split-40  
 
 .column.bg-main1[.content.vmiddle[
 
@@ -271,7 +276,7 @@ class: split-40  with-thick-border
 
 ]]
 
-.column.bg-main4[.content.vmiddle.center[
+.column.bg-main5[.content.vmiddle.center[
 <center>
 
 ```{r, echo = F}
@@ -299,7 +304,7 @@ yikai_themes = theme(
 ```
 
 
-```{r, message= F, warning=F, echo = F, out.width = "100%" , dpi = 300, out.height= "70%"}
+```{r, message= F, warning=F, echo = F, out.width = "80%" , dpi = 300, out.height= "60%"}
   all[, 1:ncol(all)] %>%
     is.na %>%
     melt %>%
