@@ -25,7 +25,7 @@ class: center, middle
 
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)
-knitr::opts_chunk$set(dpi = 300,  out.width = "80%") # this is set for the aesthetics of the 
+knitr::opts_chunk$set(dpi = 300,  out.width = "80%", message = F, warning = F) # this is set for the aesthetics of the 
 # flipplot remember to add out.width to all other plots
 
 
@@ -71,7 +71,8 @@ library(corrplot)
 # library(gridExtra)
 # library(scales)
 # library(Rmisc)
-# library(ggrepel)
+library(ggrepel)
+library(plotly)
 # library(randomForest)
 # library(psych)
 # library(xgboost)
@@ -247,12 +248,12 @@ ggplot(data = training_data,
   labs(subtitle = "Data Source: House Prices Competition in Kaggle", 
        caption = "Vis: @zhao_yikai with ggplot")+
   theme_bw()+
-  theme(plot.subtitle = element_text(color = 'grey'))+
+  theme(plot.subtitle = element_text(color = 'grey50'))+
   theme(panel.border = element_blank())+
   theme(plot.title = element_text(lineheight = .8, face = "bold", size = 16))+
   theme(panel.grid.minor = element_blank())+
   theme(axis.line.x = element_line(color = 'darkgrey', size = 0.5))+
-  scale_y_continuous(breaks= seq(0, 800000, by=100000))
+  scale_y_continuous(breaks= seq(0, 800000, by=100000), labels =scales::comma)
   
 ```
 
@@ -262,7 +263,7 @@ ggplot(data = training_data,
 
 
 ---
-class: split-40  
+class: split-60  
 
 .column.bg-main1[.content.vmiddle[
 
@@ -271,7 +272,7 @@ class: split-40
 ###.orange[white lines] indicate missing values in the corresponding variable
 ### some variables have missingness at random, some have huge missingness
 ### Turns out some missingness indicate the .orange[absence] of that feature (e.g. a pool or fense)
-### some are data misentry and we need to .red[find them out!] 
+### some are data misentry and we need to .yellow[find them out!] 
 
 
 ]]
@@ -304,7 +305,7 @@ yikai_themes = theme(
 ```
 
 
-```{r, message= F, warning=F, echo = F, out.width = "80%" , dpi = 300, out.height= "60%"}
+```{r, message= F, warning=F, echo = F, out.width = "90%" , dpi = 300, out.height= "75%"}
   all[, 1:ncol(all)] %>%
     is.na %>%
     melt %>%
@@ -333,9 +334,37 @@ yikai_themes = theme(
 
 ---
 
+class: split-50
+
+.column.bg-main1[.content.vmiddle.center[
+# We could visualize the relationship between .tile[GrLivArea] and .orange[SalePrice]
+
+###  In the next slide, we visualize the relationship between .yellow[OverallQual] and .orange[SalePrice] in steps.
+
+]]
+
+.column.bg-main5[.content.vmiddle.center[
 
 
+```{r, out.width = "80%", echo = F}
+p = ggplot(data=all[!is.na(all$SalePrice),], aes(x=GrLivArea, y=SalePrice))+
+        geom_point(color = ifelse(all$GrLivArea[!is.na(all$SalePrice)]>4500, "red", "grey50")) + 
+        geom_smooth(method = "lm", se=FALSE, color="black", lty = "dotted") +
+        scale_y_continuous(breaks= seq(0, 800000, by=100000), labels = scales::comma) +
+        geom_text_repel(aes(label = ifelse(all$GrLivArea[!is.na(all$SalePrice)]>4500, rownames(all), '')))+
+        theme_bw()+
+        theme(plot.subtitle = element_text(color = 'grey70'))+
+        theme(panel.border = element_blank())+
+        theme(plot.title = element_text(lineheight = .8, face = "bold", size = 16))+
+        theme(panel.grid.minor = element_blank())+
+        theme(plot.subtitle = element_text(color = 'darkgray'))+
+        theme(axis.line.x = element_line(color = 'darkgrey', size = 0.5))+
+        labs(title = "Relationship between SalesPrice and GrLivArea")+
+        labs(subtitle = "Data Source: House Prices Competition in Kaggle")+
+        labs(caption = "Vis: @zhao_yikai with ggplot")
+p
+```
 
 
-
+]]
 

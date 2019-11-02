@@ -496,10 +496,10 @@
 .split-20>.column:nth-of-type(2) {width: 80%;height:100%;position: absolute;top: 0;right: 0;}
 .split-30>.column:first-of-type {width: 30%; height:100%; position: absolute; top: 0; left: 0; }
 .split-30>.column:nth-of-type(2) {width: 70%;height:100%;position: absolute;top: 0;right: 0;}
-.split-40>.column:first-of-type {width: 40%; height:100%; position: absolute; top: 0; left: 0; }
-.split-40>.column:nth-of-type(2) {width: 60%; height:100%; position: absolute; top: 0; right: 0; }
-.split-50>.column:first-of-type {width: 50%; height:100%; position: absolute; top: 0; left: 0; padding-left: 1%; padding-right: 1% }
-.split-50>.column:nth-of-type(2) {width: 50%; height:100%; position: absolute; top: 0; right: 0; padding-left: 1%; padding-right: 1% }
+.split-40>.column:first-of-type {width: 40%; height:100%; position: absolute; top: 0; left: 0; padding-left: 1%; padding-right: 1%;}
+.split-40>.column:nth-of-type(2) {width: 60%; height:100%; position: absolute; top: 0; right: 0; padding-left: 1%; padding-right: 1%;}
+.split-50>.column:first-of-type {width: 50%; height:100%; position: absolute; top: 0; left: 0; }
+.split-50>.column:nth-of-type(2) {width: 50%; height:100%; position: absolute; top: 0; right: 0;  }
 .split-60>.column:first-of-type {width: 60%; height:100%; position: absolute; top: 0; left: 0;}
 .split-60>.column:nth-of-type(2) {width: 40%; height:100%; position: absolute; top: 0; right: 0;}
 .split-70>.column:first-of-type {width: 70%; height:100%; position: absolute; top: 0; left: 0; }
