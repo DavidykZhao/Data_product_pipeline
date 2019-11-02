@@ -8,7 +8,7 @@ output:
   xaringan::moon_reader:
     
     lib_dir: libs
-    css: ["assets/shinobi.css", "assets/ninjutsu.css", "assets/ninpo.css"]
+    css: ["assets/shinobi.css", "assets/ninjutsu.css", "assets/ninpo.css", "assets/default.css"]
     nature:
       ratio: "16:9"
       highlightStyle: github
@@ -199,7 +199,55 @@ corrplot.mixed(cor_numVar, tl.col="black", tl.pos = "lt")
 
 ---
 
+class: split-50
 
+.column.bg-main1[.content.vmiddle.center[
+# We could visualize the relationship between .tile[GrLivArea] and .orange[SalePrice]
+From the plot, the 524th and 1299th house are potential outliers that deserve special attention. We furter insepct the OverallQual of these two hourse
+
+```{r, echo = T}
+knitr::kable(all[c(524, 1299), c('SalePrice', 'GrLivArea', 'OverallQual', "Neighborhood")]
+, format = "html")
+```
+
+These two houses are all of the highest quality however located at a "normal" .tile[neighborhood], which might explain the low price. Thus we keep these two houses in the dataset. 
+
+
+]]
+
+.column.bg-main5[.content.vmiddle.center[
+
+
+```{r, out.width = "80%", echo = F}
+p = ggplot(data=all[!is.na(all$SalePrice),], aes(x=GrLivArea, y=SalePrice))+
+        geom_point(color = ifelse(all$GrLivArea[!is.na(all$SalePrice)]>4500, "red", "grey50")) + 
+        geom_smooth(method = "lm", se=FALSE, color="black", lty = "dotted") +
+        scale_y_continuous(breaks= seq(0, 800000, by=100000), labels = scales::comma) +
+        geom_text_repel(aes(label = ifelse(all$GrLivArea[!is.na(all$SalePrice)]>4500, rownames(all), '')))+
+        theme_bw()+
+        theme(plot.subtitle = element_text(color = 'grey70'))+
+        theme(panel.border = element_blank())+
+        theme(plot.title = element_text(lineheight = .8, face = "bold", size = 16))+
+        theme(panel.grid.minor = element_blank())+
+        theme(plot.subtitle = element_text(color = 'darkgray'))+
+        theme(axis.line.x = element_line(color = 'darkgrey', size = 0.5))+
+        labs(title = "Relationship between SalesPrice and GrLivArea")+
+        labs(subtitle = "Data Source: House Prices Competition in Kaggle")+
+        labs(caption = "Vis: @zhao_yikai with ggplot")
+p
+```
+
+
+]]
+---
+class: bg-main1, center, middle
+
+
+###  In the next slide, we visualize the relationship between .yellow[OverallQual] and .orange[SalePrice] in steps.
+
+# We could customize the visualization with great flexibility to the businuess needs. 
+
+---
 ```{r, echo = FALSE, warning = F, message= F}
 
 training_data = all[!is.na(all$SalePrice), ]
@@ -334,37 +382,11 @@ yikai_themes = theme(
 
 ---
 
-class: split-50
-
-.column.bg-main1[.content.vmiddle.center[
-# We could visualize the relationship between .tile[GrLivArea] and .orange[SalePrice]
-
-###  In the next slide, we visualize the relationship between .yellow[OverallQual] and .orange[SalePrice] in steps.
-
-]]
-
-.column.bg-main5[.content.vmiddle.center[
 
 
-```{r, out.width = "80%", echo = F}
-p = ggplot(data=all[!is.na(all$SalePrice),], aes(x=GrLivArea, y=SalePrice))+
-        geom_point(color = ifelse(all$GrLivArea[!is.na(all$SalePrice)]>4500, "red", "grey50")) + 
-        geom_smooth(method = "lm", se=FALSE, color="black", lty = "dotted") +
-        scale_y_continuous(breaks= seq(0, 800000, by=100000), labels = scales::comma) +
-        geom_text_repel(aes(label = ifelse(all$GrLivArea[!is.na(all$SalePrice)]>4500, rownames(all), '')))+
-        theme_bw()+
-        theme(plot.subtitle = element_text(color = 'grey70'))+
-        theme(panel.border = element_blank())+
-        theme(plot.title = element_text(lineheight = .8, face = "bold", size = 16))+
-        theme(panel.grid.minor = element_blank())+
-        theme(plot.subtitle = element_text(color = 'darkgray'))+
-        theme(axis.line.x = element_line(color = 'darkgrey', size = 0.5))+
-        labs(title = "Relationship between SalesPrice and GrLivArea")+
-        labs(subtitle = "Data Source: House Prices Competition in Kaggle")+
-        labs(caption = "Vis: @zhao_yikai with ggplot")
-p
-```
 
 
-]]
 
+
+
+---

@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="assets/shinobi.css" type="text/css" />
     <link rel="stylesheet" href="assets/ninjutsu.css" type="text/css" />
     <link rel="stylesheet" href="assets/ninpo.css" type="text/css" />
+    <link rel="stylesheet" href="assets/default.css" type="text/css" />
   </head>
   <body>
     <textarea id="source">
@@ -168,7 +169,67 @@ corrplot.mixed(cor_numVar, tl.col="black", tl.pos = "lt")
 
 ---
 
+class: split-50
 
+.column.bg-main1[.content.vmiddle.center[
+# We could visualize the relationship between .tile[GrLivArea] and .orange[SalePrice]
+From the plot, the 524th and 1299th house are potential outliers that deserve special attention. We furter insepct the OverallQual of these two hourse
+
+
+```r
+knitr::kable(all[c(524, 1299), c('SalePrice', 'GrLivArea', 'OverallQual', "Neighborhood")]
+, format = "html")
+```
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; SalePrice &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; GrLivArea &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; OverallQual &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Neighborhood &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 524 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 184750 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4676 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Edwards &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 1299 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 160000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5642 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Edwards &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+These two houses are all of the highest quality however located at a "normal" .tile[neighborhood], which might explain the low price. Thus we keep these two houses in the dataset. 
+
+
+]]
+
+.column.bg-main5[.content.vmiddle.center[
+
+
+&lt;img src="index_yikai_files/figure-html/unnamed-chunk-7-1.png" width="80%" /&gt;
+
+
+]]
+---
+class: bg-main1, center, middle
+
+
+###  In the next slide, we visualize the relationship between .yellow[OverallQual] and .orange[SalePrice] in steps.
+
+# We could customize the visualization with great flexibility to the businuess needs. 
+
+---
 
 
 
@@ -791,7 +852,7 @@ ggplot(data = training_data,
   theme(plot.title = element_text(lineheight = .8, face = "bold", size = 16))+  
   theme(panel.grid.minor = element_blank())+  
   theme(axis.line.x = element_line(color = 'darkgrey', size = 0.5))+  
-* scale_y_continuous(breaks= seq(0, 800000, by=100000))
+* scale_y_continuous(breaks= seq(0, 800000, by=100000), labels =scales::comma)
 ```
 ]]
 .column[.content[
@@ -810,7 +871,7 @@ class: split-60
 ###.orange[white lines] indicate missing values in the corresponding variable
 ### some variables have missingness at random, some have huge missingness
 ### Turns out some missingness indicate the .orange[absence] of that feature (e.g. a pool or fense)
-### some are data misentry and we need to .red[find them out!] 
+### some are data misentry and we need to .yellow[find them out!] 
 
 
 ]]
@@ -823,29 +884,21 @@ class: split-60
 
 
 
-&lt;img src="index_yikai_files/figure-html/unnamed-chunk-8-1.png" width="90%" height="75%" /&gt;
+&lt;img src="index_yikai_files/figure-html/unnamed-chunk-10-1.png" width="90%" height="75%" /&gt;
 
 
 ]]
 
 ---
 
-class: split-50
-
-.column.bg-main1[.content.vmiddle.center[
-# We could visualize the relationship between .tile[GrLivArea] and .orange[SalePrice]
-
-###  In the next slide, we visualize the relationship between .yellow[OverallQual] and .orange[SalePrice] in steps.
-
-]]
-
-.column.bg-main5[.content.vmiddle.center[
 
 
-&lt;img src="index_yikai_files/figure-html/unnamed-chunk-9-1.png" width="80%" /&gt;
 
 
-]]
+
+
+
+---
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
