@@ -6,7 +6,6 @@ institute: "Looking for a full time position as Data scientist"
 date: "25-Oct-2019 &nbsp;&nbsp; `r anicon::faa('link', animate='ring', rtext='&nbsp;ykzhao.com', color='white')`"
 output:
   xaringan::moon_reader:
-    
     lib_dir: libs
     css: ["assets/shinobi.css", "assets/ninjutsu.css", "assets/ninpo.css", "assets/default.css"]
     nature:
@@ -34,6 +33,7 @@ knitr::opts_chunk$set(dpi = 300,  out.width = "80%", message = F, warning = F) #
 
 
 ---
+
 
 class: split-60 white 
 
