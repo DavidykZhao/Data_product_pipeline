@@ -479,25 +479,50 @@ class: split-50
 .column.bg-main1[.content.vmiddle[
 # We could view the .pink[Neighborhood] variable in terms of the median .orange[SalePrice]
 
-### The label denotes the count of houses in that neighborhood
-### The dashed line is median SalePrice
 
 ]]
 
 .column.bg-main5[.content.vmiddle.center[
 
 ```{r, out.width= "85%", echo = F}
-ggplot(all[!is.na(all$SalePrice),], aes(x=Neighborhood, y=SalePrice)) +
-        geom_bar(stat='summary', fun.y = "median") +
-        scale_y_continuous(breaks= seq(0, 800000, by=50000), labels = scales::comma) +
-        geom_label(stat = "count", aes(label = ..count.., y = ..count..), size=3) +
-        geom_hline(yintercept=163000, linetype="dashed", color = "red")+
-        theme_bw()+
-        theme(axis.text.x = element_text(angle = 45, hjust = 1))+
-        yikai_themes+
-        yikai_labels+
-       theme(panel.grid.major.x  = element_blank())+
-       labs(title = "Median SalePrice by Neighborhood")
+
+data_circular = readRDS("~/Data_product_pipeline/kunoichi/data/data_circular.RDS")
+
+data_label_circular = data_circular
+number_of_bar <- nrow(data_label_circular)
+angle <-  90 - 360 * (as.numeric(data_label_circular$Neighborhood, 
+                                         data_label_circular$median )-0.5) /number_of_bar
+data_label_circular$hjust<-ifelse( angle < -90, 1.2, -0.2)
+
+# flip angle BY to make them readable
+data_label_circular$angle<-ifelse(angle < -90, angle+180, angle)
+# Make the circular plot
+
+
+ggplot(data_circular, aes(x= Neighborhood, y=median, fill = as.factor(data_label_circular$NeighRich))) +       # Note that id is a factor. If x is numeric, there is some space between the first bar
+  # This add the bars with a blue color
+  geom_bar( stat= 'identity') +
+  
+  # Limits of the plot = very important. The negative value controls the size of the inner circle, the positive one is useful to add size over each bar
+  ylim(-400000, 320000) +
+  
+  # Custom the theme: no axis title and no cartesian grid
+  theme_minimal() +
+  theme(
+    axis.text = element_blank(),
+    axis.title = element_blank(),
+    panel.grid = element_blank() ) +
+  # This makes the coordinate polar instead of cartesian.
+  coord_polar(start = 0)+
+  geom_text(data=data_label_circular, aes(x=Neighborhood, y=median, label=Neighborhood, hjust=hjust), 
+            color="black", fontface="bold",alpha=0.6, 
+            size=2.5, angle= data_label_circular$angle, 
+            inherit.aes = FALSE ) +
+  yikai_themes+
+  yikai_labels+
+  labs(title = "Median house price by neighborhood")+
+  scale_fill_manual(values = c("#E7B800", "#00AFBB", "#FC4E07"))+
+  theme(legend.position = "none")
 ```
 
 
