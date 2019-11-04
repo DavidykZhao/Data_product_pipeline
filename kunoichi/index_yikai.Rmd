@@ -6,6 +6,7 @@ institute: "Looking for a full time position as Data scientist"
 date: "25-Oct-2019 &nbsp;&nbsp; `r anicon::faa('link', animate='ring', rtext='&nbsp;ykzhao.com', color='white')`"
 output:
   xaringan::moon_reader:
+    chakra: libs/remark-latest.min.js
     lib_dir: libs
     css: ["assets/shinobi.css", "assets/ninjutsu.css", "assets/ninpo.css", "assets/default.css"]
     nature:
@@ -76,8 +77,8 @@ library(plotly)
 # library(randomForest)
 # library(psych)
 # library(xgboost)
-train <- read.csv("../kunoichi/data/train_house.csv", stringsAsFactors = F)
-test <- read.csv("../kunoichi/data/test_house.csv", stringsAsFactors = F)
+train <- read.csv("~/Data_product_pipeline/kunoichi/data/train_house.csv", stringsAsFactors = F)
+test <- read.csv("~/Data_product_pipeline/kunoichi/data/test_house.csv", stringsAsFactors = F)
 test_labels <- test$Id
 test$Id <- NULL
 train$Id <- NULL
@@ -205,7 +206,7 @@ class: split-50
 # We could visualize the relationship between .tile[GrLivArea] and .orange[SalePrice]
 From the plot, the 524th and 1299th house are potential outliers that deserve special attention. We furter insepct the OverallQual of these two hourse
 
-```{r, echo = T}
+```{r, echo = F}
 knitr::kable(all[c(524, 1299), c('SalePrice', 'GrLivArea', 'OverallQual', "Neighborhood")]
 , format = "html")
 ```
@@ -243,11 +244,12 @@ p
 class: bg-main1, center, middle
 
 
-###  In the next slide, we visualize the relationship between .yellow[OverallQual] and .orange[SalePrice] in steps.
+###  In the next slide, we visualize the relationship between .yellow[OverallQual] and .pink[SalePrice] in steps.
 
 # We could customize the visualization with great flexibility to the businuess needs. 
 
 ---
+
 ```{r, echo = FALSE, warning = F, message= F}
 
 training_data = all[!is.na(all$SalePrice), ]
@@ -308,6 +310,84 @@ ggplot(data = training_data,
 
 `r apply_reveal("rainplot")`
 
+---
+
+class: split-50  
+
+.column.bg-main1[.content.vmiddle[
+
+# Visualize the relaionship between .orange[Year] and .teal[SalePrice] by .pink[OverallQual]
+
+The dotted line is roughly the time of the economic crisis happend at the end of 2017.
+We could see clearly that the high quality (10) houses get influenced the most.
+
+
+]]
+
+
+.column.bg-main5[.content.vmiddle.center[
+```{r, echo = F}
+all %>%
+  select(YrSold, OverallQual, SalePrice) %>%
+  filter(!is.na(SalePrice)) %>%
+  group_by(YrSold, OverallQual) %>%
+  summarise(median_price = median(SalePrice), mean_price = mean(SalePrice)) -> year_by_quality_data
+
+n_qual = paste("N = ", table(all$OverallQual))
+x_location = rep(2009, 10)
+y_location = c(rep(500000, 9), 200000)
+anno_data = data.frame(n_qual = n_qual,
+                       YrSold = x_location,
+                       median_price = y_location,
+                       OverallQual = c(1:10))
+```
+
+```{r plot_themes, echo=F, message=F, warning=F}
+yikai_labels <- list(
+   labs(subtitle = "Data Source: House Prices Competition in Kaggle"),
+   labs(caption = "Vis: @zhao_yikai with ggplot")
+             )
+
+yikai_palette  <- c("#FFDB6D", "#C4961A", "#F4EDCA", 
+                "#D16103", "#C3D7A4", "#52854C", "#4E84C4", "#293352")
+yikai_themes = theme(
+  plot.subtitle = element_text(color = 'grey50'),
+  panel.border = element_blank(),
+  plot.title = element_text(lineheight = .8, face = "bold", size = 16),
+  panel.grid.minor = element_blank(),
+  axis.line.x = element_line(color = 'darkgrey', size = 0.5),
+  plot.title.position = "plot", 
+  plot.caption.position =  "plot") #NEW parameter
+```
+
+```{r, echo = F}
+ggplot(data = year_by_quality_data, aes(x = YrSold, y = median_price))+
+  geom_line(aes(color = "Median"))+
+  facet_wrap(~ OverallQual)+
+  geom_line(data = year_by_quality_data, aes(x = YrSold, y = mean_price, color = "Mean"), )+
+  scale_y_continuous(breaks = seq(0, 750000, by= 100000), 
+                     labels = scales::comma)+
+  geom_text(data = anno_data, aes(label = n_qual,
+                                  group = NULL))+
+  geom_vline(xintercept = 2007.8, linetype = "dotted") +
+  theme_light()+
+  yikai_labels+
+  yikai_themes+
+  scale_x_continuous(breaks = c(2007, 2008, 2009), labels = c("07", "08", "09"))+
+  scale_y_continuous(breaks = c(100000, 200000, 400000, 600000), labels = c("100k", "200k", "400k", "600k"))+
+  theme(panel.grid.major.x = element_blank())+
+  theme(legend.position = c(0.8,0.1), legend.direction = "horizontal")+
+  theme(legend.background = element_rect(color = "grey" ))+
+  theme(panel.spacing.y =
+          unit(1, "lines"))+
+  labs(y = 'Mean and Median of SalePrice')+
+  labs(x = 'Year')+
+  labs(title = 'Change of price by Year by OverallQual')
+```
+
+
+
+]]
 
 
 ---
@@ -318,8 +398,7 @@ class: split-60
 # Plotting the missingness in that dataset 
 
 ###.orange[white lines] indicate missing values in the corresponding variable
-### some variables have missingness at random, some have huge missingness
-### Turns out some missingness indicate the .orange[absence] of that feature (e.g. a pool or fense)
+### Turns out some missingness indicate the .orange[absence] of that feature (e.g. a pool or fense), which we could impurte as a .pink[None] type 
 ### some are data misentry and we need to .yellow[find them out!] 
 
 
@@ -336,21 +415,7 @@ class: split-60
     summarise(n_missing = sum(value)) -> missing_cols
 ```
 
-```{r plot_themes, echo=F, message=F, warning=F}
-yikai_labels <- list(
-   labs(subtitle = "Data Source: House Prices Competition in Kaggle"),
-   labs(caption = "Vis: @zhao_yikai with ggplot")
-             )
 
-yikai_themes = theme(
-  plot.subtitle = element_text(color = 'grey30'),
-  panel.border = element_blank(),
-  plot.title = element_text(lineheight = .8, face = "bold", size = 16),
-  panel.grid.minor = element_blank(),
-  axis.line.x = element_line(color = 'darkgrey', size = 0.5),
-  plot.title.position = "plot", 
-  plot.caption.position =  "plot") #NEW parameter
-```
 
 
 ```{r, message= F, warning=F, echo = F, out.width = "90%" , dpi = 300, out.height= "75%"}
@@ -382,11 +447,164 @@ yikai_themes = theme(
 
 ---
 
+class: split-40
+
+.column.bg-main1[.content.vmiddle[
+## Among the NA's, some are due to misentry of data
+
+<br>
+
+### e.g. While most NA's in .orange[Garage] related variables indicates a lack of a garage, 2 houses have contradictory values in those variables
 
 
 
+]]
+
+
+.column.bg-main4[.content.vmiddle[
+
+
+```{r, echo = F, eval = F}
+all[!is.na(all$GarageType) & is.na(all$GarageFinish), c('GarageCars', 'GarageArea', 'GarageType', 'GarageCond', 'GarageQual', 'GarageFinish')]
+```
+
+```{r, eval = F, echo = T}
+GarageCars GarageArea GarageType GarageCond GarageQual GarageFinish
+2127          1        360     Detchd       <NA>       <NA>         <NA>
+2577         NA         NA     Detchd       <NA>       <NA>         <NA>
+```
+
+<br>
+Given no other variables could predict the garage variables, I think house 2127 indeed has a garage thus the rest of NA's are imputed with the mode.
+```{r, echo = T}
+all$GarageCond[2127] <- names(sort(-table(all$GarageCond)))[1]
+all$GarageQual[2127] <- names(sort(-table(all$GarageQual)))[1]
+all$GarageFinish[2127] <- names(sort(-table(all$GarageFinish)))[1]
+```
+
+However, house 2577 does not seem to have a garage but with a wrong input of data in .teal[GarageType]. Thus all garage varialbes have been imputed into values indicating there is no garage. 
+
+
+
+
+]]
+---
+
+class: split-50
+
+.column.bg-main1[.content.vmiddle[
+
+# We also need to code the character variables into numbers
+
+## Need to consider if the variables is .orange[categorical] or .teal[ordinal]
+
+### If there is no inherent order within the variable, it will be coded as a factor variable
+]]
+
+.column.bg-main4[.content.vmiddle[
+
+### For example, the .orange[heating] variable has the following levels:
+
+
+```{r, echo = T, eval = F}
+   Floor    Floor Furnace
+   GasA Gas forced warm air furnace
+   GasW Gas hot water or steam heat
+   Grav Gravity furnace 
+   OthW Hot water or steam heat other than gas
+   Wall Wall furnace
+```
+
+### It will be coded as:
+
+```{r, echo = T, eval = F}
+all$Heating <- as.factor(all$Heating)
+table(all$Heating)
+```
+
+```{r, echo = T,  eval = F}
+1    2    3    4    5 
+3    92   857  474  1493
+```
+
+
+
+]]
+
+---
+
+class: split-50
+
+.column.bg-main1[.content.vmiddle[
+
+# We also need to code the character variables into numbers
+
+## Need to consider if the variables is .orange[categorical] or .teal[ordinal]
+
+### If there is an inherent order within the variable, it will be coded as integers indicating the inherent order
+]]
+
+.column.bg-main4[.content.vmiddle[
+
+### For example, the .pink[HeatingQC] variable has the following levels:
+
+```{r, echo = F, eval =F}
+heating = c(   'Ex', 'Gd', 'TA', 'Fa', 'Po')
+heating_qual = c('Excellent',
+   'Good', 'Average/Typical', 
+  'Fair', 'Poor')
+heating = data.frame(heating = heating, heating_qual = heating_qual)
+heating
+```
+
+```{r, eval = F, echo = T}
+   heating    heating_qual
+      Ex       Excellent
+      Gd            Good
+      TA Average/Typical
+      Fa            Fair
+      Po            Poor
+
+```
+
+### It will be coded as:
+
+```{r, echo = T, eval =F}
+Qualities <- c('None' = 0, 'Po' = 1, 
+               'Fa' = 2, 'TA' = 3, 
+               'Gd' = 4, 'Ex' = 5)
+all$HeatingQC<-as.integer(revalue(all$HeatingQC, Qualities))
+```
+]]
+
+```{r, eval = F, echo = T}
+1    2    3    4    5 
+3   92  857  474 1493
+```
+
+
+---
+
+
+class: split-50
+
+.column.bg-main1[.content.vmiddle[
+# Dealing with skewness of response variable
+## For example, the response variable SalePrice is highly skewed
+## We would log transform 
+
+]]
 
 
 
 
 ---
+class: bg-main1, center, middle
+
+# Part 2: Modeling of the data
+
+--- 
+
+
+
+
