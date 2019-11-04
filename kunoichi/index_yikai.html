@@ -64,6 +64,8 @@ class: split-60 white
 
 
 
+
+
 ```r
 # The dimention of the data are
 dim(train)
@@ -172,8 +174,8 @@ corrplot.mixed(cor_numVar, tl.col="black", tl.pos = "lt")
 
 class: split-50
 
-.column.bg-main1[.content.vmiddle.center[
-# We could visualize the relationship between .tile[GrLivArea] and .orange[SalePrice]
+.column.bg-main1[.content.vmiddle[
+# We could visualize the relationship between .pink[GrLivArea] and .orange[SalePrice]
 From the plot, the 524th and 1299th house are potential outliers that deserve special attention. We furter insepct the OverallQual of these two hourse
 
 &lt;table&gt;
@@ -212,10 +214,11 @@ These two houses are all of the highest quality however located at a "normal" .t
 .column.bg-main5[.content.vmiddle.center[
 
 
-&lt;img src="index_yikai_files/figure-html/unnamed-chunk-7-1.png" width="80%" /&gt;
+&lt;img src="index_yikai_files/figure-html/unnamed-chunk-7-1.png" width="85%" /&gt;
 
 
 ]]
+
 ---
 class: bg-main1, center, middle
 
@@ -875,12 +878,72 @@ We could see clearly that the high quality (10) houses get influenced the most.
 
 
 
-&lt;img src="index_yikai_files/figure-html/unnamed-chunk-10-1.png" width="80%" /&gt;
+&lt;img src="index_yikai_files/figure-html/unnamed-chunk-10-1.png" width="85%" /&gt;
 
 
 
 ]]
 
+
+---
+
+class: split-50  
+
+.column.bg-main1[.content.vmiddle[
+
+# Use .pink[principle components] of numerical variables to detect extreme obervations
+
+]]
+
+.column.bg-main5[.content.vmiddle[
+
+
+&lt;img src="index_yikai_files/figure-html/unnamed-chunk-11-1.png" width="80%" /&gt;
+
+
+]]
+
+
+---
+
+class: split-50 
+
+.column.bg-main1[.content.vmiddle[
+
+# Which .orange[categorical variables] are important to explore
+
+## We could find them through .teal[Random Forest] feature importance permutation test. 
+
+]]
+
+.column.bg-main5[.content.vmiddle.center[
+
+&lt;img src="index_yikai_files/figure-html/unnamed-chunk-12-1.png" width="90%" /&gt;
+
+
+
+]]
+
+
+---
+
+class: split-50  
+
+.column.bg-main1[.content.vmiddle[
+# We could view the .pink[Neighborhood] variable in terms of the median .orange[SalePrice]
+
+### The label denotes the count of houses in that neighborhood
+### The dashed line is median SalePrice
+
+]]
+
+.column.bg-main5[.content.vmiddle.center[
+
+&lt;img src="index_yikai_files/figure-html/unnamed-chunk-13-1.png" width="85%" /&gt;
+
+
+
+]]
 
 ---
 class: split-60  
@@ -904,7 +967,7 @@ class: split-60
 
 
 
-&lt;img src="index_yikai_files/figure-html/unnamed-chunk-12-1.png" width="90%" height="75%" /&gt;
+&lt;img src="index_yikai_files/figure-html/unnamed-chunk-15-1.png" width="90%" height="75%" /&gt;
 
 
 ]]
@@ -1011,7 +1074,7 @@ class: split-50
 ### If there is an inherent order within the variable, it will be coded as integers indicating the inherent order
 ]]
 
-.column.bg-main4[.content.vmiddle.center[
+.column.bg-main4[.content.vmiddle[
 
 ### For example, the .pink[HeatingQC] variable has the following levels:
 
@@ -1053,13 +1116,23 @@ class: split-50
 .column.bg-main1[.content.vmiddle[
 # Dealing with skewness of response variable
 ## For example, the response variable SalePrice is highly skewed
-## We would log transform 
+## We would log transform this variable
 
 ]]
 
 
+.column.bg-main5[.content.vmiddle[
 
 
+```r
+SalePrice &lt;- log(all$SalePrice)
+```
+
+
+
+
+
+]]
 ---
 class: bg-main1, center, middle
 
@@ -1070,6 +1143,7 @@ class: bg-main1, center, middle
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="libs/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
+"ratio": "16:9",
 "highlightStyle": "github",
 "highlightLines": true,
 "countIncrementalSlides": false

@@ -74,7 +74,7 @@ library(corrplot)
 # library(Rmisc)
 library(ggrepel)
 library(plotly)
-# library(randomForest)
+library(randomForest)
 # library(psych)
 # library(xgboost)
 train <- read.csv("~/Data_product_pipeline/kunoichi/data/train_house.csv", stringsAsFactors = F)
@@ -84,6 +84,24 @@ test$Id <- NULL
 train$Id <- NULL
 test$SalePrice <- NA
 all <- rbind(train, test)
+```
+
+```{r plot_themes, echo=F, message=F, warning=F}
+yikai_labels <- list(
+   labs(subtitle = "Data Source: House Prices Competition in Kaggle"),
+   labs(caption = "Vis: @zhao_yikai with ggplot")
+             )
+
+yikai_palette  <- c("#FFDB6D", "#C4961A", "#F4EDCA", 
+                "#D16103", "#C3D7A4", "#52854C", "#4E84C4", "#293352")
+yikai_themes = theme(
+  plot.subtitle = element_text(color = 'grey50'),
+  panel.border = element_blank(),
+  plot.title = element_text(face = "bold", size = 16),
+  panel.grid.minor = element_blank(),
+  axis.line.x = element_line(color = 'darkgrey', size = 0.5),
+  plot.title.position = "panel", 
+  plot.caption.position =  "plot") #NEW parameter
 ```
 
 ```{r, eval = F}
@@ -202,8 +220,8 @@ corrplot.mixed(cor_numVar, tl.col="black", tl.pos = "lt")
 
 class: split-50
 
-.column.bg-main1[.content.vmiddle.center[
-# We could visualize the relationship between .tile[GrLivArea] and .orange[SalePrice]
+.column.bg-main1[.content.vmiddle[
+# We could visualize the relationship between .pink[GrLivArea] and .orange[SalePrice]
 From the plot, the 524th and 1299th house are potential outliers that deserve special attention. We furter insepct the OverallQual of these two hourse
 
 ```{r, echo = F}
@@ -219,12 +237,12 @@ These two houses are all of the highest quality however located at a "normal" .t
 .column.bg-main5[.content.vmiddle.center[
 
 
-```{r, out.width = "80%", echo = F}
+```{r, out.width = "85%", echo = F}
 p = ggplot(data=all[!is.na(all$SalePrice),], aes(x=GrLivArea, y=SalePrice))+
-        geom_point(color = ifelse(all$GrLivArea[!is.na(all$SalePrice)]>4500, "red", "grey50")) + 
+        geom_point(color = ifelse(all$GrLivArea[!is.na(all$SalePrice)]>4500, "#E91E63", "grey50"), size = ifelse(all$GrLivArea[!is.na(all$SalePrice)]>4500, 4, 2)) + 
         geom_smooth(method = "lm", se=FALSE, color="black", lty = "dotted") +
         scale_y_continuous(breaks= seq(0, 800000, by=100000), labels = scales::comma) +
-        geom_text_repel(aes(label = ifelse(all$GrLivArea[!is.na(all$SalePrice)]>4500, rownames(all), '')))+
+        geom_label_repel(aes(label = ifelse(all$GrLivArea[!is.na(all$SalePrice)]>4500, rownames(all), '')))+
         theme_bw()+
         theme(plot.subtitle = element_text(color = 'grey70'))+
         theme(panel.border = element_blank())+
@@ -240,6 +258,7 @@ p
 
 
 ]]
+
 ---
 class: bg-main1, center, middle
 
@@ -342,25 +361,9 @@ anno_data = data.frame(n_qual = n_qual,
                        OverallQual = c(1:10))
 ```
 
-```{r plot_themes, echo=F, message=F, warning=F}
-yikai_labels <- list(
-   labs(subtitle = "Data Source: House Prices Competition in Kaggle"),
-   labs(caption = "Vis: @zhao_yikai with ggplot")
-             )
 
-yikai_palette  <- c("#FFDB6D", "#C4961A", "#F4EDCA", 
-                "#D16103", "#C3D7A4", "#52854C", "#4E84C4", "#293352")
-yikai_themes = theme(
-  plot.subtitle = element_text(color = 'grey50'),
-  panel.border = element_blank(),
-  plot.title = element_text(lineheight = .8, face = "bold", size = 16),
-  panel.grid.minor = element_blank(),
-  axis.line.x = element_line(color = 'darkgrey', size = 0.5),
-  plot.title.position = "plot", 
-  plot.caption.position =  "plot") #NEW parameter
-```
 
-```{r, echo = F}
+```{r, echo = F, out.width= "85%"}
 ggplot(data = year_by_quality_data, aes(x = YrSold, y = median_price))+
   geom_line(aes(color = "Median"))+
   facet_wrap(~ OverallQual)+
@@ -389,6 +392,117 @@ ggplot(data = year_by_quality_data, aes(x = YrSold, y = median_price))+
 
 ]]
 
+
+---
+
+class: split-50  
+
+.column.bg-main1[.content.vmiddle[
+
+# Use .pink[principle components] of numerical variables to detect extreme obervations
+
+]]
+
+.column.bg-main5[.content.vmiddle[
+
+
+```{r, echo = F}
+DFnorm = readRDS("~/Data_product_pipeline/kunoichi/data/normed_numerical_vars.rds")
+pcaOut      = prcomp(DFnorm,scale=F,center=F)
+data.frame(pcaOut$x) %>%
+ggplot() +
+  geom_point(aes(x = PC1, y = PC2))
+  
+
+
+```
+
+
+]]
+
+
+---
+
+class: split-50 
+
+.column.bg-main1[.content.vmiddle[
+
+# Which .orange[categorical variables] are important to explore
+
+## We could find them through .teal[Random Forest] feature importance permutation test. 
+
+]]
+
+.column.bg-main5[.content.vmiddle.center[
+
+```{r, echo = F, out.width = "90%" }
+imp_DF = readRDS("~/Data_product_pipeline/kunoichi/data/RF_importance.RDS")
+
+
+ggplot(imp_DF[1:10,], aes(x=reorder(Variables, MSE), y= MSE, label = round(MSE, 1))) +
+  geom_segment( aes(x=reorder(Variables, MSE), xend=reorder(Variables, MSE), y=0, yend= MSE ), color=ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), "orange", "grey"), size=ifelse(imp_DF[1:10,]$Variables  %in% c("Neighborhood", "MSSubClass"), 1.5, 0.7) ) +
+  geom_point( color=ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), "orange", "grey"), size=ifelse(imp_DF[1:10,]$Variables  %in% c("Neighborhood", "MSSubClass"), 9, 5) ) +
+  #theme_ipsum() +
+  coord_flip() +
+  theme(
+    legend.position="none"
+  ) +
+  geom_text(color = "white", size = ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), 3, 2))+
+  xlab("") +
+  ylab("Value of Y") +
+  ggtitle("Feature importance via Random Forrest")+
+  labs(x = 'Variables',y= '% increase MSE if variable is randomly permuted')+
+  theme_bw()+
+  yikai_labels +
+  yikai_themes+
+  ylim(0, 22)+
+  theme(plot.title.position = "plot")+
+  annotate("text", x=9, y=imp_DF[1:10,]$MSE[which(imp_DF[1:10,]$Variables=="Neighborhood")]*1.1, 
+             label= paste('Important categorical variable'),
+             color="orange", size=3, angle=0, fontface="bold", hjust=0)+
+  annotate("text", x=6, y=imp_DF[1:10,]$MSE[which(imp_DF[1:10,]$Variables=="MSSubClass")]*1.2, 
+           label= paste('Another important categorical variable'),
+           color="orange", size=3, angle=0, fontface="bold", hjust=0)+
+  theme(axis.title.x = element_text(hjust=-0.06))+
+  theme(panel.grid.major.y = element_blank())
+```
+
+
+
+]]
+
+
+---
+
+class: split-50  
+
+.column.bg-main1[.content.vmiddle[
+# We could view the .pink[Neighborhood] variable in terms of the median .orange[SalePrice]
+
+### The label denotes the count of houses in that neighborhood
+### The dashed line is median SalePrice
+
+]]
+
+.column.bg-main5[.content.vmiddle.center[
+
+```{r, out.width= "85%", echo = F}
+ggplot(all[!is.na(all$SalePrice),], aes(x=Neighborhood, y=SalePrice)) +
+        geom_bar(stat='summary', fun.y = "median") +
+        scale_y_continuous(breaks= seq(0, 800000, by=50000), labels = scales::comma) +
+        geom_label(stat = "count", aes(label = ..count.., y = ..count..), size=3) +
+        geom_hline(yintercept=163000, linetype="dashed", color = "red")+
+        theme_bw()+
+        theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+        yikai_themes+
+        yikai_labels+
+       theme(panel.grid.major.x  = element_blank())+
+       labs(title = "Median SalePrice by Neighborhood")
+```
+
+
+
+]]
 
 ---
 class: split-60  
@@ -591,13 +705,22 @@ class: split-50
 .column.bg-main1[.content.vmiddle[
 # Dealing with skewness of response variable
 ## For example, the response variable SalePrice is highly skewed
-## We would log transform 
+## We would log transform this variable
 
 ]]
 
 
+.column.bg-main5[.content.vmiddle[
+
+```{r}
+SalePrice <- log(all$SalePrice)
+```
 
 
+
+
+
+]]
 ---
 class: bg-main1, center, middle
 
