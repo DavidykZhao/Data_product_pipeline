@@ -341,30 +341,8 @@ ggplot(data = year_by_quality_data, aes(x = YrSold, y = median_price))+
 
 ---
 
-class: split-50  
-
-.column.bg-main1[.content.vmiddle[
-
-# Use .pink[principle components] of numerical variables to detect extreme obervations
-
-]]
-
-.column.bg-main5[.content.vmiddle[
-
-
-```{r, echo = F}
-DFnorm = readRDS("~/Data_product_pipeline/kunoichi/data/normed_numerical_vars.rds")
-pcaOut      = prcomp(DFnorm,scale=F,center=F)
-data.frame(pcaOut$x) %>%
-ggplot() +
-  geom_point(aes(x = PC1, y = PC2))
-  
-
-
+```{r child='PCA_plot.Rmd', warning=F, message=F}
 ```
-
-
-]]
 
 
 ---
@@ -375,7 +353,7 @@ class: split-50
 
 # Which .orange[categorical variables] are important to explore
 
-## We could find them through .teal[Random Forest] feature importance permutation test. 
+## We could find them through .yellow[Random Forest] feature importance permutation test. 
 
 ]]
 
@@ -387,13 +365,13 @@ imp_DF = readRDS("~/Data_product_pipeline/kunoichi/data/RF_importance.RDS")
 
 ggplot(imp_DF[1:10,], aes(x=reorder(Variables, MSE), y= MSE, label = round(MSE, 1))) +
   geom_segment( aes(x=reorder(Variables, MSE), xend=reorder(Variables, MSE), y=0, yend= MSE ), color=ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), "orange", "grey"), size=ifelse(imp_DF[1:10,]$Variables  %in% c("Neighborhood", "MSSubClass"), 1.5, 0.7) ) +
-  geom_point( color=ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), "orange", "grey"), size=ifelse(imp_DF[1:10,]$Variables  %in% c("Neighborhood", "MSSubClass"), 9, 5) ) +
+  geom_point( color=ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), "orange", "grey"), size=ifelse(imp_DF[1:10,]$Variables  %in% c("Neighborhood", "MSSubClass"), 11, 7) ) +
   #theme_ipsum() +
   coord_flip() +
   theme(
     legend.position="none"
   ) +
-  geom_text(color = "white", size = ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), 3, 2))+
+  geom_text(color = "white", size = ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), 3.5, 2.5))+
   xlab("") +
   ylab("Value of Y") +
   ggtitle("Feature importance via Random Forrest")+
@@ -405,10 +383,10 @@ ggplot(imp_DF[1:10,], aes(x=reorder(Variables, MSE), y= MSE, label = round(MSE, 
   theme(plot.title.position = "plot")+
   annotate("text", x=9, y=imp_DF[1:10,]$MSE[which(imp_DF[1:10,]$Variables=="Neighborhood")]*1.1, 
              label= paste('Important categorical variable'),
-             color="orange", size=3, angle=0, fontface="bold", hjust=0)+
+             color="orange", size=3.4, angle=0, fontface="bold", hjust=0)+
   annotate("text", x=6, y=imp_DF[1:10,]$MSE[which(imp_DF[1:10,]$Variables=="MSSubClass")]*1.2, 
            label= paste('Another important categorical variable'),
-           color="orange", size=3, angle=0, fontface="bold", hjust=0)+
+           color="orange", size=3.4, angle=0, fontface="bold", hjust=0)+
   theme(axis.title.x = element_text(hjust=-0.06))+
   theme(panel.grid.major.y = element_blank())
 ```
@@ -423,7 +401,7 @@ ggplot(imp_DF[1:10,], aes(x=reorder(Variables, MSE), y= MSE, label = round(MSE, 
 class: split-50  
 
 .column.bg-main1[.content.vmiddle[
-# We could view the .pink[Neighborhood] variable in terms of the median .orange[SalePrice]
+# We could view the .pink[Neighborhood] variable in terms of the median .cyan[SalePrice]
 
 
 ]]

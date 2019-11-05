@@ -1,0 +1,41 @@
+class: split-50  
+
+.column.bg-main1[.content.vmiddle[
+
+# Use .pink[principle components] of numerical variables to detect extreme obervations
+
+]]
+
+.column.bg-main5[.content.vmiddle.center[
+
+
+```{r, echo = F}
+DFnorm = readRDS("~/Data_product_pipeline/kunoichi/data/normed_numerical_vars.rds")
+pcaOut      = prcomp(DFnorm,scale=F,center=F)
+
+data.frame(pcaOut$x) %>%
+  ggplot(aes(x = PC1, y = PC2)) +
+  geom_point(color = ifelse( pcaOut$x[, 1]> 8.5 | pcaOut$x[, 1 ] < -8 | pcaOut$x[,2 ] < -8  , 
+                            "#E91E63", "grey"))+
+  geom_text_repel(aes(label = ifelse(pcaOut$x[, 1]> 8.5 | pcaOut$x[, 1 ] < -8 | pcaOut$x[,2 ] < -8,
+                                     rownames(all), '')))+
+  yikai_labels+
+  theme_bw()+
+  yikai_themes+
+  annotate(
+    geom = "curve", x = -3, y = -5.5, xend = 9.6, yend = 0.1, 
+    curvature = .3, arrow = arrow(length = unit(2, "mm"))) +
+  annotate(
+    geom = "curve", x = -6, y = -6, xend = 3, yend = -8, 
+    curvature = .1, arrow = arrow(length = unit(2, "mm")), alpha = 0.8)+
+  annotate(geom = "curve",x = - 7, y = -4.5, xend = -9.2, yend = 1, curvature = -0.1,
+           arrow = arrow(length = unit(2, "mm"))  )+
+  annotate(geom = "text", x = -9.5, y = -5.3, label = "Potential outliers", 
+           hjust = "left", color = "#E91E63", 
+           size = 6, fontface = "bold")+
+  labs(title = "Extreme observations from PCA")
+
+```
+
+
+]]
