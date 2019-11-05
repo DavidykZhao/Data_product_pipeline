@@ -32,7 +32,6 @@ class: center, middle
 
 
 
-
 ---
 
 
@@ -234,629 +233,662 @@ class: bg-main1, center, middle
 
 
 
+
+
+
+
+
 class: split-40
 count: false
+
 .column[.content[
 
 ```r
-* # We could visualize the distribution
-* # of variable OverallQual in a rainplot
-*ggplot(data = training_data,
-* aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual)))
+*# We could visualize the distribution
+# of variable OverallQual in a rainplot
+ggplot(data = training_data, 
+  aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) 
 ```
 ]]
-.column[.content[
+.column[.content.center[
 &lt;img src="index_yikai_files/figure-html/output_rainplot_4-1.png" width="80%" /&gt;
 ]]
 ---
 class: split-40
 count: false
+
 .column[.content[
 
 ```r
-  # We could visualize the distribution
-  # of variable OverallQual in a rainplot
-ggplot(data = training_data,  
-  aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +  
+# We could visualize the distribution
+# of variable OverallQual in a rainplot
+ggplot(data = training_data, 
+  aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +
 * geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width")
 ```
 ]]
-.column[.content[
+.column[.content.center[
 &lt;img src="index_yikai_files/figure-html/output_rainplot_5-1.png" width="80%" /&gt;
 ]]
 ---
 class: split-40
 count: false
+
 .column[.content[
 
 ```r
-  # We could visualize the distribution
-  # of variable OverallQual in a rainplot
-ggplot(data = training_data,  
-  aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +  
-  geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +  
+# We could visualize the distribution
+# of variable OverallQual in a rainplot
+ggplot(data = training_data, 
+  aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +
+  geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +
 * geom_point(aes(y = SalePrice, color = factor(OverallQual)),
 *            position = position_jitter(width = .15), size = .5, alpha = 1)
 ```
 ]]
-.column[.content[
+.column[.content.center[
 &lt;img src="index_yikai_files/figure-html/output_rainplot_7-1.png" width="80%" /&gt;
 ]]
 ---
 class: split-40
 count: false
+
 .column[.content[
 
 ```r
-  # We could visualize the distribution
-  # of variable OverallQual in a rainplot
-ggplot(data = training_data,  
-  aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +  
-  geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +  
-  geom_point(aes(y = SalePrice, color = factor(OverallQual)),  
-             position = position_jitter(width = .15), size = .5, alpha = 1) +  
+# We could visualize the distribution
+# of variable OverallQual in a rainplot
+ggplot(data = training_data, 
+  aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +
+  geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +
+  geom_point(aes(y = SalePrice, color = factor(OverallQual)), 
+             position = position_jitter(width = .15), size = .5, alpha = 1) +
 * geom_boxplot(width = .1, outlier.shape = NA, alpha = 0.5)
 ```
 ]]
-.column[.content[
+.column[.content.center[
 &lt;img src="index_yikai_files/figure-html/output_rainplot_8-1.png" width="80%" /&gt;
 ]]
 ---
 class: split-40
 count: false
+
 .column[.content[
 
 ```r
-  # We could visualize the distribution
-  # of variable OverallQual in a rainplot
-ggplot(data = training_data,  
-  aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +  
-  geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +  
-  geom_point(aes(y = SalePrice, color = factor(OverallQual)),  
-             position = position_jitter(width = .15), size = .5, alpha = 1) +  
-  geom_boxplot(width = .1, outlier.shape = NA, alpha = 0.5) +  
+# We could visualize the distribution
+# of variable OverallQual in a rainplot
+ggplot(data = training_data, 
+  aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +
+  geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +
+  geom_point(aes(y = SalePrice, color = factor(OverallQual)), 
+             position = position_jitter(width = .15), size = .5, alpha = 1) +
+  geom_boxplot(width = .1, outlier.shape = NA, alpha = 0.5) +
 * geom_point(data = sumld, aes(x = factor(OverallQual), y = mean),
 *            position = position_nudge(x = 0.3), size = 2.5)
 ```
 ]]
-.column[.content[
+.column[.content.center[
 &lt;img src="index_yikai_files/figure-html/output_rainplot_10-1.png" width="80%" /&gt;
 ]]
 ---
 class: split-40
 count: false
+
 .column[.content[
 
 ```r
-  # We could visualize the distribution
-  # of variable OverallQual in a rainplot
-ggplot(data = training_data,  
-  aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +  
-  geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +  
-  geom_point(aes(y = SalePrice, color = factor(OverallQual)),  
-             position = position_jitter(width = .15), size = .5, alpha = 1) +  
-  geom_boxplot(width = .1, outlier.shape = NA, alpha = 0.5) +  
-  geom_point(data = sumld, aes(x = factor(OverallQual), y = mean),  
-             position = position_nudge(x = 0.3), size = 2.5) +  
+# We could visualize the distribution
+# of variable OverallQual in a rainplot
+ggplot(data = training_data, 
+  aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +
+  geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +
+  geom_point(aes(y = SalePrice, color = factor(OverallQual)), 
+             position = position_jitter(width = .15), size = .5, alpha = 1) +
+  geom_boxplot(width = .1, outlier.shape = NA, alpha = 0.5) +
+  geom_point(data = sumld, aes(x = factor(OverallQual), y = mean), 
+             position = position_nudge(x = 0.3), size = 2.5) +
 * geom_errorbar(data = sumld, aes(ymin = lower, ymax = upper, y = mean),
 *               position = position_nudge(x = 0.3), width = 0)
 ```
 ]]
-.column[.content[
+.column[.content.center[
 &lt;img src="index_yikai_files/figure-html/output_rainplot_12-1.png" width="80%" /&gt;
 ]]
 ---
 class: split-40
 count: false
+
 .column[.content[
 
 ```r
-  # We could visualize the distribution
-  # of variable OverallQual in a rainplot
-ggplot(data = training_data,  
-  aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +  
-  geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +  
-  geom_point(aes(y = SalePrice, color = factor(OverallQual)),  
-             position = position_jitter(width = .15), size = .5, alpha = 1) +  
-  geom_boxplot(width = .1, outlier.shape = NA, alpha = 0.5) +  
-  geom_point(data = sumld, aes(x = factor(OverallQual), y = mean),  
-             position = position_nudge(x = 0.3), size = 2.5) +  
-  geom_errorbar(data = sumld, aes(ymin = lower, ymax = upper, y = mean),  
-                position = position_nudge(x = 0.3), width = 0)+  
+# We could visualize the distribution
+# of variable OverallQual in a rainplot
+ggplot(data = training_data, 
+  aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +
+  geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +
+  geom_point(aes(y = SalePrice, color = factor(OverallQual)), 
+             position = position_jitter(width = .15), size = .5, alpha = 1) +
+  geom_boxplot(width = .1, outlier.shape = NA, alpha = 0.5) +
+  geom_point(data = sumld, aes(x = factor(OverallQual), y = mean), 
+             position = position_nudge(x = 0.3), size = 2.5) +
+  geom_errorbar(data = sumld, aes(ymin = lower, ymax = upper, y = mean), 
+                position = position_nudge(x = 0.3), width = 0)+
 * expand_limits(x = 5.25)
 ```
 ]]
-.column[.content[
+.column[.content.center[
 &lt;img src="index_yikai_files/figure-html/output_rainplot_13-1.png" width="80%" /&gt;
 ]]
 ---
 class: split-40
 count: false
+
 .column[.content[
 
 ```r
-  # We could visualize the distribution
-  # of variable OverallQual in a rainplot
-ggplot(data = training_data,  
-  aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +  
-  geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +  
-  geom_point(aes(y = SalePrice, color = factor(OverallQual)),  
-             position = position_jitter(width = .15), size = .5, alpha = 1) +  
-  geom_boxplot(width = .1, outlier.shape = NA, alpha = 0.5) +  
-  geom_point(data = sumld, aes(x = factor(OverallQual), y = mean),  
-             position = position_nudge(x = 0.3), size = 2.5) +  
-  geom_errorbar(data = sumld, aes(ymin = lower, ymax = upper, y = mean),  
-                position = position_nudge(x = 0.3), width = 0)+  
-  expand_limits(x = 5.25) +  
+# We could visualize the distribution
+# of variable OverallQual in a rainplot
+ggplot(data = training_data, 
+  aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +
+  geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +
+  geom_point(aes(y = SalePrice, color = factor(OverallQual)), 
+             position = position_jitter(width = .15), size = .5, alpha = 1) +
+  geom_boxplot(width = .1, outlier.shape = NA, alpha = 0.5) +
+  geom_point(data = sumld, aes(x = factor(OverallQual), y = mean), 
+             position = position_nudge(x = 0.3), size = 2.5) +
+  geom_errorbar(data = sumld, aes(ymin = lower, ymax = upper, y = mean), 
+                position = position_nudge(x = 0.3), width = 0)+
+  expand_limits(x = 5.25) +
 * guides(fill = FALSE, color = F)
 ```
 ]]
-.column[.content[
+.column[.content.center[
 &lt;img src="index_yikai_files/figure-html/output_rainplot_14-1.png" width="80%" /&gt;
 ]]
 ---
 class: split-40
 count: false
+
 .column[.content[
 
 ```r
-  # We could visualize the distribution
-  # of variable OverallQual in a rainplot
-ggplot(data = training_data,  
-  aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +  
-  geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +  
-  geom_point(aes(y = SalePrice, color = factor(OverallQual)),  
-             position = position_jitter(width = .15), size = .5, alpha = 1) +  
-  geom_boxplot(width = .1, outlier.shape = NA, alpha = 0.5) +  
-  geom_point(data = sumld, aes(x = factor(OverallQual), y = mean),  
-             position = position_nudge(x = 0.3), size = 2.5) +  
-  geom_errorbar(data = sumld, aes(ymin = lower, ymax = upper, y = mean),  
-                position = position_nudge(x = 0.3), width = 0)+  
-  expand_limits(x = 5.25) +  
-  guides(fill = FALSE, color = F) +  
+# We could visualize the distribution
+# of variable OverallQual in a rainplot
+ggplot(data = training_data, 
+  aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +
+  geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +
+  geom_point(aes(y = SalePrice, color = factor(OverallQual)), 
+             position = position_jitter(width = .15), size = .5, alpha = 1) +
+  geom_boxplot(width = .1, outlier.shape = NA, alpha = 0.5) +
+  geom_point(data = sumld, aes(x = factor(OverallQual), y = mean), 
+             position = position_nudge(x = 0.3), size = 2.5) +
+  geom_errorbar(data = sumld, aes(ymin = lower, ymax = upper, y = mean), 
+                position = position_nudge(x = 0.3), width = 0)+
+  expand_limits(x = 5.25) +
+  guides(fill = FALSE, color = F) +
 * scale_color_manual(values = getPalette)
 ```
 ]]
-.column[.content[
+.column[.content.center[
 &lt;img src="index_yikai_files/figure-html/output_rainplot_15-1.png" width="80%" /&gt;
 ]]
 ---
 class: split-40
 count: false
+
 .column[.content[
 
 ```r
-  # We could visualize the distribution
-  # of variable OverallQual in a rainplot
-ggplot(data = training_data,  
-  aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +  
-  geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +  
-  geom_point(aes(y = SalePrice, color = factor(OverallQual)),  
-             position = position_jitter(width = .15), size = .5, alpha = 1) +  
-  geom_boxplot(width = .1, outlier.shape = NA, alpha = 0.5) +  
-  geom_point(data = sumld, aes(x = factor(OverallQual), y = mean),  
-             position = position_nudge(x = 0.3), size = 2.5) +  
-  geom_errorbar(data = sumld, aes(ymin = lower, ymax = upper, y = mean),  
-                position = position_nudge(x = 0.3), width = 0)+  
-  expand_limits(x = 5.25) +  
-  guides(fill = FALSE, color = F) +  
-  scale_color_manual(values = getPalette) +  
+# We could visualize the distribution
+# of variable OverallQual in a rainplot
+ggplot(data = training_data, 
+  aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +
+  geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +
+  geom_point(aes(y = SalePrice, color = factor(OverallQual)), 
+             position = position_jitter(width = .15), size = .5, alpha = 1) +
+  geom_boxplot(width = .1, outlier.shape = NA, alpha = 0.5) +
+  geom_point(data = sumld, aes(x = factor(OverallQual), y = mean), 
+             position = position_nudge(x = 0.3), size = 2.5) +
+  geom_errorbar(data = sumld, aes(ymin = lower, ymax = upper, y = mean), 
+                position = position_nudge(x = 0.3), width = 0)+
+  expand_limits(x = 5.25) +
+  guides(fill = FALSE, color = F) +
+  scale_color_manual(values = getPalette) +
 * scale_fill_manual(values = getPalette)
 ```
 ]]
-.column[.content[
+.column[.content.center[
 &lt;img src="index_yikai_files/figure-html/output_rainplot_16-1.png" width="80%" /&gt;
 ]]
 ---
 class: split-40
 count: false
+
 .column[.content[
 
 ```r
-  # We could visualize the distribution
-  # of variable OverallQual in a rainplot
-ggplot(data = training_data,  
-  aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +  
-  geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +  
-  geom_point(aes(y = SalePrice, color = factor(OverallQual)),  
-             position = position_jitter(width = .15), size = .5, alpha = 1) +  
-  geom_boxplot(width = .1, outlier.shape = NA, alpha = 0.5) +  
-  geom_point(data = sumld, aes(x = factor(OverallQual), y = mean),  
-             position = position_nudge(x = 0.3), size = 2.5) +  
-  geom_errorbar(data = sumld, aes(ymin = lower, ymax = upper, y = mean),  
-                position = position_nudge(x = 0.3), width = 0)+  
-  expand_limits(x = 5.25) +  
-  guides(fill = FALSE, color = F) +  
-  scale_color_manual(values = getPalette) +  
-  scale_fill_manual(values = getPalette) +  
+# We could visualize the distribution
+# of variable OverallQual in a rainplot
+ggplot(data = training_data, 
+  aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +
+  geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +
+  geom_point(aes(y = SalePrice, color = factor(OverallQual)), 
+             position = position_jitter(width = .15), size = .5, alpha = 1) +
+  geom_boxplot(width = .1, outlier.shape = NA, alpha = 0.5) +
+  geom_point(data = sumld, aes(x = factor(OverallQual), y = mean), 
+             position = position_nudge(x = 0.3), size = 2.5) +
+  geom_errorbar(data = sumld, aes(ymin = lower, ymax = upper, y = mean), 
+                position = position_nudge(x = 0.3), width = 0)+
+  expand_limits(x = 5.25) +
+  guides(fill = FALSE, color = F) +
+  scale_color_manual(values = getPalette) +
+  scale_fill_manual(values = getPalette) +
 * coord_trans(y = 'log2')
 ```
 ]]
-.column[.content[
+.column[.content.center[
 &lt;img src="index_yikai_files/figure-html/output_rainplot_17-1.png" width="80%" /&gt;
 ]]
 ---
 class: split-40
 count: false
+
 .column[.content[
 
 ```r
-  # We could visualize the distribution
-  # of variable OverallQual in a rainplot
-ggplot(data = training_data,  
-  aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +  
-  geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +  
-  geom_point(aes(y = SalePrice, color = factor(OverallQual)),  
-             position = position_jitter(width = .15), size = .5, alpha = 1) +  
-  geom_boxplot(width = .1, outlier.shape = NA, alpha = 0.5) +  
-  geom_point(data = sumld, aes(x = factor(OverallQual), y = mean),  
-             position = position_nudge(x = 0.3), size = 2.5) +  
-  geom_errorbar(data = sumld, aes(ymin = lower, ymax = upper, y = mean),  
-                position = position_nudge(x = 0.3), width = 0)+  
-  expand_limits(x = 5.25) +  
-  guides(fill = FALSE, color = F) +  
-  scale_color_manual(values = getPalette) +  
-  scale_fill_manual(values = getPalette) +  
-  coord_trans(y = 'log2') +  
+# We could visualize the distribution
+# of variable OverallQual in a rainplot
+ggplot(data = training_data, 
+  aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +
+  geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +
+  geom_point(aes(y = SalePrice, color = factor(OverallQual)), 
+             position = position_jitter(width = .15), size = .5, alpha = 1) +
+  geom_boxplot(width = .1, outlier.shape = NA, alpha = 0.5) +
+  geom_point(data = sumld, aes(x = factor(OverallQual), y = mean), 
+             position = position_nudge(x = 0.3), size = 2.5) +
+  geom_errorbar(data = sumld, aes(ymin = lower, ymax = upper, y = mean), 
+                position = position_nudge(x = 0.3), width = 0)+
+  expand_limits(x = 5.25) +
+  guides(fill = FALSE, color = F) +
+  scale_color_manual(values = getPalette) +
+  scale_fill_manual(values = getPalette) +
+  coord_trans(y = 'log2') +
 * labs( y = 'SalePrice', x = 'OverallQual' )
 ```
 ]]
-.column[.content[
+.column[.content.center[
 &lt;img src="index_yikai_files/figure-html/output_rainplot_18-1.png" width="80%" /&gt;
 ]]
 ---
 class: split-40
 count: false
+
 .column[.content[
 
 ```r
-  # We could visualize the distribution
-  # of variable OverallQual in a rainplot
-ggplot(data = training_data,  
-  aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +  
-  geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +  
-  geom_point(aes(y = SalePrice, color = factor(OverallQual)),  
-             position = position_jitter(width = .15), size = .5, alpha = 1) +  
-  geom_boxplot(width = .1, outlier.shape = NA, alpha = 0.5) +  
-  geom_point(data = sumld, aes(x = factor(OverallQual), y = mean),  
-             position = position_nudge(x = 0.3), size = 2.5) +  
-  geom_errorbar(data = sumld, aes(ymin = lower, ymax = upper, y = mean),  
-                position = position_nudge(x = 0.3), width = 0)+  
-  expand_limits(x = 5.25) +  
-  guides(fill = FALSE, color = F) +  
-  scale_color_manual(values = getPalette) +  
-  scale_fill_manual(values = getPalette) +  
-  coord_trans(y = 'log2') +  
-  labs( y = 'SalePrice', x = 'OverallQual' ) +  
+# We could visualize the distribution
+# of variable OverallQual in a rainplot
+ggplot(data = training_data, 
+  aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +
+  geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +
+  geom_point(aes(y = SalePrice, color = factor(OverallQual)), 
+             position = position_jitter(width = .15), size = .5, alpha = 1) +
+  geom_boxplot(width = .1, outlier.shape = NA, alpha = 0.5) +
+  geom_point(data = sumld, aes(x = factor(OverallQual), y = mean), 
+             position = position_nudge(x = 0.3), size = 2.5) +
+  geom_errorbar(data = sumld, aes(ymin = lower, ymax = upper, y = mean), 
+                position = position_nudge(x = 0.3), width = 0)+
+  expand_limits(x = 5.25) +
+  guides(fill = FALSE, color = F) +
+  scale_color_manual(values = getPalette) +
+  scale_fill_manual(values = getPalette) +
+  coord_trans(y = 'log2') +
+  labs( y = 'SalePrice', x = 'OverallQual' ) +
 * annotate("text", x = 4, y = 3e+05, label = c('outlier?'))
 ```
 ]]
-.column[.content[
+.column[.content.center[
 &lt;img src="index_yikai_files/figure-html/output_rainplot_19-1.png" width="80%" /&gt;
 ]]
 ---
 class: split-40
 count: false
+
 .column[.content[
 
 ```r
-  # We could visualize the distribution
-  # of variable OverallQual in a rainplot
-ggplot(data = training_data,  
-  aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +  
-  geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +  
-  geom_point(aes(y = SalePrice, color = factor(OverallQual)),  
-             position = position_jitter(width = .15), size = .5, alpha = 1) +  
-  geom_boxplot(width = .1, outlier.shape = NA, alpha = 0.5) +  
-  geom_point(data = sumld, aes(x = factor(OverallQual), y = mean),  
-             position = position_nudge(x = 0.3), size = 2.5) +  
-  geom_errorbar(data = sumld, aes(ymin = lower, ymax = upper, y = mean),  
-                position = position_nudge(x = 0.3), width = 0)+  
-  expand_limits(x = 5.25) +  
-  guides(fill = FALSE, color = F) +  
-  scale_color_manual(values = getPalette) +  
-  scale_fill_manual(values = getPalette) +  
-  coord_trans(y = 'log2') +  
-  labs( y = 'SalePrice', x = 'OverallQual' ) +  
-  annotate("text", x = 4, y = 3e+05, label = c('outlier?'))+  
+# We could visualize the distribution
+# of variable OverallQual in a rainplot
+ggplot(data = training_data, 
+  aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +
+  geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +
+  geom_point(aes(y = SalePrice, color = factor(OverallQual)), 
+             position = position_jitter(width = .15), size = .5, alpha = 1) +
+  geom_boxplot(width = .1, outlier.shape = NA, alpha = 0.5) +
+  geom_point(data = sumld, aes(x = factor(OverallQual), y = mean), 
+             position = position_nudge(x = 0.3), size = 2.5) +
+  geom_errorbar(data = sumld, aes(ymin = lower, ymax = upper, y = mean), 
+                position = position_nudge(x = 0.3), width = 0)+
+  expand_limits(x = 5.25) +
+  guides(fill = FALSE, color = F) +
+  scale_color_manual(values = getPalette) +
+  scale_fill_manual(values = getPalette) +
+  coord_trans(y = 'log2') +
+  labs( y = 'SalePrice', x = 'OverallQual' ) +
+  annotate("text", x = 4, y = 3e+05, label = c('outlier?'))+
 * labs(title = "Relationship between SalesPrice and OverallQual")
 ```
 ]]
-.column[.content[
+.column[.content.center[
 &lt;img src="index_yikai_files/figure-html/output_rainplot_20-1.png" width="80%" /&gt;
 ]]
 ---
 class: split-40
 count: false
+
 .column[.content[
 
 ```r
-  # We could visualize the distribution
-  # of variable OverallQual in a rainplot
-ggplot(data = training_data,  
-  aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +  
-  geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +  
-  geom_point(aes(y = SalePrice, color = factor(OverallQual)),  
-             position = position_jitter(width = .15), size = .5, alpha = 1) +  
-  geom_boxplot(width = .1, outlier.shape = NA, alpha = 0.5) +  
-  geom_point(data = sumld, aes(x = factor(OverallQual), y = mean),  
-             position = position_nudge(x = 0.3), size = 2.5) +  
-  geom_errorbar(data = sumld, aes(ymin = lower, ymax = upper, y = mean),  
-                position = position_nudge(x = 0.3), width = 0)+  
-  expand_limits(x = 5.25) +  
-  guides(fill = FALSE, color = F) +  
-  scale_color_manual(values = getPalette) +  
-  scale_fill_manual(values = getPalette) +  
-  coord_trans(y = 'log2') +  
-  labs( y = 'SalePrice', x = 'OverallQual' ) +  
-  annotate("text", x = 4, y = 3e+05, label = c('outlier?'))+  
-  labs(title = "Relationship between SalesPrice and OverallQual")+  
+# We could visualize the distribution
+# of variable OverallQual in a rainplot
+ggplot(data = training_data, 
+  aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +
+  geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +
+  geom_point(aes(y = SalePrice, color = factor(OverallQual)), 
+             position = position_jitter(width = .15), size = .5, alpha = 1) +
+  geom_boxplot(width = .1, outlier.shape = NA, alpha = 0.5) +
+  geom_point(data = sumld, aes(x = factor(OverallQual), y = mean), 
+             position = position_nudge(x = 0.3), size = 2.5) +
+  geom_errorbar(data = sumld, aes(ymin = lower, ymax = upper, y = mean), 
+                position = position_nudge(x = 0.3), width = 0)+
+  expand_limits(x = 5.25) +
+  guides(fill = FALSE, color = F) +
+  scale_color_manual(values = getPalette) +
+  scale_fill_manual(values = getPalette) +
+  coord_trans(y = 'log2') +
+  labs( y = 'SalePrice', x = 'OverallQual' ) +
+  annotate("text", x = 4, y = 3e+05, label = c('outlier?'))+
+  labs(title = "Relationship between SalesPrice and OverallQual")+
 * labs(subtitle = "Data Source: House Prices Competition in Kaggle",
 *      caption = "Vis: @zhao_yikai with ggplot")
 ```
 ]]
-.column[.content[
+.column[.content.center[
 &lt;img src="index_yikai_files/figure-html/output_rainplot_22-1.png" width="80%" /&gt;
 ]]
 ---
 class: split-40
 count: false
+
 .column[.content[
 
 ```r
-  # We could visualize the distribution
-  # of variable OverallQual in a rainplot
-ggplot(data = training_data,  
-  aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +  
-  geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +  
-  geom_point(aes(y = SalePrice, color = factor(OverallQual)),  
-             position = position_jitter(width = .15), size = .5, alpha = 1) +  
-  geom_boxplot(width = .1, outlier.shape = NA, alpha = 0.5) +  
-  geom_point(data = sumld, aes(x = factor(OverallQual), y = mean),  
-             position = position_nudge(x = 0.3), size = 2.5) +  
-  geom_errorbar(data = sumld, aes(ymin = lower, ymax = upper, y = mean),  
-                position = position_nudge(x = 0.3), width = 0)+  
-  expand_limits(x = 5.25) +  
-  guides(fill = FALSE, color = F) +  
-  scale_color_manual(values = getPalette) +  
-  scale_fill_manual(values = getPalette) +  
-  coord_trans(y = 'log2') +  
-  labs( y = 'SalePrice', x = 'OverallQual' ) +  
-  annotate("text", x = 4, y = 3e+05, label = c('outlier?'))+  
-  labs(title = "Relationship between SalesPrice and OverallQual")+  
-  labs(subtitle = "Data Source: House Prices Competition in Kaggle",  
-       caption = "Vis: @zhao_yikai with ggplot")+  
+# We could visualize the distribution
+# of variable OverallQual in a rainplot
+ggplot(data = training_data, 
+  aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +
+  geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +
+  geom_point(aes(y = SalePrice, color = factor(OverallQual)), 
+             position = position_jitter(width = .15), size = .5, alpha = 1) +
+  geom_boxplot(width = .1, outlier.shape = NA, alpha = 0.5) +
+  geom_point(data = sumld, aes(x = factor(OverallQual), y = mean), 
+             position = position_nudge(x = 0.3), size = 2.5) +
+  geom_errorbar(data = sumld, aes(ymin = lower, ymax = upper, y = mean), 
+                position = position_nudge(x = 0.3), width = 0)+
+  expand_limits(x = 5.25) +
+  guides(fill = FALSE, color = F) +
+  scale_color_manual(values = getPalette) +
+  scale_fill_manual(values = getPalette) +
+  coord_trans(y = 'log2') +
+  labs( y = 'SalePrice', x = 'OverallQual' ) +
+  annotate("text", x = 4, y = 3e+05, label = c('outlier?'))+
+  labs(title = "Relationship between SalesPrice and OverallQual")+
+  labs(subtitle = "Data Source: House Prices Competition in Kaggle", 
+       caption = "Vis: @zhao_yikai with ggplot")+
 * theme_bw()
 ```
 ]]
-.column[.content[
+.column[.content.center[
 &lt;img src="index_yikai_files/figure-html/output_rainplot_23-1.png" width="80%" /&gt;
 ]]
 ---
 class: split-40
 count: false
+
 .column[.content[
 
 ```r
-  # We could visualize the distribution
-  # of variable OverallQual in a rainplot
-ggplot(data = training_data,  
-  aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +  
-  geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +  
-  geom_point(aes(y = SalePrice, color = factor(OverallQual)),  
-             position = position_jitter(width = .15), size = .5, alpha = 1) +  
-  geom_boxplot(width = .1, outlier.shape = NA, alpha = 0.5) +  
-  geom_point(data = sumld, aes(x = factor(OverallQual), y = mean),  
-             position = position_nudge(x = 0.3), size = 2.5) +  
-  geom_errorbar(data = sumld, aes(ymin = lower, ymax = upper, y = mean),  
-                position = position_nudge(x = 0.3), width = 0)+  
-  expand_limits(x = 5.25) +  
-  guides(fill = FALSE, color = F) +  
-  scale_color_manual(values = getPalette) +  
-  scale_fill_manual(values = getPalette) +  
-  coord_trans(y = 'log2') +  
-  labs( y = 'SalePrice', x = 'OverallQual' ) +  
-  annotate("text", x = 4, y = 3e+05, label = c('outlier?'))+  
-  labs(title = "Relationship between SalesPrice and OverallQual")+  
-  labs(subtitle = "Data Source: House Prices Competition in Kaggle",  
-       caption = "Vis: @zhao_yikai with ggplot")+  
-  theme_bw()+  
+# We could visualize the distribution
+# of variable OverallQual in a rainplot
+ggplot(data = training_data, 
+  aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +
+  geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +
+  geom_point(aes(y = SalePrice, color = factor(OverallQual)), 
+             position = position_jitter(width = .15), size = .5, alpha = 1) +
+  geom_boxplot(width = .1, outlier.shape = NA, alpha = 0.5) +
+  geom_point(data = sumld, aes(x = factor(OverallQual), y = mean), 
+             position = position_nudge(x = 0.3), size = 2.5) +
+  geom_errorbar(data = sumld, aes(ymin = lower, ymax = upper, y = mean), 
+                position = position_nudge(x = 0.3), width = 0)+
+  expand_limits(x = 5.25) +
+  guides(fill = FALSE, color = F) +
+  scale_color_manual(values = getPalette) +
+  scale_fill_manual(values = getPalette) +
+  coord_trans(y = 'log2') +
+  labs( y = 'SalePrice', x = 'OverallQual' ) +
+  annotate("text", x = 4, y = 3e+05, label = c('outlier?'))+
+  labs(title = "Relationship between SalesPrice and OverallQual")+
+  labs(subtitle = "Data Source: House Prices Competition in Kaggle", 
+       caption = "Vis: @zhao_yikai with ggplot")+
+  theme_bw()+
 * theme(plot.subtitle = element_text(color = 'grey50'))
 ```
 ]]
-.column[.content[
+.column[.content.center[
 &lt;img src="index_yikai_files/figure-html/output_rainplot_24-1.png" width="80%" /&gt;
 ]]
 ---
 class: split-40
 count: false
+
 .column[.content[
 
 ```r
-  # We could visualize the distribution
-  # of variable OverallQual in a rainplot
-ggplot(data = training_data,  
-  aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +  
-  geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +  
-  geom_point(aes(y = SalePrice, color = factor(OverallQual)),  
-             position = position_jitter(width = .15), size = .5, alpha = 1) +  
-  geom_boxplot(width = .1, outlier.shape = NA, alpha = 0.5) +  
-  geom_point(data = sumld, aes(x = factor(OverallQual), y = mean),  
-             position = position_nudge(x = 0.3), size = 2.5) +  
-  geom_errorbar(data = sumld, aes(ymin = lower, ymax = upper, y = mean),  
-                position = position_nudge(x = 0.3), width = 0)+  
-  expand_limits(x = 5.25) +  
-  guides(fill = FALSE, color = F) +  
-  scale_color_manual(values = getPalette) +  
-  scale_fill_manual(values = getPalette) +  
-  coord_trans(y = 'log2') +  
-  labs( y = 'SalePrice', x = 'OverallQual' ) +  
-  annotate("text", x = 4, y = 3e+05, label = c('outlier?'))+  
-  labs(title = "Relationship between SalesPrice and OverallQual")+  
-  labs(subtitle = "Data Source: House Prices Competition in Kaggle",  
-       caption = "Vis: @zhao_yikai with ggplot")+  
-  theme_bw()+  
-  theme(plot.subtitle = element_text(color = 'grey50'))+  
+# We could visualize the distribution
+# of variable OverallQual in a rainplot
+ggplot(data = training_data, 
+  aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +
+  geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +
+  geom_point(aes(y = SalePrice, color = factor(OverallQual)), 
+             position = position_jitter(width = .15), size = .5, alpha = 1) +
+  geom_boxplot(width = .1, outlier.shape = NA, alpha = 0.5) +
+  geom_point(data = sumld, aes(x = factor(OverallQual), y = mean), 
+             position = position_nudge(x = 0.3), size = 2.5) +
+  geom_errorbar(data = sumld, aes(ymin = lower, ymax = upper, y = mean), 
+                position = position_nudge(x = 0.3), width = 0)+
+  expand_limits(x = 5.25) +
+  guides(fill = FALSE, color = F) +
+  scale_color_manual(values = getPalette) +
+  scale_fill_manual(values = getPalette) +
+  coord_trans(y = 'log2') +
+  labs( y = 'SalePrice', x = 'OverallQual' ) +
+  annotate("text", x = 4, y = 3e+05, label = c('outlier?'))+
+  labs(title = "Relationship between SalesPrice and OverallQual")+
+  labs(subtitle = "Data Source: House Prices Competition in Kaggle", 
+       caption = "Vis: @zhao_yikai with ggplot")+
+  theme_bw()+
+  theme(plot.subtitle = element_text(color = 'grey50'))+
 * theme(panel.border = element_blank())
 ```
 ]]
-.column[.content[
+.column[.content.center[
 &lt;img src="index_yikai_files/figure-html/output_rainplot_25-1.png" width="80%" /&gt;
 ]]
 ---
 class: split-40
 count: false
+
 .column[.content[
 
 ```r
-  # We could visualize the distribution
-  # of variable OverallQual in a rainplot
-ggplot(data = training_data,  
-  aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +  
-  geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +  
-  geom_point(aes(y = SalePrice, color = factor(OverallQual)),  
-             position = position_jitter(width = .15), size = .5, alpha = 1) +  
-  geom_boxplot(width = .1, outlier.shape = NA, alpha = 0.5) +  
-  geom_point(data = sumld, aes(x = factor(OverallQual), y = mean),  
-             position = position_nudge(x = 0.3), size = 2.5) +  
-  geom_errorbar(data = sumld, aes(ymin = lower, ymax = upper, y = mean),  
-                position = position_nudge(x = 0.3), width = 0)+  
-  expand_limits(x = 5.25) +  
-  guides(fill = FALSE, color = F) +  
-  scale_color_manual(values = getPalette) +  
-  scale_fill_manual(values = getPalette) +  
-  coord_trans(y = 'log2') +  
-  labs( y = 'SalePrice', x = 'OverallQual' ) +  
-  annotate("text", x = 4, y = 3e+05, label = c('outlier?'))+  
-  labs(title = "Relationship between SalesPrice and OverallQual")+  
-  labs(subtitle = "Data Source: House Prices Competition in Kaggle",  
-       caption = "Vis: @zhao_yikai with ggplot")+  
-  theme_bw()+  
-  theme(plot.subtitle = element_text(color = 'grey50'))+  
-  theme(panel.border = element_blank())+  
+# We could visualize the distribution
+# of variable OverallQual in a rainplot
+ggplot(data = training_data, 
+  aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +
+  geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +
+  geom_point(aes(y = SalePrice, color = factor(OverallQual)), 
+             position = position_jitter(width = .15), size = .5, alpha = 1) +
+  geom_boxplot(width = .1, outlier.shape = NA, alpha = 0.5) +
+  geom_point(data = sumld, aes(x = factor(OverallQual), y = mean), 
+             position = position_nudge(x = 0.3), size = 2.5) +
+  geom_errorbar(data = sumld, aes(ymin = lower, ymax = upper, y = mean), 
+                position = position_nudge(x = 0.3), width = 0)+
+  expand_limits(x = 5.25) +
+  guides(fill = FALSE, color = F) +
+  scale_color_manual(values = getPalette) +
+  scale_fill_manual(values = getPalette) +
+  coord_trans(y = 'log2') +
+  labs( y = 'SalePrice', x = 'OverallQual' ) +
+  annotate("text", x = 4, y = 3e+05, label = c('outlier?'))+
+  labs(title = "Relationship between SalesPrice and OverallQual")+
+  labs(subtitle = "Data Source: House Prices Competition in Kaggle", 
+       caption = "Vis: @zhao_yikai with ggplot")+
+  theme_bw()+
+  theme(plot.subtitle = element_text(color = 'grey50'))+
+  theme(panel.border = element_blank())+
 * theme(plot.title = element_text(lineheight = .8, face = "bold", size = 16))
 ```
 ]]
-.column[.content[
+.column[.content.center[
 &lt;img src="index_yikai_files/figure-html/output_rainplot_26-1.png" width="80%" /&gt;
 ]]
 ---
 class: split-40
 count: false
+
 .column[.content[
 
 ```r
-  # We could visualize the distribution
-  # of variable OverallQual in a rainplot
-ggplot(data = training_data,  
-  aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +  
-  geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +  
-  geom_point(aes(y = SalePrice, color = factor(OverallQual)),  
-             position = position_jitter(width = .15), size = .5, alpha = 1) +  
-  geom_boxplot(width = .1, outlier.shape = NA, alpha = 0.5) +  
-  geom_point(data = sumld, aes(x = factor(OverallQual), y = mean),  
-             position = position_nudge(x = 0.3), size = 2.5) +  
-  geom_errorbar(data = sumld, aes(ymin = lower, ymax = upper, y = mean),  
-                position = position_nudge(x = 0.3), width = 0)+  
-  expand_limits(x = 5.25) +  
-  guides(fill = FALSE, color = F) +  
-  scale_color_manual(values = getPalette) +  
-  scale_fill_manual(values = getPalette) +  
-  coord_trans(y = 'log2') +  
-  labs( y = 'SalePrice', x = 'OverallQual' ) +  
-  annotate("text", x = 4, y = 3e+05, label = c('outlier?'))+  
-  labs(title = "Relationship between SalesPrice and OverallQual")+  
-  labs(subtitle = "Data Source: House Prices Competition in Kaggle",  
-       caption = "Vis: @zhao_yikai with ggplot")+  
-  theme_bw()+  
-  theme(plot.subtitle = element_text(color = 'grey50'))+  
-  theme(panel.border = element_blank())+  
-  theme(plot.title = element_text(lineheight = .8, face = "bold", size = 16))+  
+# We could visualize the distribution
+# of variable OverallQual in a rainplot
+ggplot(data = training_data, 
+  aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +
+  geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +
+  geom_point(aes(y = SalePrice, color = factor(OverallQual)), 
+             position = position_jitter(width = .15), size = .5, alpha = 1) +
+  geom_boxplot(width = .1, outlier.shape = NA, alpha = 0.5) +
+  geom_point(data = sumld, aes(x = factor(OverallQual), y = mean), 
+             position = position_nudge(x = 0.3), size = 2.5) +
+  geom_errorbar(data = sumld, aes(ymin = lower, ymax = upper, y = mean), 
+                position = position_nudge(x = 0.3), width = 0)+
+  expand_limits(x = 5.25) +
+  guides(fill = FALSE, color = F) +
+  scale_color_manual(values = getPalette) +
+  scale_fill_manual(values = getPalette) +
+  coord_trans(y = 'log2') +
+  labs( y = 'SalePrice', x = 'OverallQual' ) +
+  annotate("text", x = 4, y = 3e+05, label = c('outlier?'))+
+  labs(title = "Relationship between SalesPrice and OverallQual")+
+  labs(subtitle = "Data Source: House Prices Competition in Kaggle", 
+       caption = "Vis: @zhao_yikai with ggplot")+
+  theme_bw()+
+  theme(plot.subtitle = element_text(color = 'grey50'))+
+  theme(panel.border = element_blank())+
+  theme(plot.title = element_text(lineheight = .8, face = "bold", size = 16))+
 * theme(panel.grid.minor = element_blank())
 ```
 ]]
-.column[.content[
+.column[.content.center[
 &lt;img src="index_yikai_files/figure-html/output_rainplot_27-1.png" width="80%" /&gt;
 ]]
 ---
 class: split-40
 count: false
+
 .column[.content[
 
 ```r
-  # We could visualize the distribution
-  # of variable OverallQual in a rainplot
-ggplot(data = training_data,  
-  aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +  
-  geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +  
-  geom_point(aes(y = SalePrice, color = factor(OverallQual)),  
-             position = position_jitter(width = .15), size = .5, alpha = 1) +  
-  geom_boxplot(width = .1, outlier.shape = NA, alpha = 0.5) +  
-  geom_point(data = sumld, aes(x = factor(OverallQual), y = mean),  
-             position = position_nudge(x = 0.3), size = 2.5) +  
-  geom_errorbar(data = sumld, aes(ymin = lower, ymax = upper, y = mean),  
-                position = position_nudge(x = 0.3), width = 0)+  
-  expand_limits(x = 5.25) +  
-  guides(fill = FALSE, color = F) +  
-  scale_color_manual(values = getPalette) +  
-  scale_fill_manual(values = getPalette) +  
-  coord_trans(y = 'log2') +  
-  labs( y = 'SalePrice', x = 'OverallQual' ) +  
-  annotate("text", x = 4, y = 3e+05, label = c('outlier?'))+  
-  labs(title = "Relationship between SalesPrice and OverallQual")+  
-  labs(subtitle = "Data Source: House Prices Competition in Kaggle",  
-       caption = "Vis: @zhao_yikai with ggplot")+  
-  theme_bw()+  
-  theme(plot.subtitle = element_text(color = 'grey50'))+  
-  theme(panel.border = element_blank())+  
-  theme(plot.title = element_text(lineheight = .8, face = "bold", size = 16))+  
-  theme(panel.grid.minor = element_blank())+  
+# We could visualize the distribution
+# of variable OverallQual in a rainplot
+ggplot(data = training_data, 
+  aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +
+  geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +
+  geom_point(aes(y = SalePrice, color = factor(OverallQual)), 
+             position = position_jitter(width = .15), size = .5, alpha = 1) +
+  geom_boxplot(width = .1, outlier.shape = NA, alpha = 0.5) +
+  geom_point(data = sumld, aes(x = factor(OverallQual), y = mean), 
+             position = position_nudge(x = 0.3), size = 2.5) +
+  geom_errorbar(data = sumld, aes(ymin = lower, ymax = upper, y = mean), 
+                position = position_nudge(x = 0.3), width = 0)+
+  expand_limits(x = 5.25) +
+  guides(fill = FALSE, color = F) +
+  scale_color_manual(values = getPalette) +
+  scale_fill_manual(values = getPalette) +
+  coord_trans(y = 'log2') +
+  labs( y = 'SalePrice', x = 'OverallQual' ) +
+  annotate("text", x = 4, y = 3e+05, label = c('outlier?'))+
+  labs(title = "Relationship between SalesPrice and OverallQual")+
+  labs(subtitle = "Data Source: House Prices Competition in Kaggle", 
+       caption = "Vis: @zhao_yikai with ggplot")+
+  theme_bw()+
+  theme(plot.subtitle = element_text(color = 'grey50'))+
+  theme(panel.border = element_blank())+
+  theme(plot.title = element_text(lineheight = .8, face = "bold", size = 16))+
+  theme(panel.grid.minor = element_blank())+
 * theme(axis.line.x = element_line(color = 'darkgrey', size = 0.5))
 ```
 ]]
-.column[.content[
+.column[.content.center[
 &lt;img src="index_yikai_files/figure-html/output_rainplot_28-1.png" width="80%" /&gt;
 ]]
 ---
 class: split-40
 count: false
+
 .column[.content[
 
 ```r
-  # We could visualize the distribution
-  # of variable OverallQual in a rainplot
-ggplot(data = training_data,  
-  aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +  
-  geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +  
-  geom_point(aes(y = SalePrice, color = factor(OverallQual)),  
-             position = position_jitter(width = .15), size = .5, alpha = 1) +  
-  geom_boxplot(width = .1, outlier.shape = NA, alpha = 0.5) +  
-  geom_point(data = sumld, aes(x = factor(OverallQual), y = mean),  
-             position = position_nudge(x = 0.3), size = 2.5) +  
-  geom_errorbar(data = sumld, aes(ymin = lower, ymax = upper, y = mean),  
-                position = position_nudge(x = 0.3), width = 0)+  
-  expand_limits(x = 5.25) +  
-  guides(fill = FALSE, color = F) +  
-  scale_color_manual(values = getPalette) +  
-  scale_fill_manual(values = getPalette) +  
-  coord_trans(y = 'log2') +  
-  labs( y = 'SalePrice', x = 'OverallQual' ) +  
-  annotate("text", x = 4, y = 3e+05, label = c('outlier?'))+  
-  labs(title = "Relationship between SalesPrice and OverallQual")+  
-  labs(subtitle = "Data Source: House Prices Competition in Kaggle",  
-       caption = "Vis: @zhao_yikai with ggplot")+  
-  theme_bw()+  
-  theme(plot.subtitle = element_text(color = 'grey50'))+  
-  theme(panel.border = element_blank())+  
-  theme(plot.title = element_text(lineheight = .8, face = "bold", size = 16))+  
-  theme(panel.grid.minor = element_blank())+  
-  theme(axis.line.x = element_line(color = 'darkgrey', size = 0.5))+  
+# We could visualize the distribution
+# of variable OverallQual in a rainplot
+ggplot(data = training_data, 
+  aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +
+  geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +
+  geom_point(aes(y = SalePrice, color = factor(OverallQual)), 
+             position = position_jitter(width = .15), size = .5, alpha = 1) +
+  geom_boxplot(width = .1, outlier.shape = NA, alpha = 0.5) +
+  geom_point(data = sumld, aes(x = factor(OverallQual), y = mean), 
+             position = position_nudge(x = 0.3), size = 2.5) +
+  geom_errorbar(data = sumld, aes(ymin = lower, ymax = upper, y = mean), 
+                position = position_nudge(x = 0.3), width = 0)+
+  expand_limits(x = 5.25) +
+  guides(fill = FALSE, color = F) +
+  scale_color_manual(values = getPalette) +
+  scale_fill_manual(values = getPalette) +
+  coord_trans(y = 'log2') +
+  labs( y = 'SalePrice', x = 'OverallQual' ) +
+  annotate("text", x = 4, y = 3e+05, label = c('outlier?'))+
+  labs(title = "Relationship between SalesPrice and OverallQual")+
+  labs(subtitle = "Data Source: House Prices Competition in Kaggle", 
+       caption = "Vis: @zhao_yikai with ggplot")+
+  theme_bw()+
+  theme(plot.subtitle = element_text(color = 'grey50'))+
+  theme(panel.border = element_blank())+
+  theme(plot.title = element_text(lineheight = .8, face = "bold", size = 16))+
+  theme(panel.grid.minor = element_blank())+
+  theme(axis.line.x = element_line(color = 'darkgrey', size = 0.5))+
 * scale_y_continuous(breaks= seq(0, 800000, by=100000), labels =scales::comma)
 ```
 ]]
-.column[.content[
+.column[.content.center[
 &lt;img src="index_yikai_files/figure-html/output_rainplot_29-1.png" width="80%" /&gt;
 ]]
+
+
+
+
+
+
 
 ---
 
@@ -932,8 +964,6 @@ class: split-50
 .column.bg-main1[.content.vmiddle[
 # We could view the .pink[Neighborhood] variable in terms of the median .orange[SalePrice]
 
-### The label denotes the count of houses in that neighborhood
-### The dashed line is median SalePrice
 
 ]]
 
@@ -944,6 +974,34 @@ class: split-50
 
 
 ]]
+
+---
+
+
+
+
+class: split-50  
+
+.column.bg-main1[.content.vmiddle[
+
+# View the median .pink[qualities] of houses from different category of .orange[neighborhood]
+
+ 
+
+]]
+
+.column.bg-main5[.content.vmiddle.center[
+&lt;center&gt;
+
+
+
+&lt;img src="index_yikai_files/figure-html/unnamed-chunk-30-1.png" width="90%" /&gt;
+
+
+]]
+
+
+
 
 ---
 class: split-60  
@@ -967,7 +1025,7 @@ class: split-60
 
 
 
-&lt;img src="index_yikai_files/figure-html/unnamed-chunk-15-1.png" width="90%" height="75%" /&gt;
+&lt;img src="index_yikai_files/figure-html/unnamed-chunk-16-1.png" width="90%" height="75%" /&gt;
 
 
 ]]

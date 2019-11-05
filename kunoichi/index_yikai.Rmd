@@ -32,7 +32,6 @@ knitr::opts_chunk$set(dpi = 300,  out.width = "80%", message = F, warning = F) #
 ```
 
 
-
 ---
 
 
@@ -84,6 +83,9 @@ test$Id <- NULL
 train$Id <- NULL
 test$SalePrice <- NA
 all <- rbind(train, test)
+source("https://raw.githubusercontent.com/EvaMaeRey/little_flipbooks_library/master/xaringan_reveal_parentheses_balanced.R")
+source(file = "~/Data_product_pipeline/kunoichi/xaringan_reveal_parenthetical.R")
+
 ```
 
 ```{r plot_themes, echo=F, message=F, warning=F}
@@ -269,65 +271,9 @@ class: bg-main1, center, middle
 
 ---
 
-```{r, echo = FALSE, warning = F, message= F}
-
-training_data = all[!is.na(all$SalePrice), ]
-
-lb <- function(x) mean(x) - sd(x)
-ub <- function(x) {
-
-  return(mean(x) + sd(x))
-}
-
-source("https://gist.githubusercontent.com/benmarwick/2a1bb0133ff568cbe28d/raw/fb53bd97121f7f9ce947837ef1a4c65a73bffb3f/geom_flat_violin.R")
-
-
-getPalette = colorRampPalette(RColorBrewer::brewer.pal(8, "RdBu"))(10)
-
-sumld <- training_data %>% 
-  dplyr::select(OverallQual, SalePrice) %>% 
-  group_by(OverallQual) %>% 
-  summarise_all(funs(mean, median, lower = lb, upper = ub))
-
-source("https://raw.githubusercontent.com/EvaMaeRey/little_flipbooks_library/master/xaringan_reveal_parentheses_balanced.R")
-
+```{r child='flip_plot_seperate_script.Rmd', warning=F, message=F}
 ```
 
-```{r rainplot, eval = F, echo = F,  out.width = "100%", warning = F, message = F, dpi= 300}
-# We could visualize the distribution
-# of variable OverallQual in a rainplot
-ggplot(data = training_data, 
-  aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +
-  geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +
-  geom_point(aes(y = SalePrice, color = factor(OverallQual)), 
-             position = position_jitter(width = .15), size = .5, alpha = 1) +
-  geom_boxplot(width = .1, outlier.shape = NA, alpha = 0.5) +
-  geom_point(data = sumld, aes(x = factor(OverallQual), y = mean), 
-             position = position_nudge(x = 0.3), size = 2.5) +
-  geom_errorbar(data = sumld, aes(ymin = lower, ymax = upper, y = mean), 
-                position = position_nudge(x = 0.3), width = 0)+
-  expand_limits(x = 5.25) +
-  guides(fill = FALSE, color = F) +
-  scale_color_manual(values = getPalette) +
-  scale_fill_manual(values = getPalette) +
-  coord_trans(y = 'log2') +
-  labs( y = 'SalePrice', x = 'OverallQual' ) +
-  annotate("text", x = 4, y = 3e+05, label = c('outlier?'))+
-  labs(title = "Relationship between SalesPrice and OverallQual")+
-  labs(subtitle = "Data Source: House Prices Competition in Kaggle", 
-       caption = "Vis: @zhao_yikai with ggplot")+
-  theme_bw()+
-  theme(plot.subtitle = element_text(color = 'grey50'))+
-  theme(panel.border = element_blank())+
-  theme(plot.title = element_text(lineheight = .8, face = "bold", size = 16))+
-  theme(panel.grid.minor = element_blank())+
-  theme(axis.line.x = element_line(color = 'darkgrey', size = 0.5))+
-  scale_y_continuous(breaks= seq(0, 800000, by=100000), labels =scales::comma)
-  
-```
-
-
-`r apply_reveal("rainplot")`
 
 ---
 
@@ -528,6 +474,15 @@ ggplot(data_circular, aes(x= Neighborhood, y=median, fill = as.factor(data_label
 
 
 ]]
+
+---
+
+
+```{r child='radar_plot.Rmd', warning=F, message=F}
+```
+
+
+
 
 ---
 class: split-60  
