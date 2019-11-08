@@ -35,6 +35,8 @@ data.frame(pcaOut$x) %>%
            size = 6, fontface = "bold")+
   labs(title = "Extreme observations from PCA")
 
+grid::grid.raster(logo, x = 0.79, y = 0.91, just = c('left', 'bottom'), width = unit(1.5, 'inches'))
+
 ```
 
 

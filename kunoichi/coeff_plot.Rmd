@@ -2,7 +2,7 @@ class: split-50
 
 .column.bg-main1[.content.vmiddle[
 
-# Through a refitted LASSO we could view the feature importance by the size of the coefficients. 
+# Through a refitted LASSO we could view the feature importance by the .teal[size of the coefficients]. 
 
 Note: The independent numerical variables have been mean centerred and scaled, dependent variable has been log transformed. 
 

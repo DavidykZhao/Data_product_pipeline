@@ -40,15 +40,10 @@ class: split-60 white
 .column.bg-main1[.content.vmiddle[
 # Overview
 &lt;br&gt;
-### Data visualization is important to
-
-* #### draw insights amid the data analysis
-* #### convey those insights to customers &amp; decision makers
-
 
 ### This powerpoint aims to use .orange[visualizations] to showcase the process of data analysis from data cleaning to model interpretation
 
-### Specific details within the process are stripped if there is no good way for visualization such as missing value imputation and model ensembling.
+### Specific details within the process are stripped if there is no good way for visualization such as missing value imputation and model training
 
 ### I will use the House Prices dataset from [Kaggle](https://www.kaggle.com/c/house-prices-advanced-regression-techniques)
 
@@ -89,7 +84,7 @@ dim(test)
 class: bg-main1 center middle hide-slide-number
 
 .reveal-text[.pad1[
-.font4[There will be two major parts
+.orange[There will be two major parts
 ]
 ]]
 
@@ -109,7 +104,7 @@ class: split-two
 .column.bg-main1[.content.vmiddle.center[
 #  Modeling and Model interpretation
 
-### This step involves fitting different models and interpret the .yellow[feature importance]
+### This step involves fitting different models and interpret the .orange[feature importance]
 
 
 ]]
@@ -130,7 +125,7 @@ layout: false
 
 class: bg-main1, center, middle
 
-# Part 1: Data exploration and manipulation
+# Part 1: .orange[Data exploration and manipulation]
 
 ---
 
@@ -868,6 +863,27 @@ We could see clearly that the high quality (10) houses get influenced the most.
 ---
 
 
+
+class: split-50  
+
+.column.bg-main1[.content.vmiddle[
+# We could view the median .orange[SalePrie] in 3 .green[wealthy neiborhoods] across years
+
+]]
+
+.column.bg-main5[.content.vmiddle.center[
+
+
+&lt;img src="index_yikai_files/figure-html/unnamed-chunk-31-1.png" width="90%" /&gt;
+
+  
+  
+]]
+
+
+---
+
+
 class: split-50  
 
 .column.bg-main1[.content.vmiddle[
@@ -879,7 +895,7 @@ class: split-50
 .column.bg-main5[.content.vmiddle.center[
 
 
-&lt;img src="index_yikai_files/figure-html/unnamed-chunk-30-1.png" width="80%" /&gt;
+&lt;img src="index_yikai_files/figure-html/unnamed-chunk-32-1.png" width="80%" /&gt;
 
 
 ]]
@@ -1374,14 +1390,14 @@ ggplot(imp_DF[1:10,], aes(x=reorder(Variables, MSE), y= MSE, label = round(MSE, 
 class: split-50  
 
 .column.bg-main1[.content.vmiddle[
-# We could view the .pink[Neighborhood] variable in terms of the median .blue[SalePrice]
+# We could view the .pink[Neighborhood] variable in terms of the median .cyan[SalePrice]
 
 
 ]]
 
 .column.bg-main5[.content.vmiddle.center[
 
-&lt;img src="index_yikai_files/figure-html/unnamed-chunk-13-1.png" width="85%" /&gt;
+&lt;img src="index_yikai_files/figure-html/unnamed-chunk-14-1.png" width="85%" /&gt;
 
 
 
@@ -1407,7 +1423,7 @@ class: split-50
 
 
 
-&lt;img src="index_yikai_files/figure-html/unnamed-chunk-33-1.png" width="90%" /&gt;
+&lt;img src="index_yikai_files/figure-html/unnamed-chunk-35-1.png" width="90%" /&gt;
 
 
 ]]
@@ -1437,7 +1453,7 @@ class: split-60
 
 
 
-&lt;img src="index_yikai_files/figure-html/unnamed-chunk-16-1.png" width="90%" height="75%" /&gt;
+&lt;img src="index_yikai_files/figure-html/unnamed-chunk-17-1.png" width="90%" height="75%" /&gt;
 
 
 ]]
@@ -1602,7 +1618,7 @@ Note: The independent numerical variables have been mean centerred and scaled, d
 
 
 
-&lt;img src="index_yikai_files/figure-html/unnamed-chunk-34-1.png" width="80%" /&gt;
+&lt;img src="index_yikai_files/figure-html/unnamed-chunk-36-1.png" width="90%" /&gt;
 
 
 ]]
@@ -1626,10 +1642,10 @@ class: split-50
 
 ]]
 
-.column.bg-main4[.content.vmiddle.center[
+.column.bg-main5[.content.vmiddle.center[
 
 
-&lt;img src="index_yikai_files/figure-html/unnamed-chunk-35-1.png" width="80%" /&gt;
+&lt;img src="index_yikai_files/figure-html/unnamed-chunk-37-1.png" width="80%" /&gt;
 
 
 
@@ -1651,11 +1667,11 @@ class: split-50
 
 ]]
 
-.column.bg-main4[.content.vmiddle.center[
+.column.bg-main5[.content.vmiddle.center[
 
 
 
-&lt;img src="index_yikai_files/figure-html/unnamed-chunk-36-1.png" width="80%" /&gt;
+&lt;img src="index_yikai_files/figure-html/unnamed-chunk-38-1.png" width="80%" /&gt;
 
 ]]
 

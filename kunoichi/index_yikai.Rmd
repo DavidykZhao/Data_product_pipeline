@@ -42,15 +42,10 @@ class: split-60 white
 .column.bg-main1[.content.vmiddle[
 # Overview
 <br>
-### Data visualization is important to
-
-* #### draw insights amid the data analysis
-* #### convey those insights to customers & decision makers
-
 
 ### This powerpoint aims to use .orange[visualizations] to showcase the process of data analysis from data cleaning to model interpretation
 
-### Specific details within the process are stripped if there is no good way for visualization such as missing value imputation and model ensembling.
+### Specific details within the process are stripped if there is no good way for visualization such as missing value imputation and model training
 
 ### I will use the House Prices dataset from [Kaggle](https://www.kaggle.com/c/house-prices-advanced-regression-techniques)
 
@@ -330,11 +325,17 @@ ggplot(data = year_by_quality_data, aes(x = YrSold, y = median_price))+
   labs(y = 'Mean and Median of SalePrice')+
   labs(x = 'Year')+
   labs(title = 'Change of price by Year by OverallQual')
+grid::grid.raster(logo, x = 0.79, y = 0.91, just = c('left', 'bottom'), width = unit(1.5, 'inches'))
 ```
 
 
 
 ]]
+
+
+---
+```{r child='parallel_plot.Rmd', warning=F, message=F}
+```
 
 
 ---
@@ -407,6 +408,8 @@ ggplot(data_circular, aes(x= Neighborhood, y=median, fill = as.factor(data_label
   labs(title = "Median house price by neighborhood")+
   scale_fill_manual(values = c("#E7B800", "#00AFBB", "#FC4E07"))+
   theme(legend.position = "none")
+
+grid::grid.raster(logo, x = 0.79, y = 0.91, just = c('left', 'bottom'), width = unit(1.5, 'inches'))
 ```
 
 
@@ -468,152 +471,16 @@ class: split-60
     yikai_themes+
     yikai_labels+
     theme(panel.grid.minor = element_blank())+
-    theme(panel.grid.major = element_blank())
+    theme(panel.grid.major = element_blank())+
+    labs(title = "Missing values across the dataset")
 
-
+grid::grid.raster(logo, x = 0.79, y = 0.91, just = c('left', 'bottom'), width = unit(1.5, 'inches'))
   
 ```
 
 
 ]]
 
----
-
-class: split-40
-
-.column.bg-main1[.content.vmiddle[
-## Among the NA's, some are due to misentry of data
-
-<br>
-
-### e.g. While most NA's in .orange[Garage] related variables indicates a lack of a garage, 2 houses have contradictory values in those variables
-
-
-
-]]
-
-
-.column.bg-main4[.content.vmiddle[
-
-
-```{r, echo = F, eval = F}
-all[!is.na(all$GarageType) & is.na(all$GarageFinish), c('GarageCars', 'GarageArea', 'GarageType', 'GarageCond', 'GarageQual', 'GarageFinish')]
-```
-
-```{r, eval = F, echo = T}
-GarageCars GarageArea GarageType GarageCond GarageQual GarageFinish
-2127          1        360     Detchd       <NA>       <NA>         <NA>
-2577         NA         NA     Detchd       <NA>       <NA>         <NA>
-```
-
-<br>
-Given no other variables could predict the garage variables, I think house 2127 indeed has a garage thus the rest of NA's are imputed with the mode.
-```{r, echo = T}
-all$GarageCond[2127] <- names(sort(-table(all$GarageCond)))[1]
-all$GarageQual[2127] <- names(sort(-table(all$GarageQual)))[1]
-all$GarageFinish[2127] <- names(sort(-table(all$GarageFinish)))[1]
-```
-
-However, house 2577 does not seem to have a garage but with a wrong input of data in .teal[GarageType]. Thus all garage varialbes have been imputed into values indicating there is no garage. 
-
-
-
-
-]]
----
-
-class: split-50
-
-.column.bg-main1[.content.vmiddle[
-
-# We also need to code the character variables into numbers
-
-## Need to consider if the variables is .orange[categorical] or .teal[ordinal]
-
-### If there is no inherent order within the variable, it will be coded as a factor variable
-]]
-
-.column.bg-main4[.content.vmiddle[
-
-### For example, the .orange[heating] variable has the following levels:
-
-
-```{r, echo = T, eval = F}
-   Floor    Floor Furnace
-   GasA Gas forced warm air furnace
-   GasW Gas hot water or steam heat
-   Grav Gravity furnace 
-   OthW Hot water or steam heat other than gas
-   Wall Wall furnace
-```
-
-### It will be coded as:
-
-```{r, echo = T, eval = F}
-all$Heating <- as.factor(all$Heating)
-table(all$Heating)
-```
-
-```{r, echo = T,  eval = F}
-1    2    3    4    5 
-3    92   857  474  1493
-```
-
-
-
-]]
-
----
-
-class: split-50
-
-.column.bg-main1[.content.vmiddle[
-
-# We also need to code the character variables into numbers
-
-## Need to consider if the variables is .orange[categorical] or .teal[ordinal]
-
-### If there is an inherent order within the variable, it will be coded as integers indicating the inherent order
-]]
-
-.column.bg-main4[.content.vmiddle[
-
-### For example, the .pink[HeatingQC] variable has the following levels:
-
-```{r, echo = F, eval =F}
-heating = c(   'Ex', 'Gd', 'TA', 'Fa', 'Po')
-heating_qual = c('Excellent',
-   'Good', 'Average/Typical', 
-  'Fair', 'Poor')
-heating = data.frame(heating = heating, heating_qual = heating_qual)
-heating
-```
-
-```{r, eval = F, echo = T}
-   heating    heating_qual
-      Ex       Excellent
-      Gd            Good
-      TA Average/Typical
-      Fa            Fair
-      Po            Poor
-
-```
-
-### It will be coded as:
-
-```{r, echo = T, eval =F}
-Qualities <- c('None' = 0, 'Po' = 1, 
-               'Fa' = 2, 'TA' = 3, 
-               'Gd' = 4, 'Ex' = 5)
-all$HeatingQC<-as.integer(revalue(all$HeatingQC, Qualities))
-```
-
-
-```{r, eval = F, echo = T}
-1    2    3    4    5 
-3   92  857  474 1493
-```
-]]
 
 ---
 class: bg-main1, center, middle

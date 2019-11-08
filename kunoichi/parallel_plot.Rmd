@@ -1,0 +1,46 @@
+
+
+class: split-50  
+
+.column.bg-main1[.content.vmiddle[
+# We could view the median .orange[SalePrie] in 3 .green[wealthy neiborhoods] across years
+
+]]
+
+.column.bg-main5[.content.vmiddle.center[
+
+
+```{r, echo = F, out.width= "90%" }
+library(GGally)
+parallel_plot_data_wide = readRDS("data/parallel_plot_data_wide.rds")
+parallel_plot_data_wide %>%
+  ggparcoord(
+    columns = 2:6, groupColumn = 1,
+    scale="globalminmax",
+    showPoints = TRUE, 
+    #title = "Original",
+    alphaLines = 1
+  )  -> p
+
+p +
+  scale_y_continuous(breaks = seq(100000, 400000, by = 100000), 
+                     labels = scales::comma)+
+  theme_bw()+
+  yikai_themes+
+  yikai_labels+
+  scale_color_manual(values = ifelse(parallel_plot_data_wide$Neighborhood %in% c("NoRidge", "NridgHt", "StoneBr"),
+                                     "#69b3a2", "#E8E8E8" ))+
+  labs(title = "SalePrice in Wealthy Neighborhoods across Years")+
+  labs(x = "", y = "")+
+  theme(legend.position = "none")+
+  theme(axis.ticks.y = element_blank())+
+  theme(panel.grid.major.y = element_blank())+
+  theme(axis.text.y = element_text( hjust = -5))
+
+grid::grid.raster(logo, x = 0.79, y = 0.91, just = c('left', 'bottom'), width = unit(1.2, 'inches'))
+
+```
+
+  
+  
+]]
