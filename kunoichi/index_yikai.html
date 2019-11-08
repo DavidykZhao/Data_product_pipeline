@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
   <head>
-    <title>End-to-end data analysis pipeline</title>
+    <title>Data analysis pipeline</title>
     <meta charset="utf-8" />
     <meta name="author" content=" Yikai Zhao   <span>&lt;i class="fab  fa-twitter faa-vertical animated "&gt;&lt;/i&gt;&amp;nbsp;@zhao_yikai</span>" />
     <link href="libs/font-awesome-animation/font-awesome-animation-emi.css" rel="stylesheet" />
@@ -15,7 +15,7 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
-# End-to-end data analysis pipeline
+# Data analysis pipeline
 ## An visualization journey
 ### <br>Yikai Zhao   <span>&lt;i class="fab  fa-twitter faa-vertical animated "&gt;&lt;/i&gt;&amp;nbsp;@zhao_yikai</span>
 ### Looking for a full time position as Data scientist
@@ -46,12 +46,13 @@ class: split-60 white
 * #### convey those insights to customers &amp; decision makers
 
 
-### This powerpoint aims to use .orange[visualizations] to showcase the process of data analysis from data cleaning to final model interpretation
+### This powerpoint aims to use .orange[visualizations] to showcase the process of data analysis from data cleaning to model interpretation
+
+### Specific details within the process are stripped if there is no good way for visualization such as missing value imputation and model ensembling.
 
 ### I will use the House Prices dataset from [Kaggle](https://www.kaggle.com/c/house-prices-advanced-regression-techniques)
 
 
-### The information about this dataset could be glanced from right
 
 
 ]]
@@ -64,12 +65,16 @@ class: split-60 white
 
 
 
+### The information about this dataset:
+
+
 
 ```r
 # The dimention of the data are
 dim(train)
 dim(test)
 ```
+
 
 
 ```r
@@ -84,7 +89,7 @@ dim(test)
 class: bg-main1 center middle hide-slide-number
 
 .reveal-text[.pad1[
-.font4[There will be three major parts
+.font4[There will be two major parts
 ]
 ]]
 
@@ -92,47 +97,33 @@ class: bg-main1 center middle hide-slide-number
 ---
 layout: true
 
-class: split-three 
+class: split-two 
 
-.column.bg-main1[.content[
+.column.bg-main1[.content.vmiddle.center[
 #  Data exploration and manipulation 
-### This step involves dealing of .orange[missing data] and .teal[outliers]:
-  + ### missing at random or missing with pattern(s)
-  + ### impute or discard them
-  
-### View the distribution of variables and their relaitonships
-### Deal with skewed variables
-### Feature engineering 
+### This step involves visualizing the relationship between .orange[variables], .teal[missing values] and .pink[possible extreme values]  
+
+
 
 ]]
-.column.bg-main1[.content[
-# Predicative modeling
+.column.bg-main1[.content.vmiddle.center[
+#  Modeling and Model interpretation
 
-## Choose the appropriate modeling architecture(s)
-## .orange[hyperparamerter tuning] 
-## .teal[ensembling] the models for better generalibility
-]]
-.column.bg-main1[.content[
-# Results interpretation
+### This step involves fitting different models and interpret the .yellow[feature importance]
 
-## Interpretable machine learning
-## .orange[Shapley] values to attribute contributions to variables
-## View interactions between variables
+
 ]]
+
 
 ---
 
-class: gray-col2 gray-col3
-count: false
-
----
-
-class: gray-col3
+class: fade-col2
 count: false
 
 ---
 
 count: false
+
 
 ---
 layout: false
@@ -149,7 +140,7 @@ class: split-50
 
 # Which numerical variables are important to explore first
 
-## We could find variables with a correlation of at least 0.5 with our dependent variable .orange[SalePrice]
+## We could find variables with a correlation of at least 0.5 with our dependent variable .cyan[SalePrice]
 
 ]]
 
@@ -244,10 +235,24 @@ count: false
 .column[.content[
 
 ```r
-*# We could visualize the distribution
-# of variable OverallQual in a rainplot
+ #&lt;&lt;
 ggplot(data = training_data, 
   aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) 
+```
+]]
+.column[.content.center[
+&lt;img src="index_yikai_files/figure-html/output_rainplot_3-1.png" width="80%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+ggplot(data = training_data, 
+  aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +
+* geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width")
 ```
 ]]
 .column[.content.center[
@@ -260,15 +265,15 @@ count: false
 .column[.content[
 
 ```r
-# We could visualize the distribution
-# of variable OverallQual in a rainplot
 ggplot(data = training_data, 
   aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +
-* geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width")
+  geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +
+* geom_point(aes(y = SalePrice, color = factor(OverallQual)),
+*            position = position_jitter(width = .15), size = .5, alpha = 1)
 ```
 ]]
 .column[.content.center[
-&lt;img src="index_yikai_files/figure-html/output_rainplot_5-1.png" width="80%" /&gt;
+&lt;img src="index_yikai_files/figure-html/output_rainplot_6-1.png" width="80%" /&gt;
 ]]
 ---
 class: split-40
@@ -277,13 +282,12 @@ count: false
 .column[.content[
 
 ```r
-# We could visualize the distribution
-# of variable OverallQual in a rainplot
 ggplot(data = training_data, 
   aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +
   geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +
-* geom_point(aes(y = SalePrice, color = factor(OverallQual)),
-*            position = position_jitter(width = .15), size = .5, alpha = 1)
+  geom_point(aes(y = SalePrice, color = factor(OverallQual)), 
+             position = position_jitter(width = .15), size = .5, alpha = 1) +
+* geom_boxplot(width = .1, outlier.shape = NA, alpha = 0.5)
 ```
 ]]
 .column[.content.center[
@@ -296,28 +300,6 @@ count: false
 .column[.content[
 
 ```r
-# We could visualize the distribution
-# of variable OverallQual in a rainplot
-ggplot(data = training_data, 
-  aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +
-  geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +
-  geom_point(aes(y = SalePrice, color = factor(OverallQual)), 
-             position = position_jitter(width = .15), size = .5, alpha = 1) +
-* geom_boxplot(width = .1, outlier.shape = NA, alpha = 0.5)
-```
-]]
-.column[.content.center[
-&lt;img src="index_yikai_files/figure-html/output_rainplot_8-1.png" width="80%" /&gt;
-]]
----
-class: split-40
-count: false
-
-.column[.content[
-
-```r
-# We could visualize the distribution
-# of variable OverallQual in a rainplot
 ggplot(data = training_data, 
   aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +
   geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +
@@ -329,7 +311,7 @@ ggplot(data = training_data,
 ```
 ]]
 .column[.content.center[
-&lt;img src="index_yikai_files/figure-html/output_rainplot_10-1.png" width="80%" /&gt;
+&lt;img src="index_yikai_files/figure-html/output_rainplot_9-1.png" width="80%" /&gt;
 ]]
 ---
 class: split-40
@@ -338,8 +320,6 @@ count: false
 .column[.content[
 
 ```r
-# We could visualize the distribution
-# of variable OverallQual in a rainplot
 ggplot(data = training_data, 
   aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +
   geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +
@@ -353,7 +333,7 @@ ggplot(data = training_data,
 ```
 ]]
 .column[.content.center[
-&lt;img src="index_yikai_files/figure-html/output_rainplot_12-1.png" width="80%" /&gt;
+&lt;img src="index_yikai_files/figure-html/output_rainplot_11-1.png" width="80%" /&gt;
 ]]
 ---
 class: split-40
@@ -362,8 +342,6 @@ count: false
 .column[.content[
 
 ```r
-# We could visualize the distribution
-# of variable OverallQual in a rainplot
 ggplot(data = training_data, 
   aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +
   geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +
@@ -378,7 +356,7 @@ ggplot(data = training_data,
 ```
 ]]
 .column[.content.center[
-&lt;img src="index_yikai_files/figure-html/output_rainplot_13-1.png" width="80%" /&gt;
+&lt;img src="index_yikai_files/figure-html/output_rainplot_12-1.png" width="80%" /&gt;
 ]]
 ---
 class: split-40
@@ -387,8 +365,6 @@ count: false
 .column[.content[
 
 ```r
-# We could visualize the distribution
-# of variable OverallQual in a rainplot
 ggplot(data = training_data, 
   aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +
   geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +
@@ -404,7 +380,7 @@ ggplot(data = training_data,
 ```
 ]]
 .column[.content.center[
-&lt;img src="index_yikai_files/figure-html/output_rainplot_14-1.png" width="80%" /&gt;
+&lt;img src="index_yikai_files/figure-html/output_rainplot_13-1.png" width="80%" /&gt;
 ]]
 ---
 class: split-40
@@ -413,8 +389,6 @@ count: false
 .column[.content[
 
 ```r
-# We could visualize the distribution
-# of variable OverallQual in a rainplot
 ggplot(data = training_data, 
   aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +
   geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +
@@ -431,7 +405,7 @@ ggplot(data = training_data,
 ```
 ]]
 .column[.content.center[
-&lt;img src="index_yikai_files/figure-html/output_rainplot_15-1.png" width="80%" /&gt;
+&lt;img src="index_yikai_files/figure-html/output_rainplot_14-1.png" width="80%" /&gt;
 ]]
 ---
 class: split-40
@@ -440,8 +414,6 @@ count: false
 .column[.content[
 
 ```r
-# We could visualize the distribution
-# of variable OverallQual in a rainplot
 ggplot(data = training_data, 
   aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +
   geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +
@@ -459,7 +431,7 @@ ggplot(data = training_data,
 ```
 ]]
 .column[.content.center[
-&lt;img src="index_yikai_files/figure-html/output_rainplot_16-1.png" width="80%" /&gt;
+&lt;img src="index_yikai_files/figure-html/output_rainplot_15-1.png" width="80%" /&gt;
 ]]
 ---
 class: split-40
@@ -468,8 +440,6 @@ count: false
 .column[.content[
 
 ```r
-# We could visualize the distribution
-# of variable OverallQual in a rainplot
 ggplot(data = training_data, 
   aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +
   geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +
@@ -488,7 +458,7 @@ ggplot(data = training_data,
 ```
 ]]
 .column[.content.center[
-&lt;img src="index_yikai_files/figure-html/output_rainplot_17-1.png" width="80%" /&gt;
+&lt;img src="index_yikai_files/figure-html/output_rainplot_16-1.png" width="80%" /&gt;
 ]]
 ---
 class: split-40
@@ -497,8 +467,6 @@ count: false
 .column[.content[
 
 ```r
-# We could visualize the distribution
-# of variable OverallQual in a rainplot
 ggplot(data = training_data, 
   aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +
   geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +
@@ -518,7 +486,7 @@ ggplot(data = training_data,
 ```
 ]]
 .column[.content.center[
-&lt;img src="index_yikai_files/figure-html/output_rainplot_18-1.png" width="80%" /&gt;
+&lt;img src="index_yikai_files/figure-html/output_rainplot_17-1.png" width="80%" /&gt;
 ]]
 ---
 class: split-40
@@ -527,8 +495,6 @@ count: false
 .column[.content[
 
 ```r
-# We could visualize the distribution
-# of variable OverallQual in a rainplot
 ggplot(data = training_data, 
   aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +
   geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +
@@ -549,7 +515,7 @@ ggplot(data = training_data,
 ```
 ]]
 .column[.content.center[
-&lt;img src="index_yikai_files/figure-html/output_rainplot_19-1.png" width="80%" /&gt;
+&lt;img src="index_yikai_files/figure-html/output_rainplot_18-1.png" width="80%" /&gt;
 ]]
 ---
 class: split-40
@@ -558,8 +524,6 @@ count: false
 .column[.content[
 
 ```r
-# We could visualize the distribution
-# of variable OverallQual in a rainplot
 ggplot(data = training_data, 
   aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +
   geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +
@@ -581,7 +545,7 @@ ggplot(data = training_data,
 ```
 ]]
 .column[.content.center[
-&lt;img src="index_yikai_files/figure-html/output_rainplot_20-1.png" width="80%" /&gt;
+&lt;img src="index_yikai_files/figure-html/output_rainplot_19-1.png" width="80%" /&gt;
 ]]
 ---
 class: split-40
@@ -590,8 +554,6 @@ count: false
 .column[.content[
 
 ```r
-# We could visualize the distribution
-# of variable OverallQual in a rainplot
 ggplot(data = training_data, 
   aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +
   geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +
@@ -615,7 +577,7 @@ ggplot(data = training_data,
 ```
 ]]
 .column[.content.center[
-&lt;img src="index_yikai_files/figure-html/output_rainplot_22-1.png" width="80%" /&gt;
+&lt;img src="index_yikai_files/figure-html/output_rainplot_21-1.png" width="80%" /&gt;
 ]]
 ---
 class: split-40
@@ -624,8 +586,6 @@ count: false
 .column[.content[
 
 ```r
-# We could visualize the distribution
-# of variable OverallQual in a rainplot
 ggplot(data = training_data, 
   aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +
   geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +
@@ -650,7 +610,7 @@ ggplot(data = training_data,
 ```
 ]]
 .column[.content.center[
-&lt;img src="index_yikai_files/figure-html/output_rainplot_23-1.png" width="80%" /&gt;
+&lt;img src="index_yikai_files/figure-html/output_rainplot_22-1.png" width="80%" /&gt;
 ]]
 ---
 class: split-40
@@ -659,8 +619,6 @@ count: false
 .column[.content[
 
 ```r
-# We could visualize the distribution
-# of variable OverallQual in a rainplot
 ggplot(data = training_data, 
   aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +
   geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +
@@ -686,7 +644,7 @@ ggplot(data = training_data,
 ```
 ]]
 .column[.content.center[
-&lt;img src="index_yikai_files/figure-html/output_rainplot_24-1.png" width="80%" /&gt;
+&lt;img src="index_yikai_files/figure-html/output_rainplot_23-1.png" width="80%" /&gt;
 ]]
 ---
 class: split-40
@@ -695,8 +653,6 @@ count: false
 .column[.content[
 
 ```r
-# We could visualize the distribution
-# of variable OverallQual in a rainplot
 ggplot(data = training_data, 
   aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +
   geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +
@@ -723,7 +679,7 @@ ggplot(data = training_data,
 ```
 ]]
 .column[.content.center[
-&lt;img src="index_yikai_files/figure-html/output_rainplot_25-1.png" width="80%" /&gt;
+&lt;img src="index_yikai_files/figure-html/output_rainplot_24-1.png" width="80%" /&gt;
 ]]
 ---
 class: split-40
@@ -732,8 +688,6 @@ count: false
 .column[.content[
 
 ```r
-# We could visualize the distribution
-# of variable OverallQual in a rainplot
 ggplot(data = training_data, 
   aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +
   geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +
@@ -761,7 +715,7 @@ ggplot(data = training_data,
 ```
 ]]
 .column[.content.center[
-&lt;img src="index_yikai_files/figure-html/output_rainplot_26-1.png" width="80%" /&gt;
+&lt;img src="index_yikai_files/figure-html/output_rainplot_25-1.png" width="80%" /&gt;
 ]]
 ---
 class: split-40
@@ -770,8 +724,6 @@ count: false
 .column[.content[
 
 ```r
-# We could visualize the distribution
-# of variable OverallQual in a rainplot
 ggplot(data = training_data, 
   aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +
   geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +
@@ -800,7 +752,7 @@ ggplot(data = training_data,
 ```
 ]]
 .column[.content.center[
-&lt;img src="index_yikai_files/figure-html/output_rainplot_27-1.png" width="80%" /&gt;
+&lt;img src="index_yikai_files/figure-html/output_rainplot_26-1.png" width="80%" /&gt;
 ]]
 ---
 class: split-40
@@ -809,8 +761,6 @@ count: false
 .column[.content[
 
 ```r
-# We could visualize the distribution
-# of variable OverallQual in a rainplot
 ggplot(data = training_data, 
   aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +
   geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +
@@ -840,7 +790,7 @@ ggplot(data = training_data,
 ```
 ]]
 .column[.content.center[
-&lt;img src="index_yikai_files/figure-html/output_rainplot_28-1.png" width="80%" /&gt;
+&lt;img src="index_yikai_files/figure-html/output_rainplot_27-1.png" width="80%" /&gt;
 ]]
 ---
 class: split-40
@@ -849,8 +799,6 @@ count: false
 .column[.content[
 
 ```r
-# We could visualize the distribution
-# of variable OverallQual in a rainplot
 ggplot(data = training_data, 
   aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +
   geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +
@@ -881,7 +829,7 @@ ggplot(data = training_data,
 ```
 ]]
 .column[.content.center[
-&lt;img src="index_yikai_files/figure-html/output_rainplot_29-1.png" width="80%" /&gt;
+&lt;img src="index_yikai_files/figure-html/output_rainplot_28-1.png" width="80%" /&gt;
 ]]
 
 
@@ -931,7 +879,7 @@ class: split-50
 .column.bg-main5[.content.vmiddle.center[
 
 
-&lt;img src="index_yikai_files/figure-html/unnamed-chunk-29-1.png" width="80%" /&gt;
+&lt;img src="index_yikai_files/figure-html/unnamed-chunk-30-1.png" width="80%" /&gt;
 
 
 ]]
@@ -939,23 +887,486 @@ class: split-50
 
 ---
 
-class: split-50 
-
-.column.bg-main1[.content.vmiddle[
+class: bg-main1, center, middle
 
 # Which .orange[categorical variables] are important to explore
 
-## We could find them through .cyan[Random Forest] feature importance permutation test. 
+## We could find them via a .cyan[Random Forest] feature importance test.
 
+---
+
+
+
+
+
+
+
+
+
+
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+ #&lt;&lt;
+ggplot(imp_DF[1:10,], aes(x=reorder(Variables, MSE), y= MSE, label = round(MSE, 1))) 
+```
+]]
+.column[.content.center[
+&lt;img src="index_yikai_files/figure-html/output_lollipop_2-1.png" width="80%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+ggplot(imp_DF[1:10,], aes(x=reorder(Variables, MSE), y= MSE, label = round(MSE, 1))) +
+* geom_segment( aes(x=reorder(Variables, MSE), xend=reorder(Variables, MSE), y=0, yend= MSE ), color=ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), "orange", "grey"), size=ifelse(imp_DF[1:10,]$Variables  %in% c("Neighborhood", "MSSubClass"), 1.5, 0.7) )
+```
+]]
+.column[.content.center[
+&lt;img src="index_yikai_files/figure-html/output_lollipop_3-1.png" width="80%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+ggplot(imp_DF[1:10,], aes(x=reorder(Variables, MSE), y= MSE, label = round(MSE, 1))) +
+  geom_segment( aes(x=reorder(Variables, MSE), xend=reorder(Variables, MSE), y=0, yend= MSE ), color=ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), "orange", "grey"), size=ifelse(imp_DF[1:10,]$Variables  %in% c("Neighborhood", "MSSubClass"), 1.5, 0.7) ) +
+* geom_point( color=ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), "orange", "grey"), size=ifelse(imp_DF[1:10,]$Variables  %in% c("Neighborhood", "MSSubClass"), 11, 7) )
+```
+]]
+.column[.content.center[
+&lt;img src="index_yikai_files/figure-html/output_lollipop_4-1.png" width="80%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+ggplot(imp_DF[1:10,], aes(x=reorder(Variables, MSE), y= MSE, label = round(MSE, 1))) +
+  geom_segment( aes(x=reorder(Variables, MSE), xend=reorder(Variables, MSE), y=0, yend= MSE ), color=ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), "orange", "grey"), size=ifelse(imp_DF[1:10,]$Variables  %in% c("Neighborhood", "MSSubClass"), 1.5, 0.7) ) +
+  geom_point( color=ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), "orange", "grey"), size=ifelse(imp_DF[1:10,]$Variables  %in% c("Neighborhood", "MSSubClass"), 11, 7) ) +
+* coord_flip()
+```
+]]
+.column[.content.center[
+&lt;img src="index_yikai_files/figure-html/output_lollipop_5-1.png" width="80%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+ggplot(imp_DF[1:10,], aes(x=reorder(Variables, MSE), y= MSE, label = round(MSE, 1))) +
+  geom_segment( aes(x=reorder(Variables, MSE), xend=reorder(Variables, MSE), y=0, yend= MSE ), color=ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), "orange", "grey"), size=ifelse(imp_DF[1:10,]$Variables  %in% c("Neighborhood", "MSSubClass"), 1.5, 0.7) ) +
+  geom_point( color=ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), "orange", "grey"), size=ifelse(imp_DF[1:10,]$Variables  %in% c("Neighborhood", "MSSubClass"), 11, 7) ) +
+  coord_flip() +
+* theme(
+*   legend.position="none"
+* )
+```
+]]
+.column[.content.center[
+&lt;img src="index_yikai_files/figure-html/output_lollipop_8-1.png" width="80%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+ggplot(imp_DF[1:10,], aes(x=reorder(Variables, MSE), y= MSE, label = round(MSE, 1))) +
+  geom_segment( aes(x=reorder(Variables, MSE), xend=reorder(Variables, MSE), y=0, yend= MSE ), color=ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), "orange", "grey"), size=ifelse(imp_DF[1:10,]$Variables  %in% c("Neighborhood", "MSSubClass"), 1.5, 0.7) ) +
+  geom_point( color=ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), "orange", "grey"), size=ifelse(imp_DF[1:10,]$Variables  %in% c("Neighborhood", "MSSubClass"), 11, 7) ) +
+  coord_flip() +
+  theme(
+    legend.position="none"
+  ) +
+* geom_text(color = "white", size = ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), 3.5, 2.5))
+```
+]]
+.column[.content.center[
+&lt;img src="index_yikai_files/figure-html/output_lollipop_9-1.png" width="80%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+ggplot(imp_DF[1:10,], aes(x=reorder(Variables, MSE), y= MSE, label = round(MSE, 1))) +
+  geom_segment( aes(x=reorder(Variables, MSE), xend=reorder(Variables, MSE), y=0, yend= MSE ), color=ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), "orange", "grey"), size=ifelse(imp_DF[1:10,]$Variables  %in% c("Neighborhood", "MSSubClass"), 1.5, 0.7) ) +
+  geom_point( color=ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), "orange", "grey"), size=ifelse(imp_DF[1:10,]$Variables  %in% c("Neighborhood", "MSSubClass"), 11, 7) ) +
+  coord_flip() +
+  theme(
+    legend.position="none"
+  ) +
+  geom_text(color = "white", size = ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), 3.5, 2.5))+
+* xlab("")
+```
+]]
+.column[.content.center[
+&lt;img src="index_yikai_files/figure-html/output_lollipop_10-1.png" width="80%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+ggplot(imp_DF[1:10,], aes(x=reorder(Variables, MSE), y= MSE, label = round(MSE, 1))) +
+  geom_segment( aes(x=reorder(Variables, MSE), xend=reorder(Variables, MSE), y=0, yend= MSE ), color=ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), "orange", "grey"), size=ifelse(imp_DF[1:10,]$Variables  %in% c("Neighborhood", "MSSubClass"), 1.5, 0.7) ) +
+  geom_point( color=ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), "orange", "grey"), size=ifelse(imp_DF[1:10,]$Variables  %in% c("Neighborhood", "MSSubClass"), 11, 7) ) +
+  coord_flip() +
+  theme(
+    legend.position="none"
+  ) +
+  geom_text(color = "white", size = ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), 3.5, 2.5))+
+  xlab("") +
+* ylab("Value of Y")
+```
+]]
+.column[.content.center[
+&lt;img src="index_yikai_files/figure-html/output_lollipop_11-1.png" width="80%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+ggplot(imp_DF[1:10,], aes(x=reorder(Variables, MSE), y= MSE, label = round(MSE, 1))) +
+  geom_segment( aes(x=reorder(Variables, MSE), xend=reorder(Variables, MSE), y=0, yend= MSE ), color=ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), "orange", "grey"), size=ifelse(imp_DF[1:10,]$Variables  %in% c("Neighborhood", "MSSubClass"), 1.5, 0.7) ) +
+  geom_point( color=ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), "orange", "grey"), size=ifelse(imp_DF[1:10,]$Variables  %in% c("Neighborhood", "MSSubClass"), 11, 7) ) +
+  coord_flip() +
+  theme(
+    legend.position="none"
+  ) +
+  geom_text(color = "white", size = ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), 3.5, 2.5))+
+  xlab("") +
+  ylab("Value of Y") +
+* ggtitle("Feature importance via Random Forrest")
+```
+]]
+.column[.content.center[
+&lt;img src="index_yikai_files/figure-html/output_lollipop_12-1.png" width="80%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+ggplot(imp_DF[1:10,], aes(x=reorder(Variables, MSE), y= MSE, label = round(MSE, 1))) +
+  geom_segment( aes(x=reorder(Variables, MSE), xend=reorder(Variables, MSE), y=0, yend= MSE ), color=ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), "orange", "grey"), size=ifelse(imp_DF[1:10,]$Variables  %in% c("Neighborhood", "MSSubClass"), 1.5, 0.7) ) +
+  geom_point( color=ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), "orange", "grey"), size=ifelse(imp_DF[1:10,]$Variables  %in% c("Neighborhood", "MSSubClass"), 11, 7) ) +
+  coord_flip() +
+  theme(
+    legend.position="none"
+  ) +
+  geom_text(color = "white", size = ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), 3.5, 2.5))+
+  xlab("") +
+  ylab("Value of Y") +
+  ggtitle("Feature importance via Random Forrest")+
+* labs(x = 'Variables',y= '% increase MSE if variable is randomly permuted')
+```
+]]
+.column[.content.center[
+&lt;img src="index_yikai_files/figure-html/output_lollipop_13-1.png" width="80%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+ggplot(imp_DF[1:10,], aes(x=reorder(Variables, MSE), y= MSE, label = round(MSE, 1))) +
+  geom_segment( aes(x=reorder(Variables, MSE), xend=reorder(Variables, MSE), y=0, yend= MSE ), color=ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), "orange", "grey"), size=ifelse(imp_DF[1:10,]$Variables  %in% c("Neighborhood", "MSSubClass"), 1.5, 0.7) ) +
+  geom_point( color=ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), "orange", "grey"), size=ifelse(imp_DF[1:10,]$Variables  %in% c("Neighborhood", "MSSubClass"), 11, 7) ) +
+  coord_flip() +
+  theme(
+    legend.position="none"
+  ) +
+  geom_text(color = "white", size = ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), 3.5, 2.5))+
+  xlab("") +
+  ylab("Value of Y") +
+  ggtitle("Feature importance via Random Forrest")+
+  labs(x = 'Variables',y= '% increase MSE if variable is randomly permuted')+
+* theme_bw()
+```
+]]
+.column[.content.center[
+&lt;img src="index_yikai_files/figure-html/output_lollipop_14-1.png" width="80%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+ggplot(imp_DF[1:10,], aes(x=reorder(Variables, MSE), y= MSE, label = round(MSE, 1))) +
+  geom_segment( aes(x=reorder(Variables, MSE), xend=reorder(Variables, MSE), y=0, yend= MSE ), color=ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), "orange", "grey"), size=ifelse(imp_DF[1:10,]$Variables  %in% c("Neighborhood", "MSSubClass"), 1.5, 0.7) ) +
+  geom_point( color=ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), "orange", "grey"), size=ifelse(imp_DF[1:10,]$Variables  %in% c("Neighborhood", "MSSubClass"), 11, 7) ) +
+  coord_flip() +
+  theme(
+    legend.position="none"
+  ) +
+  geom_text(color = "white", size = ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), 3.5, 2.5))+
+  xlab("") +
+  ylab("Value of Y") +
+  ggtitle("Feature importance via Random Forrest")+
+  labs(x = 'Variables',y= '% increase MSE if variable is randomly permuted')+
+  theme_bw()+
+* yikai_labels
+```
+]]
+.column[.content.center[
+&lt;img src="index_yikai_files/figure-html/output_lollipop_15-1.png" width="80%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+ggplot(imp_DF[1:10,], aes(x=reorder(Variables, MSE), y= MSE, label = round(MSE, 1))) +
+  geom_segment( aes(x=reorder(Variables, MSE), xend=reorder(Variables, MSE), y=0, yend= MSE ), color=ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), "orange", "grey"), size=ifelse(imp_DF[1:10,]$Variables  %in% c("Neighborhood", "MSSubClass"), 1.5, 0.7) ) +
+  geom_point( color=ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), "orange", "grey"), size=ifelse(imp_DF[1:10,]$Variables  %in% c("Neighborhood", "MSSubClass"), 11, 7) ) +
+  coord_flip() +
+  theme(
+    legend.position="none"
+  ) +
+  geom_text(color = "white", size = ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), 3.5, 2.5))+
+  xlab("") +
+  ylab("Value of Y") +
+  ggtitle("Feature importance via Random Forrest")+
+  labs(x = 'Variables',y= '% increase MSE if variable is randomly permuted')+
+  theme_bw()+
+  yikai_labels +
+* yikai_themes
+```
+]]
+.column[.content.center[
+&lt;img src="index_yikai_files/figure-html/output_lollipop_16-1.png" width="80%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+ggplot(imp_DF[1:10,], aes(x=reorder(Variables, MSE), y= MSE, label = round(MSE, 1))) +
+  geom_segment( aes(x=reorder(Variables, MSE), xend=reorder(Variables, MSE), y=0, yend= MSE ), color=ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), "orange", "grey"), size=ifelse(imp_DF[1:10,]$Variables  %in% c("Neighborhood", "MSSubClass"), 1.5, 0.7) ) +
+  geom_point( color=ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), "orange", "grey"), size=ifelse(imp_DF[1:10,]$Variables  %in% c("Neighborhood", "MSSubClass"), 11, 7) ) +
+  coord_flip() +
+  theme(
+    legend.position="none"
+  ) +
+  geom_text(color = "white", size = ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), 3.5, 2.5))+
+  xlab("") +
+  ylab("Value of Y") +
+  ggtitle("Feature importance via Random Forrest")+
+  labs(x = 'Variables',y= '% increase MSE if variable is randomly permuted')+
+  theme_bw()+
+  yikai_labels +
+  yikai_themes+
+* ylim(0, 22)
+```
+]]
+.column[.content.center[
+&lt;img src="index_yikai_files/figure-html/output_lollipop_17-1.png" width="80%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+ggplot(imp_DF[1:10,], aes(x=reorder(Variables, MSE), y= MSE, label = round(MSE, 1))) +
+  geom_segment( aes(x=reorder(Variables, MSE), xend=reorder(Variables, MSE), y=0, yend= MSE ), color=ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), "orange", "grey"), size=ifelse(imp_DF[1:10,]$Variables  %in% c("Neighborhood", "MSSubClass"), 1.5, 0.7) ) +
+  geom_point( color=ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), "orange", "grey"), size=ifelse(imp_DF[1:10,]$Variables  %in% c("Neighborhood", "MSSubClass"), 11, 7) ) +
+  coord_flip() +
+  theme(
+    legend.position="none"
+  ) +
+  geom_text(color = "white", size = ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), 3.5, 2.5))+
+  xlab("") +
+  ylab("Value of Y") +
+  ggtitle("Feature importance via Random Forrest")+
+  labs(x = 'Variables',y= '% increase MSE if variable is randomly permuted')+
+  theme_bw()+
+  yikai_labels +
+  yikai_themes+
+  ylim(0, 22)+
+* theme(plot.title.position = "plot")
+```
+]]
+.column[.content.center[
+&lt;img src="index_yikai_files/figure-html/output_lollipop_18-1.png" width="80%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+ggplot(imp_DF[1:10,], aes(x=reorder(Variables, MSE), y= MSE, label = round(MSE, 1))) +
+  geom_segment( aes(x=reorder(Variables, MSE), xend=reorder(Variables, MSE), y=0, yend= MSE ), color=ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), "orange", "grey"), size=ifelse(imp_DF[1:10,]$Variables  %in% c("Neighborhood", "MSSubClass"), 1.5, 0.7) ) +
+  geom_point( color=ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), "orange", "grey"), size=ifelse(imp_DF[1:10,]$Variables  %in% c("Neighborhood", "MSSubClass"), 11, 7) ) +
+  coord_flip() +
+  theme(
+    legend.position="none"
+  ) +
+  geom_text(color = "white", size = ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), 3.5, 2.5))+
+  xlab("") +
+  ylab("Value of Y") +
+  ggtitle("Feature importance via Random Forrest")+
+  labs(x = 'Variables',y= '% increase MSE if variable is randomly permuted')+
+  theme_bw()+
+  yikai_labels +
+  yikai_themes+
+  ylim(0, 22)+
+  theme(plot.title.position = "plot")+
+* annotate("text", x=9, y=imp_DF[1:10,]$MSE[which(imp_DF[1:10,]$Variables=="Neighborhood")]*1.1,
+*            label= paste('Important categorical variable'),
+*            color="orange", size=3.4, angle=0, fontface="bold", hjust=0)
+```
+]]
+.column[.content.center[
+&lt;img src="index_yikai_files/figure-html/output_lollipop_21-1.png" width="80%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+ggplot(imp_DF[1:10,], aes(x=reorder(Variables, MSE), y= MSE, label = round(MSE, 1))) +
+  geom_segment( aes(x=reorder(Variables, MSE), xend=reorder(Variables, MSE), y=0, yend= MSE ), color=ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), "orange", "grey"), size=ifelse(imp_DF[1:10,]$Variables  %in% c("Neighborhood", "MSSubClass"), 1.5, 0.7) ) +
+  geom_point( color=ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), "orange", "grey"), size=ifelse(imp_DF[1:10,]$Variables  %in% c("Neighborhood", "MSSubClass"), 11, 7) ) +
+  coord_flip() +
+  theme(
+    legend.position="none"
+  ) +
+  geom_text(color = "white", size = ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), 3.5, 2.5))+
+  xlab("") +
+  ylab("Value of Y") +
+  ggtitle("Feature importance via Random Forrest")+
+  labs(x = 'Variables',y= '% increase MSE if variable is randomly permuted')+
+  theme_bw()+
+  yikai_labels +
+  yikai_themes+
+  ylim(0, 22)+
+  theme(plot.title.position = "plot")+
+  annotate("text", x=9, y=imp_DF[1:10,]$MSE[which(imp_DF[1:10,]$Variables=="Neighborhood")]*1.1, 
+             label= paste('Important categorical variable'),
+             color="orange", size=3.4, angle=0, fontface="bold", hjust=0)+
+* annotate("text", x=6, y=imp_DF[1:10,]$MSE[which(imp_DF[1:10,]$Variables=="MSSubClass")]*1.2,
+*          label= paste('Another important categorical variable'),
+*          color="orange", size=3.4, angle=0, fontface="bold", hjust=0)
+```
+]]
+.column[.content.center[
+&lt;img src="index_yikai_files/figure-html/output_lollipop_24-1.png" width="80%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+ggplot(imp_DF[1:10,], aes(x=reorder(Variables, MSE), y= MSE, label = round(MSE, 1))) +
+  geom_segment( aes(x=reorder(Variables, MSE), xend=reorder(Variables, MSE), y=0, yend= MSE ), color=ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), "orange", "grey"), size=ifelse(imp_DF[1:10,]$Variables  %in% c("Neighborhood", "MSSubClass"), 1.5, 0.7) ) +
+  geom_point( color=ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), "orange", "grey"), size=ifelse(imp_DF[1:10,]$Variables  %in% c("Neighborhood", "MSSubClass"), 11, 7) ) +
+  coord_flip() +
+  theme(
+    legend.position="none"
+  ) +
+  geom_text(color = "white", size = ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), 3.5, 2.5))+
+  xlab("") +
+  ylab("Value of Y") +
+  ggtitle("Feature importance via Random Forrest")+
+  labs(x = 'Variables',y= '% increase MSE if variable is randomly permuted')+
+  theme_bw()+
+  yikai_labels +
+  yikai_themes+
+  ylim(0, 22)+
+  theme(plot.title.position = "plot")+
+  annotate("text", x=9, y=imp_DF[1:10,]$MSE[which(imp_DF[1:10,]$Variables=="Neighborhood")]*1.1, 
+             label= paste('Important categorical variable'),
+             color="orange", size=3.4, angle=0, fontface="bold", hjust=0)+
+  annotate("text", x=6, y=imp_DF[1:10,]$MSE[which(imp_DF[1:10,]$Variables=="MSSubClass")]*1.2, 
+           label= paste('Another important categorical variable'),
+           color="orange", size=3.4, angle=0, fontface="bold", hjust=0)+
+* theme(axis.title.x = element_text(hjust=-0.06))
+```
+]]
+.column[.content.center[
+&lt;img src="index_yikai_files/figure-html/output_lollipop_25-1.png" width="80%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+ggplot(imp_DF[1:10,], aes(x=reorder(Variables, MSE), y= MSE, label = round(MSE, 1))) +
+  geom_segment( aes(x=reorder(Variables, MSE), xend=reorder(Variables, MSE), y=0, yend= MSE ), color=ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), "orange", "grey"), size=ifelse(imp_DF[1:10,]$Variables  %in% c("Neighborhood", "MSSubClass"), 1.5, 0.7) ) +
+  geom_point( color=ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), "orange", "grey"), size=ifelse(imp_DF[1:10,]$Variables  %in% c("Neighborhood", "MSSubClass"), 11, 7) ) +
+  coord_flip() +
+  theme(
+    legend.position="none"
+  ) +
+  geom_text(color = "white", size = ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), 3.5, 2.5))+
+  xlab("") +
+  ylab("Value of Y") +
+  ggtitle("Feature importance via Random Forrest")+
+  labs(x = 'Variables',y= '% increase MSE if variable is randomly permuted')+
+  theme_bw()+
+  yikai_labels +
+  yikai_themes+
+  ylim(0, 22)+
+  theme(plot.title.position = "plot")+
+  annotate("text", x=9, y=imp_DF[1:10,]$MSE[which(imp_DF[1:10,]$Variables=="Neighborhood")]*1.1, 
+             label= paste('Important categorical variable'),
+             color="orange", size=3.4, angle=0, fontface="bold", hjust=0)+
+  annotate("text", x=6, y=imp_DF[1:10,]$MSE[which(imp_DF[1:10,]$Variables=="MSSubClass")]*1.2, 
+           label= paste('Another important categorical variable'),
+           color="orange", size=3.4, angle=0, fontface="bold", hjust=0)+
+  theme(axis.title.x = element_text(hjust=-0.06))+
+* theme(panel.grid.major.y = element_blank())
+```
+]]
+.column[.content.center[
+&lt;img src="index_yikai_files/figure-html/output_lollipop_26-1.png" width="80%" /&gt;
 ]]
 
-.column.bg-main5[.content.vmiddle.center[
-
-&lt;img src="index_yikai_files/figure-html/unnamed-chunk-12-1.png" width="90%" /&gt;
-
-
-
-]]
 
 
 ---
@@ -963,7 +1374,7 @@ class: split-50
 class: split-50  
 
 .column.bg-main1[.content.vmiddle[
-# We could view the .pink[Neighborhood] variable in terms of the median .orange[SalePrice]
+# We could view the .pink[Neighborhood] variable in terms of the median .blue[SalePrice]
 
 
 ]]
@@ -985,7 +1396,7 @@ class: split-50
 
 .column.bg-main1[.content.vmiddle[
 
-# View the median .pink[qualities] of houses from different category of .orange[neighborhood]
+# View the median .pink[qualities] of houses from different categories of .orange[neighborhood]
 
  
 
@@ -996,7 +1407,7 @@ class: split-50
 
 
 
-&lt;img src="index_yikai_files/figure-html/unnamed-chunk-31-1.png" width="90%" /&gt;
+&lt;img src="index_yikai_files/figure-html/unnamed-chunk-33-1.png" width="90%" /&gt;
 
 
 ]]
@@ -1012,8 +1423,8 @@ class: split-60
 # Plotting the missingness in that dataset 
 
 ###.orange[white lines] indicate missing values in the corresponding variable
-### Turns out some missingness indicate the .orange[absence] of that feature (e.g. a pool or fense), which we could impurte as a .pink[None] type 
-### some are data misentry and we need to .yellow[find them out!] 
+### Most missingness indicate the .orange[absence] of that feature (e.g. a pool or fense), which we could impurte as a .pink[None] type 
+### some are data misentry and we need to deal with them individually
 
 
 ]]
@@ -1158,44 +1569,95 @@ Qualities &lt;- c('None' = 0, 'Po' = 1,
                'Gd' = 4, 'Ex' = 5)
 all$HeatingQC&lt;-as.integer(revalue(all$HeatingQC, Qualities))
 ```
-]]
+
 
 
 ```r
 1    2    3    4    5 
 3   92  857  474 1493
 ```
+]]
 
+---
+class: bg-main1, center, middle
 
+# Part 2: Modeling of the data
 ---
 
 
 class: split-50
 
 .column.bg-main1[.content.vmiddle[
-# Dealing with skewness of response variable
-## For example, the response variable SalePrice is highly skewed
-## We would log transform this variable
+
+# Through a refitted LASSO we could view the feature importance by the size of the coefficients. 
+
+Note: The independent numerical variables have been mean centerred and scaled, dependent variable has been log transformed. 
 
 ]]
 
 
-.column.bg-main5[.content.vmiddle[
-
-
-```r
-SalePrice &lt;- log(all$SalePrice)
-```
+.column.bg-main5[.content.vmiddle.center[
 
 
 
+
+
+&lt;img src="index_yikai_files/figure-html/unnamed-chunk-34-1.png" width="80%" /&gt;
 
 
 ]]
+
+
+
 ---
-class: bg-main1, center, middle
 
-# Part 2: Modeling of the data
+
+
+
+
+class: split-50
+
+.column.bg-main1[.content.vmiddle[
+
+# To achieve great .orange[predicability] and .orange[explanabiity]
+# XGBoost model is used
+# A Bayesian hyperparameter tuning was conducted to find the optimal combination of hyperparamters from our XGBoost model
+
+
+]]
+
+.column.bg-main4[.content.vmiddle.center[
+
+
+&lt;img src="index_yikai_files/figure-html/unnamed-chunk-35-1.png" width="80%" /&gt;
+
+
+
+]]
+
+
+
+---
+
+class: split-50
+
+
+.column.bg-main1[.content.vmiddle[
+
+# We could view feature importance through SHAPLEY values.
+## SHAP utilizes SHAPLEY values to attribute contributions to features
+### For more about SHAP or SHAPLEY values, please look at [here](https://github.com/slundberg/shap):
+
+
+]]
+
+.column.bg-main4[.content.vmiddle.center[
+
+
+
+&lt;img src="index_yikai_files/figure-html/unnamed-chunk-36-1.png" width="80%" /&gt;
+
+]]
 
 ---
     </textarea>

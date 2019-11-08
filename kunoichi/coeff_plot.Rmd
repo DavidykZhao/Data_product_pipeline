@@ -1,0 +1,72 @@
+class: split-50
+
+.column.bg-main1[.content.vmiddle[
+
+# Through a refitted LASSO we could view the feature importance by the size of the coefficients. 
+
+Note: The independent numerical variables have been mean centerred and scaled, dependent variable has been log transformed. 
+
+]]
+
+
+.column.bg-main5[.content.vmiddle.center[
+
+```{r tobedeleted, echo = F, message = F, warning=F}
+library(xgboost)
+library(SHAPforxgboost)
+yikai_labels <- list(
+   labs(subtitle = "Data Source: House Prices Competition in Kaggle"),
+   labs(caption = "Vis: @zhao_yikai with ggplot")
+             )
+
+yikai_palette  <- c("#FFDB6D", "#C4961A", "#F4EDCA", 
+                "#D16103", "#C3D7A4", "#52854C", "#4E84C4", "#293352")
+yikai_themes = theme(
+  plot.subtitle = element_text(color = 'grey50'),
+  panel.border = element_blank(),
+  plot.title = element_text(face = "bold", size = 16),
+  panel.grid.minor = element_blank(),
+  axis.line.x = element_line(color = 'darkgrey', size = 0.5),
+  plot.title.position = "panel", 
+  plot.caption.position =  "plot") #NEW parameter
+
+logo <- image_read("./images/TAMU_logo.png")
+
+```
+
+
+
+```{r, echo = F, out.width= "90%"}
+dt = readRDS("data/coeff_plot_data.rds")
+
+p = ggplot(dt, aes(x=reorder(varname, coeffs), y= coeffs, label = round(coeffs, 2))) +
+  #geom_segment( aes(x=reorder(varname, coeffs), xend=reorder(varname, coeffs), y=0, yend= coeffs ) ) +
+  geom_point( size = 12, 
+            color = ifelse(dt$color, "#9DBEBB", "#468189")) +
+  coord_flip() +
+  theme(
+    legend.position="none"
+  ) +
+  geom_text(color = "white", size =  3.5)+
+  xlab("") +
+  ylab("Value of Y") +
+  ggtitle("Feature importance via Refitted LASSO")+
+  labs(x = 'Variables',y= 'Regression Coefficients')+
+  theme_bw()+
+  yikai_labels +
+  yikai_themes+
+  theme(plot.title.position = "plot")+
+  theme(axis.title.x = element_text(hjust=-0.06))+
+  theme(axis.title.y = element_text(hjust=-0.02))+
+  theme(panel.grid.major.x = element_blank())+
+  ylim(c(-0.1, 0.15))
+
+p
+grid::grid.raster(logo, x = 0.79, y = 0.91, just = c('left', 'bottom'), width = unit(1.5, 'inches'))
+
+
+```
+
+
+]]
+

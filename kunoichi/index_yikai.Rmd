@@ -1,5 +1,5 @@
 ---
-title: "End-to-end data analysis pipeline"
+title: "Data analysis pipeline"
 subtitle: 'An visualization journey'
 author: "<br>Yikai Zhao&nbsp;&nbsp;&nbsp;`r anicon::faa('twitter', animate='vertical', rtext='&nbsp;@zhao_yikai')`"
 institute: "Looking for a full time position as Data scientist"
@@ -27,8 +27,10 @@ class: center, middle
 options(htmltools.dir.version = FALSE)
 knitr::opts_chunk$set(dpi = 300,  out.width = "80%", message = F, warning = F) # this is set for the aesthetics of the 
 # flipplot remember to add out.width to all other plots
-
-
+source("https://raw.githubusercontent.com/EvaMaeRey/little_flipbooks_library/master/xaringan_reveal_parentheses_balanced.R")
+source(file = "~/Data_product_pipeline/kunoichi/xaringan_reveal_parenthetical.R")
+library(magick)
+logo <- image_read("./images/TAMU_logo.png")
 ```
 
 
@@ -46,12 +48,13 @@ class: split-60 white
 * #### convey those insights to customers & decision makers
 
 
-### This powerpoint aims to use .orange[visualizations] to showcase the process of data analysis from data cleaning to final model interpretation
+### This powerpoint aims to use .orange[visualizations] to showcase the process of data analysis from data cleaning to model interpretation
+
+### Specific details within the process are stripped if there is no good way for visualization such as missing value imputation and model ensembling.
 
 ### I will use the House Prices dataset from [Kaggle](https://www.kaggle.com/c/house-prices-advanced-regression-techniques)
 
 
-### The information about this dataset could be glanced from right
 
 
 ]]
@@ -74,6 +77,8 @@ library(corrplot)
 library(ggrepel)
 library(plotly)
 library(randomForest)
+library(magick)
+
 # library(psych)
 # library(xgboost)
 train <- read.csv("~/Data_product_pipeline/kunoichi/data/train_house.csv", stringsAsFactors = F)
@@ -83,8 +88,7 @@ test$Id <- NULL
 train$Id <- NULL
 test$SalePrice <- NA
 all <- rbind(train, test)
-source("https://raw.githubusercontent.com/EvaMaeRey/little_flipbooks_library/master/xaringan_reveal_parentheses_balanced.R")
-source(file = "~/Data_product_pipeline/kunoichi/xaringan_reveal_parenthetical.R")
+
 
 ```
 
@@ -104,13 +108,21 @@ yikai_themes = theme(
   axis.line.x = element_line(color = 'darkgrey', size = 0.5),
   plot.title.position = "panel", 
   plot.caption.position =  "plot") #NEW parameter
+
+
+logo <- image_read("./images/TAMU_logo.png")
+
 ```
+
+### The information about this dataset:
+
 
 ```{r, eval = F}
 # The dimention of the data are
 dim(train)
 dim(test)
 ```
+
 
 ```{r, eval=F}
 [1] 1460   80
@@ -124,7 +136,7 @@ dim(test)
 class: bg-main1 center middle hide-slide-number
 
 .reveal-text[.pad1[
-.font4[There will be three major parts
+.font4[There will be two major parts
 ]
 ]]
 
@@ -132,47 +144,33 @@ class: bg-main1 center middle hide-slide-number
 ---
 layout: true
 
-class: split-three 
+class: split-two 
 
-.column.bg-main1[.content[
+.column.bg-main1[.content.vmiddle.center[
 #  Data exploration and manipulation 
-### This step involves dealing of .orange[missing data] and .teal[outliers]:
-  + ### missing at random or missing with pattern(s)
-  + ### impute or discard them
-  
-### View the distribution of variables and their relaitonships
-### Deal with skewed variables
-### Feature engineering 
+### This step involves visualizing the relationship between .orange[variables], .teal[missing values] and .pink[possible extreme values]  
+
+
 
 ]]
-.column.bg-main1[.content[
-# Predicative modeling
+.column.bg-main1[.content.vmiddle.center[
+#  Modeling and Model interpretation
 
-## Choose the appropriate modeling architecture(s)
-## .orange[hyperparamerter tuning] 
-## .teal[ensembling] the models for better generalibility
-]]
-.column.bg-main1[.content[
-# Results interpretation
+### This step involves fitting different models and interpret the .yellow[feature importance]
 
-## Interpretable machine learning
-## .orange[Shapley] values to attribute contributions to variables
-## View interactions between variables
+
 ]]
+
 
 ---
 
-class: gray-col2 gray-col3
-count: false
-
----
-
-class: gray-col3
+class: fade-col2
 count: false
 
 ---
 
 count: false
+
 
 ---
 layout: false
@@ -189,7 +187,7 @@ class: split-50
 
 # Which numerical variables are important to explore first
 
-## We could find variables with a correlation of at least 0.5 with our dependent variable .orange[SalePrice]
+## We could find variables with a correlation of at least 0.5 with our dependent variable .cyan[SalePrice]
 
 ]]
 
@@ -347,54 +345,16 @@ ggplot(data = year_by_quality_data, aes(x = YrSold, y = median_price))+
 
 ---
 
-class: split-50 
-
-.column.bg-main1[.content.vmiddle[
+class: bg-main1, center, middle
 
 # Which .orange[categorical variables] are important to explore
 
-## We could find them through .yellow[Random Forest] feature importance permutation test. 
+## We could find them via a .cyan[Random Forest] feature importance test.
 
-]]
+---
 
-.column.bg-main5[.content.vmiddle.center[
-
-```{r, echo = F, out.width = "90%" }
-imp_DF = readRDS("~/Data_product_pipeline/kunoichi/data/RF_importance.RDS")
-
-
-ggplot(imp_DF[1:10,], aes(x=reorder(Variables, MSE), y= MSE, label = round(MSE, 1))) +
-  geom_segment( aes(x=reorder(Variables, MSE), xend=reorder(Variables, MSE), y=0, yend= MSE ), color=ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), "orange", "grey"), size=ifelse(imp_DF[1:10,]$Variables  %in% c("Neighborhood", "MSSubClass"), 1.5, 0.7) ) +
-  geom_point( color=ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), "orange", "grey"), size=ifelse(imp_DF[1:10,]$Variables  %in% c("Neighborhood", "MSSubClass"), 11, 7) ) +
-  #theme_ipsum() +
-  coord_flip() +
-  theme(
-    legend.position="none"
-  ) +
-  geom_text(color = "white", size = ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), 3.5, 2.5))+
-  xlab("") +
-  ylab("Value of Y") +
-  ggtitle("Feature importance via Random Forrest")+
-  labs(x = 'Variables',y= '% increase MSE if variable is randomly permuted')+
-  theme_bw()+
-  yikai_labels +
-  yikai_themes+
-  ylim(0, 22)+
-  theme(plot.title.position = "plot")+
-  annotate("text", x=9, y=imp_DF[1:10,]$MSE[which(imp_DF[1:10,]$Variables=="Neighborhood")]*1.1, 
-             label= paste('Important categorical variable'),
-             color="orange", size=3.4, angle=0, fontface="bold", hjust=0)+
-  annotate("text", x=6, y=imp_DF[1:10,]$MSE[which(imp_DF[1:10,]$Variables=="MSSubClass")]*1.2, 
-           label= paste('Another important categorical variable'),
-           color="orange", size=3.4, angle=0, fontface="bold", hjust=0)+
-  theme(axis.title.x = element_text(hjust=-0.06))+
-  theme(panel.grid.major.y = element_blank())
+```{r child='lollipop_plot.Rmd', warning=F, message=F}
 ```
-
-
-
-]]
-
 
 ---
 
@@ -470,8 +430,8 @@ class: split-60
 # Plotting the missingness in that dataset 
 
 ###.orange[white lines] indicate missing values in the corresponding variable
-### Turns out some missingness indicate the .orange[absence] of that feature (e.g. a pool or fense), which we could impurte as a .pink[None] type 
-### some are data misentry and we need to .yellow[find them out!] 
+### Most missingness indicate the .orange[absence] of that feature (e.g. a pool or fense), which we could impurte as a .pink[None] type 
+### some are data misentry and we need to deal with them individually
 
 
 ]]
@@ -647,44 +607,27 @@ Qualities <- c('None' = 0, 'Po' = 1,
                'Gd' = 4, 'Ex' = 5)
 all$HeatingQC<-as.integer(revalue(all$HeatingQC, Qualities))
 ```
-]]
+
 
 ```{r, eval = F, echo = T}
 1    2    3    4    5 
 3   92  857  474 1493
 ```
-
-
----
-
-
-class: split-50
-
-.column.bg-main1[.content.vmiddle[
-# Dealing with skewness of response variable
-## For example, the response variable SalePrice is highly skewed
-## We would log transform this variable
-
 ]]
 
-
-.column.bg-main5[.content.vmiddle[
-
-```{r}
-SalePrice <- log(all$SalePrice)
-```
-
-
-
-
-
-]]
 ---
 class: bg-main1, center, middle
 
 # Part 2: Modeling of the data
+---
 
---- 
+```{r child='coeff_plot.Rmd', warning=F, message=F}
+```
+
+
+---
+```{r child='part2_modeling.Rmd', warning=F, message=F}
+```
 
 
 

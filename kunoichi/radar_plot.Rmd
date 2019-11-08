@@ -3,7 +3,7 @@ class: split-50
 
 .column.bg-main1[.content.vmiddle[
 
-# View the median .pink[qualities] of houses from different category of .orange[neighborhood]
+# View the median .pink[qualities] of houses from different categories of .orange[neighborhood]
 
  
 
@@ -33,14 +33,14 @@ qual_data$NeighRich[qual_data$Neighborhood %in% c('MeadowV', 'IDOTRR', 'BrDale')
 median_qual_data = qual_data %>%
   group_by(NeighRich) %>%
   summarise_at(vars(ends_with("Qual")), median)
-median_qual_data<- rbind(rep(5,5) , rep(0,5) , median_qual_data)
+median_qual_data <- rbind(rep(5,5) , rep(0,5) , median_qual_data)
 
 
 
 colors_border=c( rgb(0.2,0.5,0.5,0.9), rgb(0.8,0.2,0.5,0.9) , rgb(0.7,0.5,0.1,0.9) )
-colors_in=c( rgb(0.2,0.5,0.5,0.4), rgb(0.8,0.2,0.5,0.4) , rgb(0.7,0.5,0.1,0.4) )
+colors_in=c( rgb(0.2,0.5,0.5,0.5), rgb(0.8,0.2,0.5,0.5) , rgb(0.7,0.5,0.1,0.5) )
 
-radarchart(median_qual_data[1:5], axistype=1 , 
+radarchart(median_qual_data[2:6], axistype=1 , 
            #custom polygon
            pcol=colors_border , pfcol=colors_in, plwd=4 , plty=1,
            #custom the grid

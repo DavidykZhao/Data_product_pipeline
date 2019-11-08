@@ -25,8 +25,7 @@ sumld <- training_data %>%
 ```
 
 ```{r rainplot, eval = F, echo = F,  out.width = "100%", warning = F, message = F}
-# We could visualize the distribution
-# of variable OverallQual in a rainplot
+
 ggplot(data = training_data, 
   aes(x = factor(OverallQual), y = SalePrice, fill=factor(OverallQual))) +
   geom_flat_violin(position = position_nudge(x = .2, y = 0), trim = TRUE, alpha = .8, scale = "width") +

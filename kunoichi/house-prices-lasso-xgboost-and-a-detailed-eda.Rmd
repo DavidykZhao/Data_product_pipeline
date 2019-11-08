@@ -55,8 +55,8 @@ library(xgboost)
 Below, I am reading the csv's as dataframes into R.
 
 ```{r}
-train <- read.csv("train_house.csv", stringsAsFactors = F)
-test <- read.csv("test_house.csv", stringsAsFactors = F)
+train <- read.csv("data/train_house.csv", stringsAsFactors = F)
+test <- read.csv("data/test_house.csv", stringsAsFactors = F)
 ```
 
 ##Data size and structure
@@ -423,7 +423,7 @@ Within Fence, there are 2348 NAs. The values seem to be ordinal. Values:
 ```{r}
 all$Fence[is.na(all$Fence)] <- 'None'
 table(all$Fence)
-all[!is.na(all$SalePrice),] %>% group_by(Fence) %>% summarise(median = median(SalePrice), counts=n())
+all[!is.na(all$SalePrice),] %>% group_by(Fence) %>% summarise(median = median(SalePrice))
 ```
 
 My conclusion is that the values do not seem ordinal (no fence is best). Therefore, I will convert Fence into a factor.
@@ -865,7 +865,7 @@ Will check the ordinality below.
 ```{r}
 all$MasVnrType[is.na(all$MasVnrType)] <- 'None'
 
-all[!is.na(all$SalePrice),] %>% group_by(MasVnrType) %>% summarise(median = median(SalePrice), counts=n()) %>% arrange(median)
+all[!is.na(all$SalePrice),] %>% group_by(MasVnrType) %>% summarise(median = median(SalePrice)) %>% arrange(median)
 ```
 
 There seems to be a significant difference between "common brick/none" and the other types. I assume that simple stones and for instance wooden houses are just cheaper. I will make the ordinality accordingly.
@@ -2251,7 +2251,6 @@ write.csv(sub_avg, file = 'average1.csv', row.names = F)
 ```{r}
 #devtools::install_github("liuyanguu/SHAPforxgboost")
 
-library('SHAPforxgboost')
 ```
 
 
@@ -2279,6 +2278,7 @@ yikai_themes = theme(
 
 ```{r}
 # to make SHAP summary plot
+library('SHAPforxgboost')
 
 mod <- xgboost::xgboost(data = as.matrix(train1), label = as.matrix(train_df$SalePrice), 
                        xgb_param = default_param, nrounds = 301,
@@ -2287,6 +2287,7 @@ mod <- xgboost::xgboost(data = as.matrix(train1), label = as.matrix(train_df$Sal
 shap_values <- shap.values(xgb_model = mod, X_train = train1)
 
 shap_long <- shap.prep(xgb_model = mod, X_train = train1)
+
 # find out the top20 names
 top20_names = shap_long %>%
   select(variable, mean_value) %>%
@@ -2312,11 +2313,12 @@ shap.plot.summary(shap_top20) + yikai_labels + yikai_themes
 
 ```{r}
 # interaction plots
-shap.plot.dependence(data_long = shap_long, x = 'TotalSqFeet', y = 'TotalSqFeet', color_feature = 'OverallQual') + ggtitle("(A) SHAP values of TotalSqFeet vs. TotalSqFeet")+
+shap.plot.dependence(data_long = shap_long, x = 'TotalSqFeet', y = 'TotalSqFeet', color_feature = 'OverallQual') + 
+  ggtitle("(A) SHAP values of TotalSqFeet vs. TotalSqFeet")+
 
 ```
 
-```{r}
+```{r, warning = F, message = F}
 shap.plot.dependence(data_long = shap_long, x = 'TotalSqFeet', y = 'Age', color_feature = 'OverallQual') + ggtitle("(A) SHAP values of TotalSqFeet vs. TotalSqFeet")
 ```
 
@@ -2337,10 +2339,11 @@ mod_20 <- xgboost::xgboost(data = as.matrix(top_20_feature_field), label = as.ma
                        early_stopping_rounds = 8)
 shap_long_20 <- shap.prep(xgb_model = mod_20, X_train = as.matrix(top_20_feature_field))
 
-shap_int <- shap.prep.interaction(xgb_mod = mod_20, X_train = as.matrix(top_20_feature_field))
-saveRDS(shap_int, "shap_interaction_plot_data")
+#shap_int <- shap.prep.interaction(xgb_mod = mod_20, X_train = as.matrix(top_20_feature_field))
+#saveRDS(shap_int, "shap_interaction_plot_data.rds")
+shap_int = read_rds("data/shap_interaction_plot_data.rds")
 shap.plot.dependence(data_long = shap_long_20,
-                           #data_int = shap_int,
+                           data_int = shap_int,
                            x= "TotalSqFeet", y = "OverallQual", 
                            color_feature = "OverallQual")
 
