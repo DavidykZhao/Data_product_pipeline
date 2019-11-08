@@ -3,7 +3,7 @@
 class: split-50  
 
 .column.bg-main1[.content.vmiddle[
-# We could view the median .orange[SalePrie] in 3 .green[wealthy neiborhoods] across years
+# We could view the median SalePrie in 3 .teal[wealthy neighborhoods] across years
 
 ]]
 

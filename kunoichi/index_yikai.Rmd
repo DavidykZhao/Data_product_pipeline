@@ -43,7 +43,7 @@ class: split-60 white
 # Overview
 <br>
 
-### This powerpoint aims to use .orange[visualizations] to showcase the process of data analysis from data cleaning to model interpretation
+## This powerpoint aims to use .orange[visualizations] to showcase the process of data analysis
 
 ### Specific details within the process are stripped if there is no good way for visualization such as missing value imputation and model training
 
@@ -141,17 +141,17 @@ layout: true
 
 class: split-two 
 
-.column.bg-main1[.content.vmiddle.center[
+.row.bg-main1[.content.vmiddle[
 #  Data exploration and manipulation 
 ### This step involves visualizing the relationship between .orange[variables], .teal[missing values] and .pink[possible extreme values]  
 
 
 
 ]]
-.column.bg-main1[.content.vmiddle.center[
+.row.bg-main1[.content.vmiddle[
 #  Modeling and Model interpretation
 
-### This step involves fitting different models and interpret the .yellow[feature importance]
+### This step involves fitting different models and interpret the .orange[feature importance]
 
 
 ]]
@@ -159,7 +159,7 @@ class: split-two
 
 ---
 
-class: fade-col2
+class: fade-row2
 count: false
 
 ---
@@ -180,9 +180,9 @@ layout: false
 class: split-50 
 .column.bg-main1[.content.vmiddle[
 
-# Which numerical variables are important to explore first
+# Which .blue[numerical] variables are important to explore first
 
-## We could find variables with a correlation of at least 0.5 with our dependent variable .cyan[SalePrice]
+## We could find variables with a correlation of at least 0.5 with our dependent variable .deep-orange[SalePrice]
 
 ]]
 
@@ -249,6 +249,7 @@ p = ggplot(data=all[!is.na(all$SalePrice),], aes(x=GrLivArea, y=SalePrice))+
         labs(subtitle = "Data Source: House Prices Competition in Kaggle")+
         labs(caption = "Vis: @zhao_yikai with ggplot")
 p
+grid::grid.raster(logo, x = 0.79, y = 0.91, just = c('left', 'bottom'), width = unit(1.5, 'inches'))
 ```
 
 
@@ -258,9 +259,9 @@ p
 class: bg-main1, center, middle
 
 
-###  In the next slide, we visualize the relationship between .yellow[OverallQual] and .pink[SalePrice] in steps.
+###  In the next slide, we visualize the relationship between .orange[OverallQual] and .deep-orange[SalePrice] in steps.
 
-# We could customize the visualization with great flexibility to the businuess needs. 
+# We could customize the visualization with great .orange[flexibility] to the businuess needs. 
 
 ---
 
@@ -274,9 +275,9 @@ class: split-50
 
 .column.bg-main1[.content.vmiddle[
 
-# Visualize the relaionship between .orange[Year] and .teal[SalePrice] by .pink[OverallQual]
+# Visualize the relationship between .orange[Year] and .teal[SalePrice] by .pink[OverallQual]
 
-The dotted line is roughly the time of the economic crisis happend at the end of 2017.
+The dotted line is roughly the time when the economic crisis happend at the end of 2017.
 We could see clearly that the high quality (10) houses get influenced the most.
 
 
@@ -350,7 +351,7 @@ class: bg-main1, center, middle
 
 # Which .orange[categorical variables] are important to explore
 
-## We could find them via a .cyan[Random Forest] feature importance test.
+## We could find them via .orange[Random Forest] feature importance.
 
 ---
 
@@ -430,11 +431,9 @@ class: split-60
 
 .column.bg-main1[.content.vmiddle[
 
-# Plotting the missingness in that dataset 
+# Plotting the missing values in the dataset 
 
-###.orange[white lines] indicate missing values in the corresponding variable
-### Most missingness indicate the .orange[absence] of that feature (e.g. a pool or fense), which we could impurte as a .pink[None] type 
-### some are data misentry and we need to deal with them individually
+
 
 
 ]]
@@ -485,7 +484,7 @@ grid::grid.raster(logo, x = 0.79, y = 0.91, just = c('left', 'bottom'), width = 
 ---
 class: bg-main1, center, middle
 
-# Part 2: Modeling of the data
+# Part 2: Modeling and interpretation
 ---
 
 ```{r child='coeff_plot.Rmd', warning=F, message=F}

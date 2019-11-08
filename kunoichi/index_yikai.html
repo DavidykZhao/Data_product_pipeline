@@ -41,7 +41,7 @@ class: split-60 white
 # Overview
 &lt;br&gt;
 
-### This powerpoint aims to use .orange[visualizations] to showcase the process of data analysis from data cleaning to model interpretation
+## This powerpoint aims to use .orange[visualizations] to showcase the process of data analysis
 
 ### Specific details within the process are stripped if there is no good way for visualization such as missing value imputation and model training
 
@@ -84,7 +84,7 @@ dim(test)
 class: bg-main1 center middle hide-slide-number
 
 .reveal-text[.pad1[
-.orange[There will be two major parts
+.font4[There will be two major parts
 ]
 ]]
 
@@ -94,14 +94,14 @@ layout: true
 
 class: split-two 
 
-.column.bg-main1[.content.vmiddle.center[
+.row.bg-main1[.content.vmiddle[
 #  Data exploration and manipulation 
 ### This step involves visualizing the relationship between .orange[variables], .teal[missing values] and .pink[possible extreme values]  
 
 
 
 ]]
-.column.bg-main1[.content.vmiddle.center[
+.row.bg-main1[.content.vmiddle[
 #  Modeling and Model interpretation
 
 ### This step involves fitting different models and interpret the .orange[feature importance]
@@ -112,7 +112,7 @@ class: split-two
 
 ---
 
-class: fade-col2
+class: fade-row2
 count: false
 
 ---
@@ -125,7 +125,7 @@ layout: false
 
 class: bg-main1, center, middle
 
-# Part 1: .orange[Data exploration and manipulation]
+# Part 1: Data exploration and manipulation
 
 ---
 
@@ -133,9 +133,9 @@ layout: false
 class: split-50 
 .column.bg-main1[.content.vmiddle[
 
-# Which numerical variables are important to explore first
+# Which .blue[numerical] variables are important to explore first
 
-## We could find variables with a correlation of at least 0.5 with our dependent variable .cyan[SalePrice]
+## We could find variables with a correlation of at least 0.5 with our dependent variable .deep-orange[SalePrice]
 
 ]]
 
@@ -208,9 +208,9 @@ These two houses are all of the highest quality however located at a "normal" .t
 class: bg-main1, center, middle
 
 
-###  In the next slide, we visualize the relationship between .yellow[OverallQual] and .pink[SalePrice] in steps.
+###  In the next slide, we visualize the relationship between .orange[OverallQual] and .deep-orange[SalePrice] in steps.
 
-# We could customize the visualization with great flexibility to the businuess needs. 
+# We could customize the visualization with great .orange[flexibility] to the businuess needs. 
 
 ---
 
@@ -841,7 +841,7 @@ class: split-50
 
 # Visualize the relaionship between .orange[Year] and .teal[SalePrice] by .pink[OverallQual]
 
-The dotted line is roughly the time of the economic crisis happend at the end of 2017.
+The dotted line is roughly the time when the economic crisis happend at the end of 2017.
 We could see clearly that the high quality (10) houses get influenced the most.
 
 
@@ -867,14 +867,14 @@ We could see clearly that the high quality (10) houses get influenced the most.
 class: split-50  
 
 .column.bg-main1[.content.vmiddle[
-# We could view the median .orange[SalePrie] in 3 .green[wealthy neiborhoods] across years
+# We could view the median SalePrie in 3 .teal[wealthy neighborhoods] across years
 
 ]]
 
 .column.bg-main5[.content.vmiddle.center[
 
 
-&lt;img src="index_yikai_files/figure-html/unnamed-chunk-31-1.png" width="90%" /&gt;
+&lt;img src="index_yikai_files/figure-html/unnamed-chunk-21-1.png" width="90%" /&gt;
 
   
   
@@ -895,7 +895,7 @@ class: split-50
 .column.bg-main5[.content.vmiddle.center[
 
 
-&lt;img src="index_yikai_files/figure-html/unnamed-chunk-32-1.png" width="80%" /&gt;
+&lt;img src="index_yikai_files/figure-html/unnamed-chunk-22-1.png" width="80%" /&gt;
 
 
 ]]
@@ -907,7 +907,7 @@ class: bg-main1, center, middle
 
 # Which .orange[categorical variables] are important to explore
 
-## We could find them via a .cyan[Random Forest] feature importance test.
+## We could find them via .orange[Random Forest] feature importance.
 
 ---
 
@@ -1423,7 +1423,7 @@ class: split-50
 
 
 
-&lt;img src="index_yikai_files/figure-html/unnamed-chunk-35-1.png" width="90%" /&gt;
+&lt;img src="index_yikai_files/figure-html/unnamed-chunk-25-1.png" width="90%" /&gt;
 
 
 ]]
@@ -1436,11 +1436,9 @@ class: split-60
 
 .column.bg-main1[.content.vmiddle[
 
-# Plotting the missingness in that dataset 
+# Plotting the missing values in the dataset 
 
-###.orange[white lines] indicate missing values in the corresponding variable
-### Most missingness indicate the .orange[absence] of that feature (e.g. a pool or fense), which we could impurte as a .pink[None] type 
-### some are data misentry and we need to deal with them individually
+
 
 
 ]]
@@ -1458,146 +1456,11 @@ class: split-60
 
 ]]
 
----
-
-class: split-40
-
-.column.bg-main1[.content.vmiddle[
-## Among the NA's, some are due to misentry of data
-
-&lt;br&gt;
-
-### e.g. While most NA's in .orange[Garage] related variables indicates a lack of a garage, 2 houses have contradictory values in those variables
-
-
-
-]]
-
-
-.column.bg-main4[.content.vmiddle[
-
-
-
-
-
-```r
-GarageCars GarageArea GarageType GarageCond GarageQual GarageFinish
-2127          1        360     Detchd       &lt;NA&gt;       &lt;NA&gt;         &lt;NA&gt;
-2577         NA         NA     Detchd       &lt;NA&gt;       &lt;NA&gt;         &lt;NA&gt;
-```
-
-&lt;br&gt;
-Given no other variables could predict the garage variables, I think house 2127 indeed has a garage thus the rest of NA's are imputed with the mode.
-
-```r
-all$GarageCond[2127] &lt;- names(sort(-table(all$GarageCond)))[1]
-all$GarageQual[2127] &lt;- names(sort(-table(all$GarageQual)))[1]
-all$GarageFinish[2127] &lt;- names(sort(-table(all$GarageFinish)))[1]
-```
-
-However, house 2577 does not seem to have a garage but with a wrong input of data in .teal[GarageType]. Thus all garage varialbes have been imputed into values indicating there is no garage. 
-
-
-
-
-]]
----
-
-class: split-50
-
-.column.bg-main1[.content.vmiddle[
-
-# We also need to code the character variables into numbers
-
-## Need to consider if the variables is .orange[categorical] or .teal[ordinal]
-
-### If there is no inherent order within the variable, it will be coded as a factor variable
-]]
-
-.column.bg-main4[.content.vmiddle[
-
-### For example, the .orange[heating] variable has the following levels:
-
-
-
-```r
-   Floor    Floor Furnace
-   GasA Gas forced warm air furnace
-   GasW Gas hot water or steam heat
-   Grav Gravity furnace 
-   OthW Hot water or steam heat other than gas
-   Wall Wall furnace
-```
-
-### It will be coded as:
-
-
-```r
-all$Heating &lt;- as.factor(all$Heating)
-table(all$Heating)
-```
-
-
-```r
-1    2    3    4    5 
-3    92   857  474  1493
-```
-
-
-
-]]
-
----
-
-class: split-50
-
-.column.bg-main1[.content.vmiddle[
-
-# We also need to code the character variables into numbers
-
-## Need to consider if the variables is .orange[categorical] or .teal[ordinal]
-
-### If there is an inherent order within the variable, it will be coded as integers indicating the inherent order
-]]
-
-.column.bg-main4[.content.vmiddle[
-
-### For example, the .pink[HeatingQC] variable has the following levels:
-
-
-
-
-```r
-   heating    heating_qual
-      Ex       Excellent
-      Gd            Good
-      TA Average/Typical
-      Fa            Fair
-      Po            Poor
-```
-
-### It will be coded as:
-
-
-```r
-Qualities &lt;- c('None' = 0, 'Po' = 1, 
-               'Fa' = 2, 'TA' = 3, 
-               'Gd' = 4, 'Ex' = 5)
-all$HeatingQC&lt;-as.integer(revalue(all$HeatingQC, Qualities))
-```
-
-
-
-```r
-1    2    3    4    5 
-3   92  857  474 1493
-```
-]]
 
 ---
 class: bg-main1, center, middle
 
-# Part 2: Modeling of the data
+# Part 2: Modeling and interpretation
 ---
 
 
@@ -1605,7 +1468,7 @@ class: split-50
 
 .column.bg-main1[.content.vmiddle[
 
-# Through a refitted LASSO we could view the feature importance by the size of the coefficients. 
+# Through a refitted LASSO we could view the feature importance by the .teal[size of the coefficients]. 
 
 Note: The independent numerical variables have been mean centerred and scaled, dependent variable has been log transformed. 
 
@@ -1618,7 +1481,7 @@ Note: The independent numerical variables have been mean centerred and scaled, d
 
 
 
-&lt;img src="index_yikai_files/figure-html/unnamed-chunk-36-1.png" width="90%" /&gt;
+&lt;img src="index_yikai_files/figure-html/unnamed-chunk-26-1.png" width="90%" /&gt;
 
 
 ]]
@@ -1645,7 +1508,7 @@ class: split-50
 .column.bg-main5[.content.vmiddle.center[
 
 
-&lt;img src="index_yikai_files/figure-html/unnamed-chunk-37-1.png" width="80%" /&gt;
+&lt;img src="index_yikai_files/figure-html/unnamed-chunk-27-1.png" width="80%" /&gt;
 
 
 
@@ -1671,7 +1534,7 @@ class: split-50
 
 
 
-&lt;img src="index_yikai_files/figure-html/unnamed-chunk-38-1.png" width="80%" /&gt;
+&lt;img src="index_yikai_files/figure-html/unnamed-chunk-28-1.png" width="80%" /&gt;
 
 ]]
 

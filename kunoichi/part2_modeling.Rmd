@@ -16,10 +16,10 @@ class: split-50
 .column.bg-main5[.content.vmiddle.center[
 
 
-```{r, echo = F}
+```{r, echo = F, warning= F, message=F}
 train1 = readRDS("data/training_x.rds")
 train_y_include = readRDS("data/training_y_included.rds")
-
+library(xgboost)
 label_train <- train_y_include["SalePrice"]
 
 # put our testing & training data into two seperates Dmatrixs objects
@@ -44,7 +44,11 @@ xgb_mod <- xgb.train(data = dtrain, params=default_param, nrounds = 178)
 
 library(Ckmeans.1d.dp) #required for ggplot clustering
 mat <- xgb.importance (feature_names = colnames(train1),model = xgb_mod)
-xgb.ggplot.importance(importance_matrix = mat[1:20], rel_to_first = TRUE)
+xgb.ggplot.importance(importance_matrix = mat[1:20], rel_to_first = TRUE)+
+  yikai_labels+
+  theme_bw()
+  yikai_themes+
+  labs("Feature importance through XGBoost")
 
 ```
 
@@ -56,34 +60,43 @@ xgb.ggplot.importance(importance_matrix = mat[1:20], rel_to_first = TRUE)
 
 ---
 
-class: split-50
 
+class: split-50
 
 .column.bg-main1[.content.vmiddle[
 
-# We could view feature importance through SHAPLEY values.
-## SHAP utilizes SHAPLEY values to attribute contributions to features
-### For more about SHAP or SHAPLEY values, please look at [here](https://github.com/slundberg/shap):
+# We could also visualize the SHAP value  between variables
 
 
 ]]
 
+
+
 .column.bg-main5[.content.vmiddle.center[
 
 
+```{r, echo = F, warning= F, message=F}
+train1 = readRDS("data/training_x.rds")
+train_y_include = readRDS("data/training_y_included.rds")
+library(xgboost)
+label_train <- train_y_include["SalePrice"]
 
-```{r, echo = F, warning= F, message = F}
-# to make SHAP summary plot
+  
+
+
+```
+
+```{r,warning=F, message = F}
 library('SHAPforxgboost')
 
-mod <- xgboost::xgboost(data = as.matrix(train1), label = as.matrix(label_train), 
+mod <- xgboost::xgboost(data = as.matrix(train1), label = as.matrix(train_df$SalePrice), 
                        xgb_param = default_param, nrounds = 301,
                        verbose = FALSE, nthread = parallel::detectCores() - 2,
                        early_stopping_rounds = 8)
-#shap_values <- shap.values(xgb_model = mod, X_train = train1)
+shap_values <- shap.values(xgb_model = mod, X_train = train1)
 
 shap_long <- shap.prep(xgb_model = mod, X_train = train1)
-# find out the top20 names
+
 top20_names = shap_long %>%
   select(variable, mean_value) %>%
   arrange(desc(mean_value)) %>%
@@ -95,20 +108,80 @@ top_20_feature_field =
   train1 %>%
   select(as.character(top20_names$variable))
 
-shap_top20 = shap_long %>%
-  filter(variable %in% top20_names$variable)
-shap_top20$variable = droplevels(shap_top20$variable)
-
-shap.plot.summary(shap_top20) + yikai_labels + yikai_themes
-
-
+mod_20 <- xgboost::xgboost(data = as.matrix(top_20_feature_field), label = as.matrix(train_df$SalePrice), 
+                       xgb_param = default_param, nrounds = 301,
+                       verbose = FALSE, nthread = parallel::detectCores() -2,
+                       early_stopping_rounds = 8)
+shap_long_20 <- shap.prep(xgb_model = mod_20, X_train = as.matrix(top_20_feature_field))
 
 
+
+shap.plot.dependence(data_long = shap_long, x = 'TotalSqFeet', y = 'TotalSqFeet', color_feature = 'OverallQual') + 
+  ggtitle("(A) SHAP values of TotalSqFeet vs. TotalSqFeet")+
+  xlim(c(-4, 3)) +
+  labs(title = "SHAP values of TotalSqFeet colored by OverallQual")+
+  yikai_labels+
+  yikai_themes+
+  theme(axis.ticks = element_blank())+
+  theme(panel.grid.major.y = element_blank())+
+  theme(legend.direction = "horizontal")+
+  theme(legend.position = c(0.3, 0.7))+
+  theme(legend.text = element_text(size = 6))+
+  theme(legend.title = element_text(size = 6))
+
+  
+grid::grid.raster(logo, x = 0.79, y = 0.91, just = c('left', 'bottom'), width = unit(1.5, 'inches'))
 ```
+
+
 
 ]]
 
+
+
 ---
+
+class split-50
+
+.column.bg-main1[.content.vmiddle[
+
+# We could also visualize the interactions between variables via SHAP values
+
+
+]]
+
+
+.column.bg-main1[.content.vmiddle[
+
+
+```{r}
+shap_int = read_rds("data/shap_interaction_plot_data.rds")
+shap.plot.dependence(data_long = shap_long_20,
+                           data_int = shap_int,
+                           x= "TotalSqFeet", y = "OverallQual", 
+                           color_feature = "OverallQual")
+```
+
+
+
+]]
+
+
+
+
+---
+
+
+
+
+```{r forceplot, warning =F, echo = F}
+# force plot
+plot_data <- shap.prep.stack.data(shap_contrib = shap_values$shap_score, top_n = 10, n_groups = 6)
+
+shap.plot.force_plot(plot_data, zoom_in_location = 500, y_parent_limit = c(-1.5,1.5))
+
+
+```
 
 
 

@@ -2070,7 +2070,7 @@ test1 = readRDS("testing_x.rds")
 
 train_df <- cbind(combined[!is.na(all$SalePrice),], 'SalePrice' = all$SalePrice[!is.na(all$SalePrice)])
 saveRDS(train_df, file = "training_y_included.rds")
-
+train_df = readRDS("data/training_y_included.rds")
 training_y_included = readRDS("training_y_included.rds")
 
 ```
@@ -2314,7 +2314,7 @@ shap.plot.summary(shap_top20) + yikai_labels + yikai_themes
 ```{r}
 # interaction plots
 shap.plot.dependence(data_long = shap_long, x = 'TotalSqFeet', y = 'TotalSqFeet', color_feature = 'OverallQual') + 
-  ggtitle("(A) SHAP values of TotalSqFeet vs. TotalSqFeet")+
+  ggtitle("(A) SHAP values of TotalSqFeet vs. TotalSqFeet")
 
 ```
 
