@@ -1,0 +1,41 @@
+
+
+class split-50
+
+
+.column.bg-main1[.content.vmiddle[
+
+# We could also visualize the interactions between .purple[TotalSqFeet] and .orange[OverallQual] via SHAP values
+
+
+]]
+
+
+
+.column.bg-main5[.content.vmiddle[
+
+
+```{r, warning =F, message=F, echo = F, out.width= "90%"}
+shap_int = read_rds("data/shap_interaction_plot_data.rds")
+shap.plot.dependence(data_long = shap_long_20,
+                           data_int = shap_int,
+                           x= "TotalSqFeet", y = "TotBathrooms", 
+                           color_feature = "TotBathrooms")+
+                        xlim(c(-2, 2.5)) +
+  labs(title = "SHAP values of TotalSqFeet colored by OverallQual")+
+  yikai_labels+
+  yikai_themes+
+  theme(axis.ticks = element_blank())+
+  theme(panel.grid.major.y = element_blank())+
+  theme(legend.direction = "horizontal")+
+  theme(legend.position = c(0.3, 0.8))+
+  theme(legend.text = element_text(size = 6))+
+  theme(legend.title = element_text(size = 6))
+
+  
+grid::grid.raster(logo, x = 0.79, y = 0.91, just = c('left', 'bottom'), width = unit(1.5, 'inches'))
+
+```
+
+
+]]

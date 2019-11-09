@@ -131,7 +131,7 @@ dim(test)
 class: bg-main1 center middle hide-slide-number
 
 .reveal-text[.pad1[
-.font4[There will be two major parts
+.font4[ There will be two major parts
 ]
 ]]
 
@@ -427,7 +427,7 @@ grid::grid.raster(logo, x = 0.79, y = 0.91, just = c('left', 'bottom'), width = 
 
 
 ---
-class: split-60  
+class: split-50  
 
 .column.bg-main1[.content.vmiddle[
 
@@ -497,4 +497,10 @@ class: bg-main1, center, middle
 
 
 
+```{r child='SHAP_interaction_plot.Rmd', warning=F, message=F}
+```
 
+---
+
+```{r child='SHAP_force_plot.Rmd', warning=F, message=F}
+```

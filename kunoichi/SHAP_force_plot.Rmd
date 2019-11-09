@@ -1,0 +1,41 @@
+
+class: split-50
+
+.column.bg-main1[.content.vmiddle[
+
+# We could also visualize the SHAP <sup>1</sup> contribution of each .yellow[feature] within each .blue[ data point].
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+.footnote[
+[1] For the interpretation of the plot, I would recommend reading [this](https://christophm.github.io/interpretable-ml-book/shap.html), or I could explain it if needed during an interview :)
+
+]
+
+]]
+
+
+.column.bg-main5[.content.vmiddle.center[
+
+```{r forceplot, warning = F, echo = F, message = F, out.width= "90%"}
+# force plot
+plot_data <- shap.prep.stack.data(shap_contrib = shap_values$shap_score, top_n = 10, n_groups = 6)
+
+shap.plot.force_plot(plot_data, zoom_in_location = 500, y_parent_limit = c(-1.5,1.5))+
+  theme(legend.position = "none")+
+  yikai_labels +
+  yikai_themes +
+  labs(title = "Force plot of SHAP values")
+
+grid::grid.raster(logo, x = 0.79, y = 0.91, just = c('left', 'bottom'), width = unit(1.5, 'inches'))
+
+```
+
+]]
+

@@ -84,7 +84,7 @@ dim(test)
 class: bg-main1 center middle hide-slide-number
 
 .reveal-text[.pad1[
-.font4[There will be two major parts
+.font4[ There will be two major parts
 ]
 ]]
 
@@ -839,7 +839,7 @@ class: split-50
 
 .column.bg-main1[.content.vmiddle[
 
-# Visualize the relaionship between .orange[Year] and .teal[SalePrice] by .pink[OverallQual]
+# Visualize the relationship between .orange[Year] and .teal[SalePrice] by .pink[OverallQual]
 
 The dotted line is roughly the time when the economic crisis happend at the end of 2017.
 We could see clearly that the high quality (10) houses get influenced the most.
@@ -874,7 +874,7 @@ class: split-50
 .column.bg-main5[.content.vmiddle.center[
 
 
-&lt;img src="index_yikai_files/figure-html/unnamed-chunk-21-1.png" width="90%" /&gt;
+&lt;img src="index_yikai_files/figure-html/unnamed-chunk-23-1.png" width="90%" /&gt;
 
   
   
@@ -895,7 +895,7 @@ class: split-50
 .column.bg-main5[.content.vmiddle.center[
 
 
-&lt;img src="index_yikai_files/figure-html/unnamed-chunk-22-1.png" width="80%" /&gt;
+&lt;img src="index_yikai_files/figure-html/unnamed-chunk-24-1.png" width="80%" /&gt;
 
 
 ]]
@@ -1423,7 +1423,7 @@ class: split-50
 
 
 
-&lt;img src="index_yikai_files/figure-html/unnamed-chunk-25-1.png" width="90%" /&gt;
+&lt;img src="index_yikai_files/figure-html/unnamed-chunk-27-1.png" width="90%" /&gt;
 
 
 ]]
@@ -1432,7 +1432,7 @@ class: split-50
 
 
 ---
-class: split-60  
+class: split-50  
 
 .column.bg-main1[.content.vmiddle[
 
@@ -1481,7 +1481,7 @@ Note: The independent numerical variables have been mean centerred and scaled, d
 
 
 
-&lt;img src="index_yikai_files/figure-html/unnamed-chunk-26-1.png" width="90%" /&gt;
+&lt;img src="index_yikai_files/figure-html/unnamed-chunk-28-1.png" width="90%" /&gt;
 
 
 ]]
@@ -1498,9 +1498,8 @@ class: split-50
 
 .column.bg-main1[.content.vmiddle[
 
-# To achieve great .orange[predicability] and .orange[explanabiity]
-# XGBoost model is used
-# A Bayesian hyperparameter tuning was conducted to find the optimal combination of hyperparamters from our XGBoost model
+# XGBoost model was used to achieve great .orange[predicability] and .orange[explanabiity], 
+Used bayesian hyperparameter tuning to find the optimal combination of hyperparamters of the XGBoost model
 
 
 ]]
@@ -1508,7 +1507,7 @@ class: split-50
 .column.bg-main5[.content.vmiddle.center[
 
 
-&lt;img src="index_yikai_files/figure-html/unnamed-chunk-27-1.png" width="80%" /&gt;
+&lt;img src="index_yikai_files/figure-html/unnamed-chunk-29-1.png" width="90%" /&gt;
 
 
 
@@ -1518,27 +1517,109 @@ class: split-50
 
 ---
 
+
 class: split-50
+
+.column.bg-main1[.content.vmiddle[
+
+# We could also visualize the .purple[SHAP] values&lt;sup&gt;1&lt;/sup&gt; of each variable
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+
+.footnote[
+
+[1]  This powerpoint is to show the visualizations, not to interpret the results. For more details, please refer [here](https://github.com/slundberg/shap)
+
+]
+
+]]
+
+
+
+.column.bg-main5[.content.vmiddle.center[
+
+
+
+
+&lt;img src="index_yikai_files/figure-html/unnamed-chunk-31-1.png" width="90%" /&gt;
+
+
+
+]]
+
+
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class split-50
 
 
 .column.bg-main1[.content.vmiddle[
 
-# We could view feature importance through SHAPLEY values.
-## SHAP utilizes SHAPLEY values to attribute contributions to features
-### For more about SHAP or SHAPLEY values, please look at [here](https://github.com/slundberg/shap):
+# We could also visualize the interactions between .purple[TotalSqFeet] and .orange[OverallQual] via SHAP values
 
 
 ]]
 
-.column.bg-main5[.content.vmiddle.center[
 
 
+.column.bg-main5[.content.vmiddle[
 
-&lt;img src="index_yikai_files/figure-html/unnamed-chunk-28-1.png" width="80%" /&gt;
+
+&lt;img src="index_yikai_files/figure-html/unnamed-chunk-32-1.png" width="90%" /&gt;
+
 
 ]]
 
 ---
+
+
+
+class: split-50
+
+.column.bg-main1[.content.vmiddle[
+
+# We could also visualize the SHAP &lt;sup&gt;1&lt;/sup&gt; contribution of each .yellow[feature] within each .blue[ data point].
+
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+.footnote[
+[1] For the interpretation of the plot, I would recommend reading [this](https://christophm.github.io/interpretable-ml-book/shap.html), or I could explain it if needed during an interview :)
+
+]
+
+]]
+
+
+.column.bg-main5[.content.vmiddle.center[
+
+&lt;img src="index_yikai_files/figure-html/forceplot-1.png" width="90%" /&gt;
+
+]]
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="libs/remark-latest.min.js"></script>

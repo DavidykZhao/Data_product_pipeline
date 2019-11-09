@@ -6,9 +6,8 @@ class: split-50
 
 .column.bg-main1[.content.vmiddle[
 
-# To achieve great .orange[predicability] and .orange[explanabiity]
-# XGBoost model is used
-# A Bayesian hyperparameter tuning was conducted to find the optimal combination of hyperparamters from our XGBoost model
+# XGBoost model was used to achieve great .orange[predicability] and .orange[explanabiity], 
+Used bayesian hyperparameter tuning to find the optimal combination of hyperparamters of the XGBoost model
 
 
 ]]
@@ -16,7 +15,7 @@ class: split-50
 .column.bg-main5[.content.vmiddle.center[
 
 
-```{r, echo = F, warning= F, message=F}
+```{r, echo = F, warning= F, message=F, out.width= "90%"}
 train1 = readRDS("data/training_x.rds")
 train_y_include = readRDS("data/training_y_included.rds")
 library(xgboost)
@@ -46,10 +45,18 @@ library(Ckmeans.1d.dp) #required for ggplot clustering
 mat <- xgb.importance (feature_names = colnames(train1),model = xgb_mod)
 xgb.ggplot.importance(importance_matrix = mat[1:20], rel_to_first = TRUE)+
   yikai_labels+
-  theme_bw()
-  yikai_themes+
-  labs("Feature importance through XGBoost")
+  theme_bw()+
+  theme(panel.grid.major = element_blank())+
+  yikai_themes +
+  scale_fill_manual(values = c( "#f9b282", "#de6b35"))+
+  theme(legend.position = "none")+
+  theme(text= element_text(color = "grey40"))+
+  theme(axis.text = element_text(color = "grey40"))+
+  theme(axis.ticks = element_blank())
+    
 
+grid::grid.raster(logo, x = 0.79, y = 0.91, just = c('left', 'bottom'), width = unit(1.5, 'inches'))
+    
 ```
 
 
@@ -65,8 +72,20 @@ class: split-50
 
 .column.bg-main1[.content.vmiddle[
 
-# We could also visualize the SHAP value  between variables
+# We could also visualize the .purple[SHAP] values<sup>1</sup> of each variable
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
+
+.footnote[
+
+[1]  This powerpoint is to show the visualizations, not to interpret the results. For more details, please refer [here](https://github.com/slundberg/shap)
+
+]
 
 ]]
 
@@ -86,8 +105,9 @@ label_train <- train_y_include["SalePrice"]
 
 ```
 
-```{r,warning=F, message = F}
+```{r,warning=F, message = F, echo = F, out.width= "90%"}
 library('SHAPforxgboost')
+train_df = readRDS("data/training_y_included.rds")
 
 mod <- xgboost::xgboost(data = as.matrix(train1), label = as.matrix(train_df$SalePrice), 
                        xgb_param = default_param, nrounds = 301,
@@ -116,10 +136,10 @@ shap_long_20 <- shap.prep(xgb_model = mod_20, X_train = as.matrix(top_20_feature
 
 
 
-shap.plot.dependence(data_long = shap_long, x = 'TotalSqFeet', y = 'TotalSqFeet', color_feature = 'OverallQual') + 
+shap.plot.dependence(data_long = shap_long, x = 'TotalSqFeet', y = 'TotalSqFeet', color_feature = 'TotalSqFeet') + 
   ggtitle("(A) SHAP values of TotalSqFeet vs. TotalSqFeet")+
-  xlim(c(-4, 3)) +
-  labs(title = "SHAP values of TotalSqFeet colored by OverallQual")+
+ xlim(c(-4, 3)) +
+  labs(title = "SHAP values of TotalSqFeet")+
   yikai_labels+
   yikai_themes+
   theme(axis.ticks = element_blank())+
@@ -140,50 +160,6 @@ grid::grid.raster(logo, x = 0.79, y = 0.91, just = c('left', 'bottom'), width = 
 
 
 ---
-
-class split-50
-
-.column.bg-main1[.content.vmiddle[
-
-# We could also visualize the interactions between variables via SHAP values
-
-
-]]
-
-
-.column.bg-main1[.content.vmiddle[
-
-
-```{r}
-shap_int = read_rds("data/shap_interaction_plot_data.rds")
-shap.plot.dependence(data_long = shap_long_20,
-                           data_int = shap_int,
-                           x= "TotalSqFeet", y = "OverallQual", 
-                           color_feature = "OverallQual")
-```
-
-
-
-]]
-
-
-
-
----
-
-
-
-
-```{r forceplot, warning =F, echo = F}
-# force plot
-plot_data <- shap.prep.stack.data(shap_contrib = shap_values$shap_score, top_n = 10, n_groups = 6)
-
-shap.plot.force_plot(plot_data, zoom_in_location = 500, y_parent_limit = c(-1.5,1.5))
-
-
-```
-
-
 
 
 

@@ -1,0 +1,56 @@
+
+
+```{r, echo = F, warning = F, message= F}
+imp_DF = readRDS("~/Data_product_pipeline/kunoichi/data/RF_importance.RDS")
+
+```
+
+
+```{r lollipop, echo = F, warning=F, message= F, out.width = "90%" }
+
+p = ggplot(imp_DF[1:10,], aes(x=reorder(Variables, MSE), y= MSE, label = round(MSE, 1))) +
+  geom_segment( aes(x=reorder(Variables, MSE), xend=reorder(Variables, MSE), y=0, yend= MSE ), color=ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), "orange", "grey"), size=ifelse(imp_DF[1:10,]$Variables  %in% c("Neighborhood", "MSSubClass"), 1.5, 0.7) ) +
+  geom_point( color=ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), "orange", "grey"), size=ifelse(imp_DF[1:10,]$Variables  %in% c("Neighborhood", "MSSubClass"), 11, 7) ) +
+  coord_flip() +
+  theme(
+    legend.position="none"
+  ) +
+  geom_text(color = "white", size = ifelse(imp_DF[1:10,]$Variables %in% c("Neighborhood", "MSSubClass"), 3.5, 2.5))+
+  xlab("") +
+  ylab("Value of Y") +
+  ggtitle("Feature importance via Random Forrest")+
+  labs(x = 'Variables',y= '% increase MSE if variable is randomly permuted')+
+  theme_bw()+
+  yikai_labels +
+  yikai_themes+
+  ylim(0, 22)+
+  theme(plot.title.position = "plot")+
+  annotate("text", x=9, y=imp_DF[1:10,]$MSE[which(imp_DF[1:10,]$Variables=="Neighborhood")]*1.1, 
+             label= paste('Important categorical variable'),
+             color="orange", size=3.4, angle=0, fontface="bold", hjust=0)+
+  annotate("text", x=6, y=imp_DF[1:10,]$MSE[which(imp_DF[1:10,]$Variables=="MSSubClass")]*1.2, 
+           label= paste('Another important categorical variable'),
+           color="orange", size=3.4, angle=0, fontface="bold", hjust=0)+
+  theme(axis.title.x = element_text(hjust=-0.06))+
+  theme(panel.grid.major.y = element_blank())
+
+```
+
+
+```{r}
+background <- image_read("images/lollipop_plot.png")
+# And bring in a logo
+logo_raw <- image_read("https://media.giphy.com/media/bxRuoWEJG7mso/giphy.gif") 
+
+frames <- lapply(logo_raw, function(frame) {
+  image_composite(background, frame, offset = "+70+800")
+})
+
+animation <- image_animate(image_join(frames))
+
+
+image_write(animation, "images/beginning.gif")
+
+```
+
+
