@@ -28,7 +28,7 @@
     --color-opacity70: rgba(26, 23, 56, 0.7);
     --color-opacity50: rgba(26,23,56 ,0.5);
     --color-opacity30: rgba(26,23,56 ,0.3);
-    --title-background: url("../images/math_background.png");
+    --title-background: url("");
     --logo: url("");
 }
 
@@ -46,7 +46,7 @@
 }
 
 .remark-slide {
-  background-color: rgb(237, 237, 237);
+  background-color: #272822;
   background-image: var(--title-background);
   background-size:  10%, cover;
   background-position: right bottom, 100%;
