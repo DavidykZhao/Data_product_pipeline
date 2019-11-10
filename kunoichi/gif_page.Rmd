@@ -1,0 +1,15 @@
+
+class: split-30
+
+.column.bg-main1[.content.vmiddle.center[
+
+# Let's get emerged into .teal[visualization]!
+
+]]
+
+.column.bg-main5[.content.vmiddle.center[
+
+<img src="images/humor.gif" width= 70%>
+
+
+]]

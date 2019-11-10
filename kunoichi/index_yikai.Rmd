@@ -18,19 +18,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-class: center, middle
-
-<img src="images/data_scientist.png" width="25%">
-
-
-```{r setup, include=FALSE}
-options(htmltools.dir.version = FALSE)
-knitr::opts_chunk$set(dpi = 300,  out.width = "80%", message = F, warning = F) # this is set for the aesthetics of the 
-# flipplot remember to add out.width to all other plots
-source("https://raw.githubusercontent.com/EvaMaeRey/little_flipbooks_library/master/xaringan_reveal_parentheses_balanced.R")
-source(file = "~/Data_product_pipeline/kunoichi/xaringan_reveal_parenthetical.R")
-library(magick)
-logo <- image_read("./images/TAMU_logo.png")
+```{r child='gif_page.Rmd', warning=F, message=F}
 ```
 
 
@@ -58,6 +46,21 @@ class: split-60 white
 
 .column.bg-main4[.content.vmiddle.center[
 <center>
+
+
+```{r setup, include=FALSE, warning= F, message= F}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(dpi = 300,  out.width = "80%", message = F, warning = F) # this is set for the aesthetics of the 
+# flipplot remember to add out.width to all other plots
+source("https://raw.githubusercontent.com/EvaMaeRey/little_flipbooks_library/master/xaringan_reveal_parentheses_balanced.R")
+source(file = "~/Data_product_pipeline/kunoichi/xaringan_reveal_parenthetical.R")
+library(magick)
+logo <- image_read("./images/TAMU_logo.png")
+
+```
+
+
+
 ```{r echo = FALSE, message=FALSE, warning=FALSE }
 library(knitr)
 library(ggplot2)
@@ -249,7 +252,7 @@ p = ggplot(data=all[!is.na(all$SalePrice),], aes(x=GrLivArea, y=SalePrice))+
         labs(subtitle = "Data Source: House Prices Competition in Kaggle")+
         labs(caption = "Vis: @zhao_yikai with ggplot")
 p
-grid::grid.raster(logo, x = 0.79, y = 0.91, just = c('left', 'bottom'), width = unit(1.5, 'inches'))
+grid::grid.raster(logo, x = 0.79, y = 0.90, just = c('left', 'bottom'), width = unit(1.5, 'inches'))
 ```
 
 

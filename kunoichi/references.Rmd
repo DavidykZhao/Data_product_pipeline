@@ -1,6 +1,6 @@
 
 
-class: bg-main1, center, middle
+class: bg-main1, middle
 
 # This visualization project is built upon these great works:
 
