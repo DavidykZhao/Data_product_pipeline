@@ -34,7 +34,7 @@ shap.plot.dependence(data_long = shap_long_20,
   theme(legend.title = element_text(size = 6))
 
   
-grid::grid.raster(logo, x = 0.79, y = 0.91, just = c('left', 'bottom'), width = unit(1.5, 'inches'))
+grid::grid.raster(logo, x = 0.79, y = 0.90, just = c('left', 'bottom'), width = unit(1.5, 'inches'))
 
 ```
 

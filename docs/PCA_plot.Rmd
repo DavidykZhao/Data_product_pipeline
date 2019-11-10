@@ -10,7 +10,7 @@ class: split-50
 
 
 ```{r, echo = F}
-DFnorm = readRDS("~/Data_product_pipeline/kunoichi/data/normed_numerical_vars.rds")
+DFnorm = readRDS("~/Data_product_pipeline/docs/data/normed_numerical_vars.rds")
 pcaOut      = prcomp(DFnorm,scale=F,center=F)
 
 data.frame(pcaOut$x) %>%

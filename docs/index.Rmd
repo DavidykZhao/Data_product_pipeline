@@ -49,11 +49,12 @@ class: split-60 white
 
 
 ```{r setup, include=FALSE, warning= F, message= F}
+
 options(htmltools.dir.version = FALSE)
 knitr::opts_chunk$set(dpi = 300,  out.width = "80%", message = F, warning = F) # this is set for the aesthetics of the 
 # flipplot remember to add out.width to all other plots
 source("https://raw.githubusercontent.com/EvaMaeRey/little_flipbooks_library/master/xaringan_reveal_parentheses_balanced.R")
-source(file = "~/Data_product_pipeline/kunoichi/xaringan_reveal_parenthetical.R")
+source(file = "~/Data_product_pipeline/docs/xaringan_reveal_parenthetical.R")
 library(magick)
 logo <- image_read("./images/TAMU_logo.png")
 
@@ -79,8 +80,8 @@ library(magick)
 
 # library(psych)
 # library(xgboost)
-train <- read.csv("~/Data_product_pipeline/kunoichi/data/train_house.csv", stringsAsFactors = F)
-test <- read.csv("~/Data_product_pipeline/kunoichi/data/test_house.csv", stringsAsFactors = F)
+train <- read.csv("~/Data_product_pipeline/docs/data/train_house.csv", stringsAsFactors = F)
+test <- read.csv("~/Data_product_pipeline/docs/data/test_house.csv", stringsAsFactors = F)
 test_labels <- test$Id
 test$Id <- NULL
 train$Id <- NULL
@@ -220,14 +221,7 @@ class: split-50
 
 .column.bg-main1[.content.vmiddle[
 # We could visualize the relationship between .pink[GrLivArea] and .orange[SalePrice]
-From the plot, the 524th and 1299th house are potential outliers that deserve special attention. We furter insepct the OverallQual of these two hourse
 
-```{r, echo = F}
-knitr::kable(all[c(524, 1299), c('SalePrice', 'GrLivArea', 'OverallQual', "Neighborhood")]
-, format = "html")
-```
-
-These two houses are all of the highest quality however located at a "normal" .tile[neighborhood], which might explain the low price. Thus we keep these two houses in the dataset. 
 
 
 ]]
@@ -375,7 +369,7 @@ class: split-50
 
 ```{r, out.width= "85%", echo = F}
 
-data_circular = readRDS("~/Data_product_pipeline/kunoichi/data/data_circular.RDS")
+data_circular = readRDS("~/Data_product_pipeline/docs/data/data_circular.RDS")
 
 data_label_circular = data_circular
 number_of_bar <- nrow(data_label_circular)

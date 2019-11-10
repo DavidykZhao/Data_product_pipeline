@@ -1,7 +1,7 @@
 
 
 ```{r, echo = F, warning = F, message= F}
-imp_DF = readRDS("~/Data_product_pipeline/kunoichi/data/RF_importance.RDS")
+imp_DF = readRDS("~/Data_product_pipeline/docs/data/RF_importance.RDS")
 
 ```
 
