@@ -47,7 +47,7 @@
 
 .remark-slide {
   background-color: rgb(237, 237, 237);
-  background-image: var(--logo), var(--title-background);
+  background-image: var(--title-background);
   background-size:  10%, cover;
   background-position: right bottom, 100%;
   background-repeat: no-repeat;
