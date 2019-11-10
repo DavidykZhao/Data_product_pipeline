@@ -1,0 +1,31 @@
+
+
+class: bg-main1, center, middle
+
+# This visualization project is built upon these great works:
+
+### [House prices: Lasso, XGBoost, and a detailed EDA](https://www.kaggle.com/erikbruin/house-prices-lasso-xgboost-and-a-detailed-eda)
+
+### [ggplot_flipbook](https://github.com/EvaMaeRey/ggplot_flipbook)
+
+### [Xaringan](https://github.com/yihui/xaringan)
+
+### [remark.js Ninja theme](https://github.com/emitanaka/ninja-theme)
+
+<br>
+
+# You could find the source code of this project at [`r anicon::faa("github", animate="vertical")` here](https://github.com/DavidykZhao/Data_product_pipeline) 
+
+
+---
+
+class: bg-main1, center, middle
+
+
+.deep-orange[ 
+
+# Thanks! 
+
+]
+
+

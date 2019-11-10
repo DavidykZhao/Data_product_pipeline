@@ -1,9 +1,9 @@
 ---
 title: "Data analysis pipeline"
 subtitle: 'An visualization journey'
-author: "<br>Yikai Zhao&nbsp;&nbsp;&nbsp;`r anicon::faa('twitter', animate='vertical', rtext='&nbsp;@zhao_yikai')`"
+author: "<br>Yikai Zhao&nbsp;&nbsp;&nbsp; [`r anicon::faa('twitter', animate='vertical', rtext='&nbsp;@zhao_yikai', color='white')`](https://twitter.com/zhao_yikai)"
 institute: "Looking for a full time position as Data scientist"
-date: "25-Oct-2019 &nbsp;&nbsp; `r anicon::faa('link', animate='ring', rtext='&nbsp;ykzhao.com', color='white')`"
+date: "25-Oct-2019 &nbsp;&nbsp; [`r anicon::faa('link', animate='ring', rtext='&nbsp;ykzhao.com', color='white')`](ykzhao.com)"
 output:
   xaringan::moon_reader:
     chakra: libs/remark-latest.min.js
@@ -505,3 +505,12 @@ class: bg-main1, center, middle
 
 ```{r child='SHAP_force_plot.Rmd', warning=F, message=F}
 ```
+
+---
+
+```{r child='references.Rmd', warning=F, message=F}
+```
+
+
+
+

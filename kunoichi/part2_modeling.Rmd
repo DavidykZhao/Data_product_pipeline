@@ -6,7 +6,7 @@ class: split-50
 
 .column.bg-main1[.content.vmiddle[
 
-# XGBoost model was used to achieve great .orange[predicability] and .orange[explanabiity], 
+# XGBoost model was used to achieve great .orange[predicability] and .orange[explanability], 
 Used bayesian hyperparameter tuning to find the optimal combination of hyperparamters of the XGBoost model
 
 
@@ -73,7 +73,7 @@ class: split-50
 
 .column.bg-main1[.content.vmiddle[
 
-# We could also visualize the global importance of features <sup>1</sup>
+# We could visualize the global importance of features <sup>1</sup>
 <br>
 <br>
 <br>
