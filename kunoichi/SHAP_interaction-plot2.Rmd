@@ -1,6 +1,6 @@
 
 
-class split-50
+class: split-50
 
 
 .column.bg-main1[.content.vmiddle[
@@ -14,15 +14,16 @@ class split-50
 
 .column.bg-main5[.content.vmiddle[
 
-
 ```{r, warning =F, message=F, echo = F, out.width= "90%"}
-shap_int = read_rds("data/shap_interaction_plot_data.rds")
+
+shap_int = readRDS("data/shap_interaction_plot_data.rds")
+
 shap.plot.dependence(data_long = shap_long_20,
                            data_int = shap_int,
-                           x= "TotalSqFeet", y = "TotBathrooms", 
-                           color_feature = "TotBathrooms")+
+                           x= "TotalSqFeet", y = "OverallQual", 
+                           color_feature = "OverallQual")+
                         xlim(c(-2, 2.5)) +
-  labs(title = "SHAP values of TotalSqFeet colored by OverallQual")+
+  labs(title = "SHAP interaction between TotalSqFeet and OverallQual")+
   yikai_labels+
   yikai_themes+
   theme(axis.ticks = element_blank())+
@@ -37,5 +38,6 @@ grid::grid.raster(logo, x = 0.79, y = 0.91, just = c('left', 'bottom'), width = 
 
 ```
 
-
 ]]
+
+

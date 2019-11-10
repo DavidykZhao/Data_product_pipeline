@@ -16,6 +16,7 @@ Used bayesian hyperparameter tuning to find the optimal combination of hyperpara
 
 
 ```{r, echo = F, warning= F, message=F, out.width= "90%"}
+
 train1 = readRDS("data/training_x.rds")
 train_y_include = readRDS("data/training_y_included.rds")
 library(xgboost)
@@ -43,12 +44,12 @@ xgb_mod <- xgb.train(data = dtrain, params=default_param, nrounds = 178)
 
 library(Ckmeans.1d.dp) #required for ggplot clustering
 mat <- xgb.importance (feature_names = colnames(train1),model = xgb_mod)
-xgb.ggplot.importance(importance_matrix = mat[1:20], rel_to_first = TRUE)+
-  yikai_labels+
-  theme_bw()+
-  theme(panel.grid.major = element_blank())+
-  yikai_themes +
-  scale_fill_manual(values = c( "#f9b282", "#de6b35"))+
+xgb.ggplot.importance(importance_matrix = mat[1:20], rel_to_first = TRUE, n_clusters = 2)+
+ yikai_labels+
+ theme_bw()+
+ theme(panel.grid.major = element_blank())+
+ yikai_themes +
+ scale_fill_manual(values = c( "#f9b282", "#de6b35"))+
   theme(legend.position = "none")+
   theme(text= element_text(color = "grey40"))+
   theme(axis.text = element_text(color = "grey40"))+
@@ -72,7 +73,7 @@ class: split-50
 
 .column.bg-main1[.content.vmiddle[
 
-# We could also visualize the .purple[SHAP] values<sup>1</sup> of each variable
+# We could also visualize the global importance of features <sup>1</sup>
 <br>
 <br>
 <br>
@@ -86,6 +87,93 @@ class: split-50
 [1]  This powerpoint is to show the visualizations, not to interpret the results. For more details, please refer [here](https://github.com/slundberg/shap)
 
 ]
+
+]]
+
+
+
+.column.bg-main5[.content.vmiddle.center[
+
+
+```{r, echo = F, warning= F, message=F}
+train1 = readRDS("data/training_x.rds")
+train_y_include = readRDS("data/training_y_included.rds")
+library(xgboost)
+label_train <- train_y_include["SalePrice"]
+
+  
+
+
+```
+
+```{r,warning=F, message = F, echo = F, out.width= "90%"}
+library('SHAPforxgboost')
+train_df = readRDS("data/training_y_included.rds")
+
+mod <- xgboost::xgboost(data = as.matrix(train1), label = as.matrix(train_df$SalePrice), 
+                       xgb_param = default_param, nrounds = 301,
+                       verbose = FALSE, nthread = parallel::detectCores() - 2,
+                       early_stopping_rounds = 8)
+shap_values <- shap.values(xgb_model = mod, X_train = train1)
+
+shap_long <- shap.prep(xgb_model = mod, X_train = train1)
+
+top20_names = shap_long %>%
+  select(variable, mean_value) %>%
+  arrange(desc(mean_value)) %>%
+  unique() %>%
+  top_n(20)
+
+top20_names$variable = droplevels(top20_names$variable)
+top_20_feature_field = 
+  train1 %>%
+  select(as.character(top20_names$variable))
+
+mod_20 <- xgboost::xgboost(data = as.matrix(top_20_feature_field), label = as.matrix(train_df$SalePrice), 
+                       xgb_param = default_param, nrounds = 301,
+                       verbose = FALSE, nthread = parallel::detectCores() -2,
+                       early_stopping_rounds = 8)
+shap_long_20 <- shap.prep(xgb_model = mod_20, X_train = as.matrix(top_20_feature_field))
+
+
+
+shap_top20 = shap_long %>%
+  filter(variable %in% top20_names$variable)
+shap_top20$variable = droplevels(shap_top20$variable)
+
+shap.plot.summary(shap_top20) + yikai_labels + yikai_themes + 
+  ggtitle("Global feature importance in SHAP")+
+  labs(title = "SHAP values of TotalSqFeet")+
+  yikai_labels+
+  yikai_themes+
+  theme(axis.ticks = element_blank())+
+  theme(panel.grid.major.y = element_blank())+
+  theme(legend.direction = "horizontal")+
+  theme(legend.position = "bottom")+
+  theme(legend.text = element_text(size = 6))+
+  theme(legend.title = element_text(size = 6))
+
+  
+grid::grid.raster(logo, x = 0.79, y = 0.91, just = c('left', 'bottom'), width = unit(1.5, 'inches'))
+```
+
+
+
+]]
+
+
+
+
+---
+
+
+class: split-50
+
+.column.bg-main1[.content.vmiddle[
+
+# We could also visualize the .purple[SHAP] values of an individual variable
+
+
 
 ]]
 
@@ -156,10 +244,6 @@ grid::grid.raster(logo, x = 0.79, y = 0.91, just = c('left', 'bottom'), width = 
 
 
 ]]
-
-
-
----
 
 
 

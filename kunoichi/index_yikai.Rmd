@@ -492,12 +492,13 @@ class: bg-main1, center, middle
 
 
 ---
+
 ```{r child='part2_modeling.Rmd', warning=F, message=F}
 ```
 
+---
 
-
-```{r child='SHAP_interaction_plot.Rmd', warning=F, message=F}
+```{r child='SHAP_interaction-plot2.Rmd', warning=F, message=F}
 ```
 
 ---
