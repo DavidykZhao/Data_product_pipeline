@@ -2,7 +2,7 @@
 title: "Data analysis pipeline"
 subtitle: 'An visualization journey'
 author: "<br>Yikai Zhao&nbsp;&nbsp;&nbsp; [`r anicon::faa('twitter', animate='vertical', rtext='&nbsp;@zhao_yikai', color='white')`](https://twitter.com/zhao_yikai)"
-institute: "Looking for a full time position as Data scientist"
+institute: "Looking for a full time position as a UX researcher or Data scientist"
 date: "25-Oct-2019 &nbsp;&nbsp; [`r anicon::faa('link', animate='ring', rtext='&nbsp;ykzhao.com', color='white')`](ykzhao.com)"
 output:
   xaringan::moon_reader:
@@ -92,6 +92,7 @@ all <- rbind(train, test)
 ```
 
 ```{r plot_themes, echo=F, message=F, warning=F}
+
 yikai_labels <- list(
    labs(subtitle = "Data Source: House Prices Competition in Kaggle"),
    labs(caption = "Vis: @zhao_yikai with ggplot")
@@ -262,7 +263,7 @@ class: bg-main1, center, middle
 
 ---
 
-```{r child='flip_plot_seperate_script.Rmd', warning=F, message=F}
+```{r child='flip_plot_seperate_script.Rmd', warning=F, message=F, cache= T}
 ```
 
 
@@ -300,7 +301,7 @@ anno_data = data.frame(n_qual = n_qual,
 
 
 
-```{r, echo = F, out.width= "85%"}
+```{r, echo = F, out.width= "85%", cache = T}
 ggplot(data = year_by_quality_data, aes(x = YrSold, y = median_price))+
   geom_line(aes(color = "Median"))+
   facet_wrap(~ OverallQual)+
@@ -352,7 +353,7 @@ class: bg-main1, center, middle
 
 ---
 
-```{r child='lollipop_plot.Rmd', warning=F, message=F}
+```{r child='lollipop_plot.Rmd', warning=F, message=F, cache= T}
 ```
 
 ---
@@ -449,7 +450,7 @@ class: split-50
 
 
 
-```{r, message= F, warning=F, echo = F, out.width = "90%" , dpi = 300, out.height= "75%"}
+```{r, message= F, warning=F, echo = F, out.width = "90%" , dpi = 300, out.height= "75%", cache= T}
   all[, 1:ncol(all)] %>%
     is.na %>%
     melt %>%
@@ -484,13 +485,13 @@ class: bg-main1, center, middle
 # Part 2: Modeling and interpretation
 ---
 
-```{r child='coeff_plot.Rmd', warning=F, message=F}
+```{r child='coeff_plot.Rmd', warning=F, message=F, cache= T}
 ```
 
 
 ---
 
-```{r child='part2_modeling.Rmd', warning=F, message=F}
+```{r child='part2_modeling.Rmd', warning=F, message=F, cache = T}
 ```
 
 ---
